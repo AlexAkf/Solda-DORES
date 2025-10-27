@@ -5,7 +5,7 @@
 package tela_login;
 
 import javax.swing.JOptionPane;
-import util.Gradiente;
+import tela_dashboard.TelaDashboard;
 
 /**
  *
@@ -97,6 +97,7 @@ public class TelaLogin extends javax.swing.JFrame {
         labelCampoSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/campoTXT.png"))); // NOI18N
         painel.add(labelCampoSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 280, 570, 50));
 
+        lembrarMe.setBackground(new java.awt.Color(255, 255, 255));
         lembrarMe.setFont(new java.awt.Font("Baloo 2", 1, 14)); // NOI18N
         lembrarMe.setForeground(new java.awt.Color(142, 142, 142));
         lembrarMe.setText("Lembrar-me");
@@ -209,6 +210,9 @@ public class TelaLogin extends javax.swing.JFrame {
         // Verifica os dados inseridos para logar:
         if(campoUsuario.getText()!=null && !campoUsuario.getText().isEmpty() && campoSenha.getText()!=null && !campoSenha.getText().isEmpty()){
             JOptionPane.showMessageDialog(painel, "Informações válidas!", "Entrando...", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            TelaDashboard TelaDashboard = new TelaDashboard();
+            TelaDashboard.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(painel, "Verifique os dados!", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
