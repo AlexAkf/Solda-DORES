@@ -81,7 +81,7 @@
         <Component class="javax.swing.JToggleButton" name="mostrarSenha">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/images/icone_ver.png"/>
+              <Image iconType="3" name="/images/olho_fechado.png"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>

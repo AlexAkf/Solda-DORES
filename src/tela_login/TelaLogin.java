@@ -67,7 +67,7 @@ public class TelaLogin extends javax.swing.JFrame {
         });
         painel.add(campoUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 390, 30));
 
-        mostrarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icone_ver.png"))); // NOI18N
+        mostrarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/olho_fechado.png"))); // NOI18N
         mostrarSenha.setBorder(null);
         mostrarSenha.setBorderPainted(false);
         mostrarSenha.setContentAreaFilled(false);
@@ -200,15 +200,17 @@ public class TelaLogin extends javax.swing.JFrame {
     private void mostrarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarSenhaActionPerformed
         // Função que mostrar os caracteres digitados no campo da senha:
         if (mostrarSenha.isSelected()) {
-            campoSenha.setEchoChar((char)0);
+            campoSenha.setEchoChar((char) 0);
+            mostrarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/olho_aberto.png")));
         } else {
             campoSenha.setEchoChar(('*'));
+            mostrarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/olho_fechado.png")));
         }
     }//GEN-LAST:event_mostrarSenhaActionPerformed
 
     private void botaoEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoEntrarMouseClicked
         // Verifica os dados inseridos para logar:
-        if(campoUsuario.getText()!=null && !campoUsuario.getText().isEmpty() && campoSenha.getText()!=null && !campoSenha.getText().isEmpty()){
+        if (campoUsuario.getText() != null && !campoUsuario.getText().isEmpty() && campoSenha.getText() != null && !campoSenha.getText().isEmpty()) {
             JOptionPane.showMessageDialog(painel, "Informações válidas!", "Entrando...", JOptionPane.INFORMATION_MESSAGE);
             dispose();
             TelaDashboard TelaDashboard = new TelaDashboard();
