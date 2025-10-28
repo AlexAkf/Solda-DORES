@@ -4,8 +4,10 @@
  */
 package tela_login;
 
+import controllers.Login;
+import controllers.LoginConexao;
 import javax.swing.JOptionPane;
-import tela_dashboard.TelaDashboard;
+import tela_principal.TelaPrincipal;
 
 /**
  *
@@ -36,13 +38,11 @@ public class TelaLogin extends javax.swing.JFrame {
         campoSenha = new javax.swing.JPasswordField();
         labelCampoUsuario = new javax.swing.JLabel();
         labelCampoSenha = new javax.swing.JLabel();
-        lembrarMe = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
         botaoEntrar = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         labelFrame = new javax.swing.JLabel();
         botaoSair = new javax.swing.JLabel();
@@ -97,20 +97,6 @@ public class TelaLogin extends javax.swing.JFrame {
         labelCampoSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/campoTXT.png"))); // NOI18N
         painel.add(labelCampoSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 280, 570, 50));
 
-        lembrarMe.setBackground(new java.awt.Color(255, 255, 255));
-        lembrarMe.setFont(new java.awt.Font("Baloo 2", 1, 14)); // NOI18N
-        lembrarMe.setForeground(new java.awt.Color(142, 142, 142));
-        lembrarMe.setText("Lembrar-me");
-        lembrarMe.setFocusPainted(false);
-        lembrarMe.setFocusable(false);
-        lembrarMe.setRequestFocusEnabled(false);
-        lembrarMe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lembrarMeActionPerformed(evt);
-            }
-        });
-        painel.add(lembrarMe, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 340, -1, -1));
-
         jLabel5.setFont(new java.awt.Font("Baloo 2", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(51, 153, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -144,11 +130,6 @@ public class TelaLogin extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icone_senha.png"))); // NOI18N
         jLabel2.setText("Senha");
         painel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 90, -1));
-
-        jLabel6.setFont(new java.awt.Font("Baloo 2", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(51, 153, 255));
-        jLabel6.setText("Crie uma nova conta");
-        painel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 480, -1, 20));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/imagem_login.png"))); // NOI18N
         painel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 410, 470));
@@ -189,10 +170,6 @@ public class TelaLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoSenhaActionPerformed
 
-    private void lembrarMeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lembrarMeActionPerformed
-
-    }//GEN-LAST:event_lembrarMeActionPerformed
-
     private void campoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoUsuarioActionPerformed
@@ -211,10 +188,11 @@ public class TelaLogin extends javax.swing.JFrame {
     private void botaoEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoEntrarMouseClicked
         // Verifica os dados inseridos para logar:
         if (campoUsuario.getText() != null && !campoUsuario.getText().isEmpty() && campoSenha.getText() != null && !campoSenha.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(painel, "Informações válidas!", "Entrando...", JOptionPane.INFORMATION_MESSAGE);
+            Login.usuario = campoUsuario.getText();
+            Login.senha = new String(campoSenha.getPassword());
+            LoginConexao lg = new LoginConexao();
+            lg.verificarUsuario();//é o método de inserir o usuário
             dispose();
-            TelaDashboard TelaDashboard = new TelaDashboard();
-            TelaDashboard.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(painel, "Verifique os dados!", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
@@ -265,13 +243,11 @@ public class TelaLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel labelCampoSenha;
     private javax.swing.JLabel labelCampoUsuario;
     private javax.swing.JLabel labelFrame;
     private javax.swing.JLabel labelLogin;
-    private javax.swing.JCheckBox lembrarMe;
     private javax.swing.JToggleButton mostrarSenha;
     private javax.swing.JPanel painel;
     // End of variables declaration//GEN-END:variables
