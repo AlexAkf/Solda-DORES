@@ -7,7 +7,8 @@ package tela_login;
 import controllers.Login;
 import controllers.LoginConexao;
 import javax.swing.JOptionPane;
-import tela_principal.TelaPrincipal;
+import java.awt.Font;
+import util.Fonte;
 
 /**
  *
@@ -53,7 +54,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
         painel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        labelLogin.setFont(new java.awt.Font("Baloo 2", 1, 48)); // NOI18N
+        labelLogin.setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 48f));
         labelLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelLogin.setText("LOGIN");
         painel.add(labelLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 570, 60));
@@ -97,13 +98,13 @@ public class TelaLogin extends javax.swing.JFrame {
         labelCampoSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/campoTXT.png"))); // NOI18N
         painel.add(labelCampoSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 280, 570, 50));
 
-        jLabel5.setFont(new java.awt.Font("Baloo 2", 1, 14)); // NOI18N
+        jLabel5.setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 18f));
         jLabel5.setForeground(new java.awt.Color(51, 153, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Recuperar senha");
         painel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 340, -1, -1));
 
-        botaoEntrar.setFont(new java.awt.Font("Baloo 2", 1, 36)); // NOI18N
+        botaoEntrar.setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 36f));
         botaoEntrar.setForeground(new java.awt.Color(255, 255, 255));
         botaoEntrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoEntrar.setText("ENTRAR");
@@ -117,14 +118,14 @@ public class TelaLogin extends javax.swing.JFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_entrar.png"))); // NOI18N
         painel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 400, 270, 60));
 
-        jLabel1.setFont(new java.awt.Font("Baloo 2", 1, 18)); // NOI18N
+        jLabel1.setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 18f));
         jLabel1.setForeground(new java.awt.Color(142, 142, 142));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icone_user.png"))); // NOI18N
         jLabel1.setText("Usuário");
         painel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 100, -1));
 
-        jLabel2.setFont(new java.awt.Font("Baloo 2", 1, 18)); // NOI18N
+        jLabel2.setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 18f));
         jLabel2.setForeground(new java.awt.Color(142, 142, 142));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icone_senha.png"))); // NOI18N
@@ -180,7 +181,7 @@ public class TelaLogin extends javax.swing.JFrame {
             campoSenha.setEchoChar((char) 0);
             mostrarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/olho_aberto.png")));
         } else {
-            campoSenha.setEchoChar(('*'));
+            campoSenha.setEchoChar(('•'));
             mostrarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/olho_fechado.png")));
         }
     }//GEN-LAST:event_mostrarSenhaActionPerformed
