@@ -20,7 +20,7 @@ public class LoginConexao {
 
         Connection conn = null;
 
-        String sql = "INSERT INTO usuarios (login, senha_hash) VALUES (?, ?)";
+        String sql = "INSERT INTO usuarios (login, senha) VALUES (?, ?)";
 
         conn = Conexao.getConexao();//conectar ao banco de dados
 
@@ -61,7 +61,7 @@ public class LoginConexao {
 
             rs.next();
 
-            String usuario1 = rs.getString("usuario");
+            String usuario1 = rs.getString("login");
             String senha1 = rs.getString("senha");
             System.out.println(usuario1);
             System.out.println(senha1);
