@@ -1,8 +1,11 @@
 package tela_principal;
 
 import java.awt.CardLayout;
-import javax.swing.ImageIcon;
+import java.awt.Color;
 import telas.*;
+import java.awt.Font;
+import javax.swing.UIManager;
+import util.Fonte;
 
 /**
  *
@@ -22,8 +25,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         painelRecebedor.add(new TelaEmpresas(), "Empresas");
         painelRecebedor.add(new TelaProjetos(), "Projetos");
         painelRecebedor.add(new TelaRelatorios(), "Relatórios");
-    }
 
+        UIManager.put("ToolTip.foreground", Color.black);
+        UIManager.put("ToolTip.background", Color.white);
+        UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 18));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,9 +51,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         botaoEmpresas = new javax.swing.JLabel();
         botaoProjetos = new javax.swing.JLabel();
         botaoRelatorios = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        selecionado = new javax.swing.JLabel();
         botaoSair = new javax.swing.JLabel();
         painelRecebedor = new javax.swing.JPanel();
+        titulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1920, 1080));
@@ -62,7 +70,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel2.setMaximumSize(new java.awt.Dimension(100, 1080));
         jPanel2.setMinimumSize(new java.awt.Dimension(100, 1080));
         jPanel2.setPreferredSize(new java.awt.Dimension(100, 1080));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel2.setLayout(null);
 
         botaoPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_pesquisar.png"))); // NOI18N
@@ -70,7 +78,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         botaoPesquisar.setMaximumSize(new java.awt.Dimension(54, 54));
         botaoPesquisar.setMinimumSize(new java.awt.Dimension(54, 54));
         botaoPesquisar.setPreferredSize(new java.awt.Dimension(54, 54));
-        jPanel2.add(botaoPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 100, -1));
+        jPanel2.add(botaoPesquisar);
+        botaoPesquisar.setBounds(0, 20, 100, 54);
 
         botaoConta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoConta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_conta.png"))); // NOI18N
@@ -78,14 +87,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         botaoConta.setMaximumSize(new java.awt.Dimension(54, 54));
         botaoConta.setMinimumSize(new java.awt.Dimension(54, 54));
         botaoConta.setPreferredSize(new java.awt.Dimension(54, 54));
-        jPanel2.add(botaoConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 927, 100, -1));
+        jPanel2.add(botaoConta);
+        botaoConta.setBounds(0, 927, 100, 54);
 
         logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logo.png"))); // NOI18N
         logo.setMaximumSize(new java.awt.Dimension(54, 54));
         logo.setMinimumSize(new java.awt.Dimension(54, 54));
         logo.setPreferredSize(new java.awt.Dimension(54, 54));
-        jPanel2.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1006, 100, -1));
+        jPanel2.add(logo);
+        logo.setBounds(0, 1006, 100, 54);
 
         botaoDashboard.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoDashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_dashboard.png"))); // NOI18N
@@ -98,7 +109,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 botaoDashboardMouseClicked(evt);
             }
         });
-        jPanel2.add(botaoDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 100, -1));
+        jPanel2.add(botaoDashboard);
+        botaoDashboard.setBounds(0, 160, 100, 54);
 
         botaoFuncionarios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoFuncionarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_funcionarios.png"))); // NOI18N
@@ -111,7 +123,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 botaoFuncionariosMouseClicked(evt);
             }
         });
-        jPanel2.add(botaoFuncionarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 249, 100, -1));
+        jPanel2.add(botaoFuncionarios);
+        botaoFuncionarios.setBounds(0, 249, 100, 54);
 
         botaoEquipamentos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoEquipamentos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_equipamentos.png"))); // NOI18N
@@ -122,7 +135,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 botaoEquipamentosMouseClicked(evt);
             }
         });
-        jPanel2.add(botaoEquipamentos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 338, 100, -1));
+        jPanel2.add(botaoEquipamentos);
+        botaoEquipamentos.setBounds(0, 338, 100, 54);
 
         botaoEmpresas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoEmpresas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_empresas.png"))); // NOI18N
@@ -135,7 +149,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 botaoEmpresasMouseClicked(evt);
             }
         });
-        jPanel2.add(botaoEmpresas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 427, 100, -1));
+        jPanel2.add(botaoEmpresas);
+        botaoEmpresas.setBounds(0, 427, 100, 54);
 
         botaoProjetos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoProjetos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_projetos.png"))); // NOI18N
@@ -148,7 +163,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 botaoProjetosMouseClicked(evt);
             }
         });
-        jPanel2.add(botaoProjetos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 516, 100, -1));
+        jPanel2.add(botaoProjetos);
+        botaoProjetos.setBounds(0, 516, 100, 54);
 
         botaoRelatorios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_relatorios.png"))); // NOI18N
@@ -161,11 +177,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 botaoRelatoriosMouseClicked(evt);
             }
         });
-        jPanel2.add(botaoRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 605, 100, -1));
+        jPanel2.add(botaoRelatorios);
+        botaoRelatorios.setBounds(0, 605, 100, 54);
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/selecionado.png"))); // NOI18N
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 100, -1));
+        selecionado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        selecionado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/selecionado.png"))); // NOI18N
+        jPanel2.add(selecionado);
+        selecionado.setBounds(0, 150, 100, 70);
 
         botaoSair.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icone_sair.png"))); // NOI18N
@@ -177,8 +195,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
 
         painelRecebedor.setBackground(new java.awt.Color(228, 228, 228));
+        painelRecebedor.setMaximumSize(new java.awt.Dimension(1828, 1022));
+        painelRecebedor.setMinimumSize(new java.awt.Dimension(1828, 1022));
         painelRecebedor.setPreferredSize(new java.awt.Dimension(1828, 1022));
         painelRecebedor.setLayout(new java.awt.CardLayout());
+
+        titulo.setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 29f));
+        titulo.setForeground(new java.awt.Color(30, 58, 138));
+        titulo.setText("DASHBOARD");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -186,20 +210,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 1768, Short.MAX_VALUE)
+                        .addGap(26, 26, 26)
+                        .addComponent(titulo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1678, Short.MAX_VALUE)
                         .addComponent(botaoSair))
-                    .addComponent(painelRecebedor, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(painelRecebedor, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(botaoSair)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(botaoSair)
+                    .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(painelRecebedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -227,29 +256,43 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void botaoDashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoDashboardMouseClicked
         CardLayout cl = (CardLayout) painelRecebedor.getLayout();
         cl.show(painelRecebedor, "Dashboard");
+        selecionado.setLocation(0, 150);
+        titulo.setText("DASHBOARD");
     }//GEN-LAST:event_botaoDashboardMouseClicked
 
     private void botaoFuncionariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoFuncionariosMouseClicked
         CardLayout cl = (CardLayout) painelRecebedor.getLayout();
         cl.show(painelRecebedor, "Funcionários");
+        selecionado.setLocation(0, 239);
+        titulo.setText("FUNCIONÁRIOS");
     }//GEN-LAST:event_botaoFuncionariosMouseClicked
 
     private void botaoEquipamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoEquipamentosMouseClicked
         CardLayout cl = (CardLayout) painelRecebedor.getLayout();
+        selecionado.setLocation(0, 328);
+        titulo.setText("EQUIPAMENTOS");
         cl.show(painelRecebedor, "Equipamentos");    }//GEN-LAST:event_botaoEquipamentosMouseClicked
 
     private void botaoEmpresasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoEmpresasMouseClicked
         CardLayout cl = (CardLayout) painelRecebedor.getLayout();
+        selecionado.setLocation(0, 417);
+        titulo.setText("EMPRESAS");
         cl.show(painelRecebedor, "Empresas");    }//GEN-LAST:event_botaoEmpresasMouseClicked
 
     private void botaoProjetosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoProjetosMouseClicked
         CardLayout cl = (CardLayout) painelRecebedor.getLayout();
+        selecionado.setLocation(0, 506);
+        titulo.setText("PROJETOS");
         cl.show(painelRecebedor, "Projetos");    }//GEN-LAST:event_botaoProjetosMouseClicked
 
     private void botaoRelatoriosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoRelatoriosMouseClicked
         CardLayout cl = (CardLayout) painelRecebedor.getLayout();
+        selecionado.setLocation(0, 595);
+        titulo.setText("RELATÓRIOS");
         cl.show(painelRecebedor, "Relatórios");    }//GEN-LAST:event_botaoRelatoriosMouseClicked
-
+    
+   
+    
     /**
      * @param args the command line arguments
      */
@@ -300,10 +343,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel botaoProjetos;
     private javax.swing.JLabel botaoRelatorios;
     private javax.swing.JLabel botaoSair;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel logo;
     private javax.swing.JPanel painelRecebedor;
+    private javax.swing.JLabel selecionado;
+    private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

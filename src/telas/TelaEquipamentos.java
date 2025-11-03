@@ -29,6 +29,8 @@ public class TelaEquipamentos extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(228, 228, 228));
+        setMaximumSize(new java.awt.Dimension(1828, 1022));
+        setMinimumSize(new java.awt.Dimension(1828, 1022));
 
         jLabel1.setText("Equipamentos");
 
@@ -36,17 +38,17 @@ public class TelaEquipamentos extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(418, 418, 418)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(1746, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(1334, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(300, 300, 300)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(1000, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(706, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 

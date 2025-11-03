@@ -9,7 +9,7 @@ import java.io.IOException;
 // Hugo
 // Classe para definir fonte personalizadas.
 // COMO USAR:
-// .setFont(Fonte.inserirFonte().deriveFont(Complementa aqui com tamanho e estilo da fonte);
+// .setFont(Fonte.inserirFonte().deriveFont(Complementa aqui com tamanho e estilo da fonte));
 
 public class Fonte {  
     public static Font inserirFonte() {
