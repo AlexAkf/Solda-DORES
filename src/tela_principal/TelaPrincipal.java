@@ -44,120 +44,128 @@ public class TelaPrincipal extends javax.swing.JFrame {
         botaoEmpresas = new javax.swing.JLabel();
         botaoProjetos = new javax.swing.JLabel();
         botaoRelatorios = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         botaoSair = new javax.swing.JLabel();
         painelRecebedor = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1920, 1080));
         setMinimumSize(new java.awt.Dimension(1920, 1080));
         setUndecorated(true);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(228, 228, 228));
+        jPanel1.setMaximumSize(new java.awt.Dimension(1920, 1080));
+        jPanel1.setMinimumSize(new java.awt.Dimension(1920, 1080));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1920, 1080));
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(80, 1080));
+        jPanel2.setMaximumSize(new java.awt.Dimension(100, 1080));
+        jPanel2.setMinimumSize(new java.awt.Dimension(100, 1080));
+        jPanel2.setPreferredSize(new java.awt.Dimension(100, 1080));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         botaoPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_pesquisar.png"))); // NOI18N
         botaoPesquisar.setToolTipText("Pesquisar");
+        botaoPesquisar.setMaximumSize(new java.awt.Dimension(54, 54));
+        botaoPesquisar.setMinimumSize(new java.awt.Dimension(54, 54));
+        botaoPesquisar.setPreferredSize(new java.awt.Dimension(54, 54));
+        jPanel2.add(botaoPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 100, -1));
 
         botaoConta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoConta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_conta.png"))); // NOI18N
         botaoConta.setToolTipText("Conta");
+        botaoConta.setMaximumSize(new java.awt.Dimension(54, 54));
+        botaoConta.setMinimumSize(new java.awt.Dimension(54, 54));
+        botaoConta.setPreferredSize(new java.awt.Dimension(54, 54));
+        jPanel2.add(botaoConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 927, 100, -1));
 
         logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logo.png"))); // NOI18N
+        logo.setMaximumSize(new java.awt.Dimension(54, 54));
+        logo.setMinimumSize(new java.awt.Dimension(54, 54));
+        logo.setPreferredSize(new java.awt.Dimension(54, 54));
+        jPanel2.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1006, 100, -1));
 
         botaoDashboard.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoDashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_dashboard.png"))); // NOI18N
         botaoDashboard.setToolTipText("Dashboard");
+        botaoDashboard.setMaximumSize(new java.awt.Dimension(54, 54));
+        botaoDashboard.setMinimumSize(new java.awt.Dimension(54, 54));
+        botaoDashboard.setPreferredSize(new java.awt.Dimension(54, 54));
         botaoDashboard.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botaoDashboardMouseClicked(evt);
             }
         });
+        jPanel2.add(botaoDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 100, -1));
 
         botaoFuncionarios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoFuncionarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_funcionarios.png"))); // NOI18N
         botaoFuncionarios.setToolTipText("Funcionários");
+        botaoFuncionarios.setMaximumSize(new java.awt.Dimension(54, 54));
+        botaoFuncionarios.setMinimumSize(new java.awt.Dimension(54, 54));
+        botaoFuncionarios.setPreferredSize(new java.awt.Dimension(54, 54));
         botaoFuncionarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botaoFuncionariosMouseClicked(evt);
             }
         });
+        jPanel2.add(botaoFuncionarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 249, 100, -1));
 
         botaoEquipamentos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoEquipamentos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_equipamentos.png"))); // NOI18N
         botaoEquipamentos.setToolTipText("Equipamentos");
+        botaoEquipamentos.setPreferredSize(new java.awt.Dimension(54, 54));
         botaoEquipamentos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botaoEquipamentosMouseClicked(evt);
             }
         });
+        jPanel2.add(botaoEquipamentos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 338, 100, -1));
 
         botaoEmpresas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoEmpresas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_empresas.png"))); // NOI18N
         botaoEmpresas.setToolTipText("Empresas");
+        botaoEmpresas.setMaximumSize(new java.awt.Dimension(54, 54));
+        botaoEmpresas.setMinimumSize(new java.awt.Dimension(54, 54));
+        botaoEmpresas.setPreferredSize(new java.awt.Dimension(54, 54));
         botaoEmpresas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botaoEmpresasMouseClicked(evt);
             }
         });
+        jPanel2.add(botaoEmpresas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 427, 100, -1));
 
         botaoProjetos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoProjetos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_projetos.png"))); // NOI18N
         botaoProjetos.setToolTipText("Projetos");
+        botaoProjetos.setMaximumSize(new java.awt.Dimension(54, 54));
+        botaoProjetos.setMinimumSize(new java.awt.Dimension(54, 54));
+        botaoProjetos.setPreferredSize(new java.awt.Dimension(54, 54));
         botaoProjetos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botaoProjetosMouseClicked(evt);
             }
         });
+        jPanel2.add(botaoProjetos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 516, 100, -1));
 
         botaoRelatorios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_relatorios.png"))); // NOI18N
         botaoRelatorios.setToolTipText("Relatórios");
+        botaoRelatorios.setMaximumSize(new java.awt.Dimension(54, 54));
+        botaoRelatorios.setMinimumSize(new java.awt.Dimension(54, 54));
+        botaoRelatorios.setPreferredSize(new java.awt.Dimension(54, 54));
         botaoRelatorios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botaoRelatoriosMouseClicked(evt);
             }
         });
+        jPanel2.add(botaoRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 605, 100, -1));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(botaoPesquisar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(botaoDashboard, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(botaoFuncionarios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(botaoEquipamentos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(botaoEmpresas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(botaoProjetos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(botaoRelatorios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(botaoConta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(logo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(botaoPesquisar)
-                .addGap(86, 86, 86)
-                .addComponent(botaoDashboard)
-                .addGap(35, 35, 35)
-                .addComponent(botaoFuncionarios)
-                .addGap(35, 35, 35)
-                .addComponent(botaoEquipamentos)
-                .addGap(35, 35, 35)
-                .addComponent(botaoEmpresas)
-                .addGap(35, 35, 35)
-                .addComponent(botaoProjetos)
-                .addGap(35, 35, 35)
-                .addComponent(botaoRelatorios)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botaoConta)
-                .addGap(30, 30, 30)
-                .addComponent(logo)
-                .addGap(20, 20, 20))
-        );
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/selecionado.png"))); // NOI18N
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 100, -1));
 
         botaoSair.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icone_sair.png"))); // NOI18N
@@ -181,9 +189,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 1768, Short.MAX_VALUE)
                         .addComponent(botaoSair))
-                    .addComponent(painelRecebedor, javax.swing.GroupLayout.DEFAULT_SIZE, 1834, Short.MAX_VALUE))
+                    .addComponent(painelRecebedor, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -292,6 +300,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel botaoProjetos;
     private javax.swing.JLabel botaoRelatorios;
     private javax.swing.JLabel botaoSair;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel logo;
