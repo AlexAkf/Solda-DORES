@@ -2,18 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package telas_cadastro;
+package telas_atualizar;
+
+
 
 /**
  *
  * @author hugos
  */
-public class CadastroEquipamentos extends javax.swing.JFrame {
+public class AtualizarEquipamentos extends javax.swing.JFrame {
 
     /**
      * Creates new form CadastroEquipamentos
      */
-    public CadastroEquipamentos() {
+    public AtualizarEquipamentos() {
         initComponents();
     }
 
@@ -41,16 +43,14 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(770, 430));
         setMinimumSize(new java.awt.Dimension(770, 430));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(770, 430));
         setResizable(false);
         getContentPane().setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("CADASTRAR EQUIPAMENTO");
+        jLabel1.setText("ATUALIZAR EQUIPAMENTO");
         getContentPane().add(jLabel1);
         jLabel1.setBounds(0, 20, 770, 48);
 
@@ -96,11 +96,11 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
         getContentPane().add(jLabel13);
-        jLabel13.setBounds(30, 320, 260, 83);
+        jLabel13.setBounds(40, 320, 260, 83);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(30, 320, 260, 83);
+        jLabel3.setBounds(40, 320, 260, 83);
 
         jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jTextField2.setText("jTextField1");
@@ -143,20 +143,23 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AtualizarEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AtualizarEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AtualizarEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AtualizarEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroEquipamentos().setVisible(true);
+                new AtualizarEquipamentos().setVisible(true);
             }
         });
     }
