@@ -26,36 +26,24 @@ public class TelaRelatorios extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jRadioButton1 = new javax.swing.JRadioButton();
-
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
         setMinimumSize(new java.awt.Dimension(1810, 1014));
         setPreferredSize(new java.awt.Dimension(1810, 1014));
 
-        jRadioButton1.setBackground(new java.awt.Color(228, 228, 228));
-        jRadioButton1.setText("jRadioButton1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(1320, Short.MAX_VALUE)
-                .addComponent(jRadioButton1)
-                .addGap(392, 392, 392))
+            .addGap(0, 1810, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(781, Short.MAX_VALUE)
-                .addComponent(jRadioButton1)
-                .addGap(212, 212, 212))
+            .addGap(0, 1014, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton jRadioButton1;
     // End of variables declaration//GEN-END:variables
 }

@@ -26,7 +26,6 @@ public class TelaEmpresas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jCheckBox1 = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -37,11 +36,6 @@ public class TelaEmpresas extends javax.swing.JPanel {
         setMinimumSize(new java.awt.Dimension(1810, 1014));
         setPreferredSize(new java.awt.Dimension(1810, 1014));
         setLayout(null);
-
-        jCheckBox1.setBackground(new java.awt.Color(228, 228, 228));
-        jCheckBox1.setText("jCheckBox1");
-        add(jCheckBox1);
-        jCheckBox1.setBounds(1720, 988, 84, 20);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -87,7 +81,6 @@ public class TelaEmpresas extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
