@@ -1,5 +1,6 @@
 package tela_principal;
 
+import tela_relatorios.TelaRelatorios;
 import tela_projetos.TelaProjetos;
 import tela_empresas.TelaEmpresas;
 import tela_funcionarios.TelaFuncionarios;
@@ -7,7 +8,6 @@ import tela_equipamentos.TelaEquipamentos;
 import tela_dashboard.TelaDashboard;
 import java.awt.CardLayout;
 import java.awt.Color;
-import telas.*;
 import java.awt.Font;
 import javax.swing.UIManager;
 import util.Fonte;
