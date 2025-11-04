@@ -27,12 +27,14 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
@@ -52,13 +54,19 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         getContentPane().add(jLabel1);
         jLabel1.setBounds(0, 20, 650, 48);
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("CADASTRAR");
+        jLabel8.setMaximumSize(new java.awt.Dimension(260, 83));
+        jLabel8.setMinimumSize(new java.awt.Dimension(260, 83));
+        jLabel8.setPreferredSize(new java.awt.Dimension(260, 83));
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(360, 320, 260, 83);
+
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(360, 330, 260, 83);
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(30, 330, 260, 83);
+        jLabel2.setBounds(360, 320, 260, 83);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel4.setText("Equipamento");
@@ -79,6 +87,20 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jLabel7.setText("Posse");
         getContentPane().add(jLabel7);
         jLabel7.setBounds(20, 250, 70, 32);
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("CANCELAR");
+        jLabel13.setMaximumSize(new java.awt.Dimension(260, 83));
+        jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
+        jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
+        getContentPane().add(jLabel13);
+        jLabel13.setBounds(30, 320, 260, 83);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(30, 320, 260, 83);
 
         jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jTextField2.setText("jTextField1");
@@ -141,12 +163,14 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
