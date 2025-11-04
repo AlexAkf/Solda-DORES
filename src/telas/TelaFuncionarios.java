@@ -29,8 +29,9 @@ public class TelaFuncionarios extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(228, 228, 228));
-        setMaximumSize(new java.awt.Dimension(1828, 1022));
-        setMinimumSize(new java.awt.Dimension(1828, 1022));
+        setMaximumSize(new java.awt.Dimension(1810, 1014));
+        setMinimumSize(new java.awt.Dimension(1810, 1014));
+        setPreferredSize(new java.awt.Dimension(1810, 1014));
 
         jTextField1.setBackground(new java.awt.Color(228, 228, 228));
         jTextField1.setText("jTextField1");

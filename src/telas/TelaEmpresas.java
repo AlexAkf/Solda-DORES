@@ -29,8 +29,9 @@ public class TelaEmpresas extends javax.swing.JPanel {
         jCheckBox1 = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(228, 228, 228));
-        setMaximumSize(new java.awt.Dimension(1828, 1022));
-        setMinimumSize(new java.awt.Dimension(1828, 1022));
+        setMaximumSize(new java.awt.Dimension(1810, 1014));
+        setMinimumSize(new java.awt.Dimension(1810, 1014));
+        setPreferredSize(new java.awt.Dimension(1810, 1014));
 
         jCheckBox1.setBackground(new java.awt.Color(228, 228, 228));
         jCheckBox1.setText("jCheckBox1");
@@ -40,14 +41,14 @@ public class TelaEmpresas extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(1737, Short.MAX_VALUE)
+                .addContainerGap(1720, Short.MAX_VALUE)
                 .addComponent(jCheckBox1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(996, Short.MAX_VALUE)
+                .addContainerGap(988, Short.MAX_VALUE)
                 .addComponent(jCheckBox1)
                 .addContainerGap())
         );

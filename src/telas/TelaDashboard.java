@@ -30,8 +30,9 @@ public class TelaDashboard extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(228, 228, 228));
-        setMaximumSize(new java.awt.Dimension(1828, 1022));
-        setMinimumSize(new java.awt.Dimension(1828, 1022));
+        setMaximumSize(new java.awt.Dimension(1810, 1014));
+        setMinimumSize(new java.awt.Dimension(1810, 1014));
+        setPreferredSize(new java.awt.Dimension(1810, 1014));
 
         jFormattedTextField1.setText("jFormattedTextField1");
 

@@ -30,9 +30,9 @@ public class TelaProjetos extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(228, 228, 228));
-        setMaximumSize(new java.awt.Dimension(1828, 1022));
-        setMinimumSize(new java.awt.Dimension(1828, 1022));
-        setPreferredSize(new java.awt.Dimension(1828, 1022));
+        setMaximumSize(new java.awt.Dimension(1810, 1014));
+        setMinimumSize(new java.awt.Dimension(1810, 1014));
+        setPreferredSize(new java.awt.Dimension(1810, 1014));
 
         jLabel1.setText("jLabel1");
 
@@ -47,7 +47,7 @@ public class TelaProjetos extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(492, 492, 492)
                 .addComponent(jLabel1)
-                .addContainerGap(1299, Short.MAX_VALUE))
+                .addContainerGap(1281, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
@@ -58,7 +58,7 @@ public class TelaProjetos extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(306, 306, 306)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 637, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 629, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
