@@ -8,12 +8,12 @@ package telas_cadastro;
  *
  * @author hugos
  */
-public class CadastroGestor extends javax.swing.JFrame {
+public class CadastroUsuario extends javax.swing.JFrame {
 
     /**
      * Creates new form CadastroGestor
      */
-    public CadastroGestor() {
+    public CadastroUsuario() {
         initComponents();
     }
 
@@ -35,16 +35,24 @@ public class CadastroGestor extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
         jFormattedTextField2 = new javax.swing.JFormattedTextField();
         jLabel10 = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
         jTextField10 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField8 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jTextField11 = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        jLabel17 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(770, 530));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -63,7 +71,7 @@ public class CadastroGestor extends javax.swing.JFrame {
         jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
         getContentPane().add(jLabel13);
-        jLabel13.setBounds(40, 540, 260, 83);
+        jLabel13.setBounds(40, 670, 260, 83);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -73,15 +81,15 @@ public class CadastroGestor extends javax.swing.JFrame {
         jLabel7.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel7.setPreferredSize(new java.awt.Dimension(260, 83));
         getContentPane().add(jLabel7);
-        jLabel7.setBounds(470, 540, 260, 83);
+        jLabel7.setBounds(470, 670, 260, 83);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(470, 540, 260, 83);
+        jLabel2.setBounds(470, 670, 260, 83);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(40, 540, 260, 83);
+        jLabel3.setBounds(40, 670, 260, 83);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel5.setText("CPF");
@@ -103,16 +111,6 @@ public class CadastroGestor extends javax.swing.JFrame {
         getContentPane().add(jLabel9);
         jLabel9.setBounds(20, 250, 100, 32);
 
-        jTextField7.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jTextField7.setText("jTextField1");
-        getContentPane().add(jTextField7);
-        jTextField7.setBounds(300, 350, 450, 30);
-
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel11.setText("Status da Conta");
-        getContentPane().add(jLabel11);
-        jLabel11.setBounds(20, 350, 250, 30);
-
         jFormattedTextField2.setText("jFormattedTextField1");
         getContentPane().add(jFormattedTextField2);
         jFormattedTextField2.setBounds(300, 150, 450, 30);
@@ -131,6 +129,59 @@ public class CadastroGestor extends javax.swing.JFrame {
         jTextField10.setText("jTextField1");
         getContentPane().add(jTextField10);
         jTextField10.setBounds(300, 250, 450, 30);
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel12.setText("Cargo");
+        getContentPane().add(jLabel12);
+        jLabel12.setBounds(20, 350, 250, 30);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---", "Gestor", "Supervisor", "Soldador" }));
+        getContentPane().add(jComboBox1);
+        jComboBox1.setBounds(300, 350, 450, 30);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Campos para Soldador");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(0, 430, 770, 40);
+
+        jTextField8.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jTextField8.setText("jTextField1");
+        getContentPane().add(jTextField8);
+        jTextField8.setBounds(300, 300, 450, 30);
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel14.setText("Status da Conta");
+        getContentPane().add(jLabel14);
+        jLabel14.setBounds(20, 300, 250, 30);
+
+        jTextField11.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jTextField11.setText("jTextField1");
+        getContentPane().add(jTextField11);
+        jTextField11.setBounds(300, 500, 450, 30);
+
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel15.setText("Supervisor");
+        getContentPane().add(jLabel15);
+        jLabel15.setBounds(20, 600, 250, 30);
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel16.setText("Cod. Sinete");
+        getContentPane().add(jLabel16);
+        jLabel16.setBounds(20, 500, 250, 30);
+
+        jFormattedTextField1.setText("jFormattedTextField1");
+        getContentPane().add(jFormattedTextField1);
+        jFormattedTextField1.setBounds(300, 550, 450, 30);
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel17.setText("Última Solda");
+        getContentPane().add(jLabel17);
+        jLabel17.setBounds(20, 550, 250, 30);
+
+        jTextField1.setText("jTextField1");
+        getContentPane().add(jTextField1);
+        jTextField1.setBounds(301, 600, 450, 30);
 
         pack();
         setLocationRelativeTo(null);
@@ -153,39 +204,49 @@ public class CadastroGestor extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroGestor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroGestor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroGestor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroGestor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroGestor().setVisible(true);
+                new CadastroUsuario().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
+    private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 }

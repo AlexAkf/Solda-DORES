@@ -37,8 +37,6 @@ public class CadastroEmpresas extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jFormattedTextField2 = new javax.swing.JFormattedTextField();
         jFormattedTextField3 = new javax.swing.JFormattedTextField();
 
@@ -60,7 +58,7 @@ public class CadastroEmpresas extends javax.swing.JFrame {
         jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
         getContentPane().add(jLabel13);
-        jLabel13.setBounds(40, 370, 260, 83);
+        jLabel13.setBounds(40, 320, 260, 83);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -70,25 +68,25 @@ public class CadastroEmpresas extends javax.swing.JFrame {
         jLabel7.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel7.setPreferredSize(new java.awt.Dimension(260, 83));
         getContentPane().add(jLabel7);
-        jLabel7.setBounds(470, 370, 260, 83);
+        jLabel7.setBounds(470, 320, 260, 83);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(470, 370, 260, 83);
+        jLabel2.setBounds(470, 320, 260, 83);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(40, 370, 260, 83);
+        jLabel3.setBounds(40, 320, 260, 83);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel5.setText("Empresa");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(20, 150, 90, 32);
+        jLabel5.setBounds(20, 100, 90, 32);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel6.setText("CNPJ");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(20, 100, 90, 32);
+        jLabel6.setBounds(20, 150, 90, 32);
 
         jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jTextField4.setText("jTextField1");
@@ -110,21 +108,6 @@ public class CadastroEmpresas extends javax.swing.JFrame {
         getContentPane().add(jTextField7);
         jTextField7.setBounds(300, 250, 450, 30);
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel11.setText("Status");
-        getContentPane().add(jLabel11);
-        jLabel11.setBounds(20, 300, 250, 30);
-
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ATIVO", "INATIVO" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jComboBox1);
-        jComboBox1.setBounds(300, 300, 450, 30);
-
         jFormattedTextField2.setText("jFormattedTextField1");
         getContentPane().add(jFormattedTextField2);
         jFormattedTextField2.setBounds(300, 150, 450, 30);
@@ -135,10 +118,6 @@ public class CadastroEmpresas extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,11 +155,9 @@ public class CadastroEmpresas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JFormattedTextField jFormattedTextField3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

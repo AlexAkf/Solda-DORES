@@ -41,10 +41,10 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(650, 450));
-        setMinimumSize(new java.awt.Dimension(650, 450));
+        setMaximumSize(new java.awt.Dimension(770, 430));
+        setMinimumSize(new java.awt.Dimension(770, 430));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(650, 450));
+        setPreferredSize(new java.awt.Dimension(770, 430));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -62,11 +62,11 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jLabel8.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel8.setPreferredSize(new java.awt.Dimension(260, 83));
         getContentPane().add(jLabel8);
-        jLabel8.setBounds(360, 320, 260, 83);
+        jLabel8.setBounds(470, 320, 260, 83);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(360, 320, 260, 83);
+        jLabel2.setBounds(470, 320, 260, 83);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel4.setText("Equipamento");
@@ -105,22 +105,22 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jTextField2.setText("jTextField1");
         getContentPane().add(jTextField2);
-        jTextField2.setBounds(180, 250, 450, 30);
+        jTextField2.setBounds(300, 250, 450, 30);
 
         jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jTextField3.setText("jTextField1");
         getContentPane().add(jTextField3);
-        jTextField3.setBounds(180, 100, 450, 30);
+        jTextField3.setBounds(300, 100, 450, 30);
 
         jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jTextField4.setText("jTextField1");
         getContentPane().add(jTextField4);
-        jTextField4.setBounds(180, 150, 450, 30);
+        jTextField4.setBounds(300, 150, 450, 30);
 
         jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jTextField5.setText("jTextField1");
         getContentPane().add(jTextField5);
-        jTextField5.setBounds(180, 200, 450, 30);
+        jTextField5.setBounds(300, 200, 450, 30);
 
         pack();
         setLocationRelativeTo(null);
