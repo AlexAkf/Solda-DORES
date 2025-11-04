@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package telas;
+package tela_funcionarios;
 
 /**
  *
  * @author ALUNO
  */
-public class TelaEmpresas extends javax.swing.JPanel {
+public class TelaFuncionarios extends javax.swing.JPanel {
 
     /**
-     * Creates new form TelaEmpresas
+     * Creates new form TelaFuncionarios
      */
-    public TelaEmpresas() {
+    public TelaFuncionarios() {
         initComponents();
     }
 
@@ -26,36 +26,36 @@ public class TelaEmpresas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jCheckBox1 = new javax.swing.JCheckBox();
+        jTextField1 = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
         setMinimumSize(new java.awt.Dimension(1810, 1014));
         setPreferredSize(new java.awt.Dimension(1810, 1014));
 
-        jCheckBox1.setBackground(new java.awt.Color(228, 228, 228));
-        jCheckBox1.setText("jCheckBox1");
+        jTextField1.setBackground(new java.awt.Color(228, 228, 228));
+        jTextField1.setText("jTextField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(1720, Short.MAX_VALUE)
-                .addComponent(jCheckBox1)
+                .addContainerGap(1751, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(988, Short.MAX_VALUE)
-                .addComponent(jCheckBox1)
+                .addContainerGap(994, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

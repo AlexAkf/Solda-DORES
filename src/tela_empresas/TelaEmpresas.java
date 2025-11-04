@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package telas;
+package tela_empresas;
 
 /**
  *
  * @author ALUNO
  */
-public class TelaEquipamentos extends javax.swing.JPanel {
+public class TelaEmpresas extends javax.swing.JPanel {
 
     /**
-     * Creates new form TelaEquipamentos
+     * Creates new form TelaEmpresas
      */
-    public TelaEquipamentos() {
+    public TelaEmpresas() {
         initComponents();
     }
 
@@ -26,35 +26,36 @@ public class TelaEquipamentos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
         setMinimumSize(new java.awt.Dimension(1810, 1014));
         setPreferredSize(new java.awt.Dimension(1810, 1014));
 
-        jLabel1.setText("Equipamentos");
+        jCheckBox1.setBackground(new java.awt.Color(228, 228, 228));
+        jCheckBox1.setText("jCheckBox1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(1746, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addContainerGap(1720, Short.MAX_VALUE)
+                .addComponent(jCheckBox1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(1000, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addContainerGap(988, Short.MAX_VALUE)
+                .addComponent(jCheckBox1)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JCheckBox jCheckBox1;
     // End of variables declaration//GEN-END:variables
 }

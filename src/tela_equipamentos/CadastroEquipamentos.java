@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package telas_cadastro;
+package tela_equipamentos;
 
 /**
  *
@@ -41,10 +41,8 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(770, 430));
         setMinimumSize(new java.awt.Dimension(770, 430));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(770, 430));
         setResizable(false);
         getContentPane().setLayout(null);
 
