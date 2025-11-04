@@ -41,6 +41,8 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(770, 430));
@@ -62,21 +64,21 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jLabel8.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel8.setPreferredSize(new java.awt.Dimension(260, 83));
         getContentPane().add(jLabel8);
-        jLabel8.setBounds(470, 320, 260, 83);
+        jLabel8.setBounds(470, 370, 260, 83);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(470, 320, 260, 83);
+        jLabel2.setBounds(470, 370, 260, 83);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel4.setText("Equipamento");
+        jLabel4.setText("Código");
         getContentPane().add(jLabel4);
         jLabel4.setBounds(20, 100, 150, 32);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel5.setText("N° de série");
+        jLabel5.setText("Marca");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(20, 200, 118, 32);
+        jLabel5.setBounds(20, 200, 65, 32);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel6.setText("Modelo");
@@ -84,9 +86,9 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jLabel6.setBounds(20, 150, 90, 32);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel7.setText("Posse");
+        jLabel7.setText("Em posse de");
         getContentPane().add(jLabel7);
-        jLabel7.setBounds(20, 250, 70, 32);
+        jLabel7.setBounds(20, 250, 140, 32);
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
@@ -96,11 +98,11 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
         getContentPane().add(jLabel13);
-        jLabel13.setBounds(40, 320, 260, 83);
+        jLabel13.setBounds(40, 370, 260, 83);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(40, 320, 260, 83);
+        jLabel3.setBounds(40, 370, 260, 83);
 
         jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jTextField2.setText("jTextField1");
@@ -121,6 +123,15 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jTextField5.setText("jTextField1");
         getContentPane().add(jTextField5);
         jTextField5.setBounds(300, 200, 450, 30);
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel9.setText("Estado de Uso");
+        getContentPane().add(jLabel9);
+        jLabel9.setBounds(20, 300, 160, 32);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estoque", "Emprestado", "Estragado" }));
+        getContentPane().add(jComboBox1);
+        jComboBox1.setBounds(300, 300, 450, 30);
 
         pack();
         setLocationRelativeTo(null);
@@ -165,6 +176,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
@@ -174,6 +186,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;

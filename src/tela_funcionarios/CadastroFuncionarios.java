@@ -42,8 +42,6 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
         jTextField11 = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -71,7 +69,7 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
         getContentPane().add(jLabel13);
-        jLabel13.setBounds(40, 670, 260, 83);
+        jLabel13.setBounds(40, 620, 260, 83);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -81,15 +79,15 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jLabel7.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel7.setPreferredSize(new java.awt.Dimension(260, 83));
         getContentPane().add(jLabel7);
-        jLabel7.setBounds(470, 670, 260, 83);
+        jLabel7.setBounds(470, 620, 260, 83);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(470, 670, 260, 83);
+        jLabel2.setBounds(470, 620, 260, 83);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(40, 670, 260, 83);
+        jLabel3.setBounds(40, 620, 260, 83);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel5.setText("CPF");
@@ -133,55 +131,45 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel12.setText("Cargo");
         getContentPane().add(jLabel12);
-        jLabel12.setBounds(20, 350, 250, 30);
+        jLabel12.setBounds(20, 300, 250, 30);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---", "Gestor", "Supervisor", "Soldador" }));
         getContentPane().add(jComboBox1);
-        jComboBox1.setBounds(300, 350, 450, 30);
+        jComboBox1.setBounds(300, 300, 450, 30);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Campos para Soldador");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(0, 430, 770, 40);
-
-        jTextField8.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jTextField8.setText("jTextField1");
-        getContentPane().add(jTextField8);
-        jTextField8.setBounds(300, 300, 450, 30);
-
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel14.setText("Status da Conta");
-        getContentPane().add(jLabel14);
-        jLabel14.setBounds(20, 300, 250, 30);
+        jLabel4.setBounds(0, 380, 770, 40);
 
         jTextField11.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jTextField11.setText("jTextField1");
         getContentPane().add(jTextField11);
-        jTextField11.setBounds(300, 500, 450, 30);
+        jTextField11.setBounds(300, 450, 450, 30);
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel15.setText("Supervisor");
         getContentPane().add(jLabel15);
-        jLabel15.setBounds(20, 600, 250, 30);
+        jLabel15.setBounds(20, 550, 250, 30);
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel16.setText("Cod. Sinete");
         getContentPane().add(jLabel16);
-        jLabel16.setBounds(20, 500, 250, 30);
+        jLabel16.setBounds(20, 450, 250, 30);
 
         jFormattedTextField1.setText("jFormattedTextField1");
         getContentPane().add(jFormattedTextField1);
-        jFormattedTextField1.setBounds(300, 550, 450, 30);
+        jFormattedTextField1.setBounds(300, 500, 450, 30);
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel17.setText("Última Solda");
         getContentPane().add(jLabel17);
-        jLabel17.setBounds(20, 550, 250, 30);
+        jLabel17.setBounds(20, 500, 250, 30);
 
         jTextField1.setText("jTextField1");
         getContentPane().add(jTextField1);
-        jTextField1.setBounds(301, 600, 450, 30);
+        jTextField1.setBounds(300, 550, 450, 30);
 
         pack();
         setLocationRelativeTo(null);
@@ -233,7 +221,6 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -248,7 +235,6 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 }
