@@ -4,6 +4,11 @@
  */
 package tela_equipamentos;
 
+import controllers.EquipamentosDAO;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import models.Equipamentos;
+
 /**
  *
  * @author ALUNO
@@ -15,6 +20,7 @@ public class TelaEquipamentos extends javax.swing.JPanel {
      */
     public TelaEquipamentos() {
         initComponents();
+        carregarTabela();
     }
 
     /**
@@ -41,6 +47,11 @@ public class TelaEquipamentos extends javax.swing.JPanel {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("+ NOVO CADASTRO");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
         add(jLabel3);
         jLabel3.setBounds(1530, 20, 260, 90);
 
@@ -79,6 +90,28 @@ public class TelaEquipamentos extends javax.swing.JPanel {
         jScrollPane1.setBounds(20, 130, 1770, 870);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        CadastroEquipamentos Cadastro = new CadastroEquipamentos();
+        Cadastro.setVisible(true);
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void carregarTabela() {
+    EquipamentosDAO dao = new EquipamentosDAO();
+    List<Equipamentos> lista = dao.listarTodos();
+
+    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+    modelo.setRowCount(0); // limpa a tabela antes de preencher
+
+    for (Equipamentos eq : lista) {
+        modelo.addRow(new Object[]{
+            eq.getCodigo(),
+            eq.getModelo(),
+            eq.getMarca(),
+            eq.getSoldador(),
+            eq.getCondicao()   
+        });
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;

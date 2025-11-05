@@ -28,67 +28,65 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(770, 430));
+        setBackground(new java.awt.Color(255, 255, 255));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setFocusable(false);
+        setFocusableWindowState(false);
+        setMaximumSize(new java.awt.Dimension(770, 480));
+        setMinimumSize(new java.awt.Dimension(770, 480));
         setUndecorated(true);
         setResizable(false);
-        getContentPane().setLayout(null);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("ATUALIZAR EQUIPAMENTO");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 20, 770, 48);
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(30, 58, 138), 2, true));
+        jPanel1.setMaximumSize(new java.awt.Dimension(770, 480));
+        jPanel1.setMinimumSize(new java.awt.Dimension(770, 480));
+        jPanel1.setPreferredSize(new java.awt.Dimension(770, 480));
+        jPanel1.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("CADASTRAR");
-        jLabel8.setMaximumSize(new java.awt.Dimension(260, 83));
-        jLabel8.setMinimumSize(new java.awt.Dimension(260, 83));
-        jLabel8.setPreferredSize(new java.awt.Dimension(260, 83));
-        getContentPane().add(jLabel8);
-        jLabel8.setBounds(470, 370, 260, 83);
+        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estoque", "Emprestado", "Estragado" }));
+        jPanel1.add(jComboBox1);
+        jComboBox1.setBounds(300, 300, 450, 30);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(470, 370, 260, 83);
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel9.setText("Estado de Uso");
+        jPanel1.add(jLabel9);
+        jLabel9.setBounds(20, 300, 160, 32);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel4.setText("Código");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(20, 100, 150, 32);
+        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jPanel1.add(jTextField3);
+        jTextField3.setBounds(300, 100, 450, 30);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel5.setText("Marca");
-        getContentPane().add(jLabel5);
-        jLabel5.setBounds(20, 200, 65, 32);
+        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jPanel1.add(jTextField4);
+        jTextField4.setBounds(300, 150, 450, 30);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel6.setText("Modelo");
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(20, 150, 90, 32);
+        jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jPanel1.add(jTextField5);
+        jTextField5.setBounds(300, 200, 450, 30);
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel7.setText("Em posse de");
-        getContentPane().add(jLabel7);
-        jLabel7.setBounds(20, 250, 140, 32);
+        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jPanel1.add(jTextField2);
+        jTextField2.setBounds(300, 250, 450, 30);
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
@@ -97,41 +95,63 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jLabel13.setMaximumSize(new java.awt.Dimension(260, 83));
         jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
-        getContentPane().add(jLabel13);
+        jPanel1.add(jLabel13);
         jLabel13.setBounds(40, 370, 260, 83);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
-        getContentPane().add(jLabel3);
+        jPanel1.add(jLabel3);
         jLabel3.setBounds(40, 370, 260, 83);
 
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField2.setText("jTextField1");
-        getContentPane().add(jTextField2);
-        jTextField2.setBounds(300, 250, 450, 30);
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel7.setText("Soldador");
+        jPanel1.add(jLabel7);
+        jLabel7.setBounds(20, 250, 140, 32);
 
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField3.setText("jTextField1");
-        getContentPane().add(jTextField3);
-        jTextField3.setBounds(300, 100, 450, 30);
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel6.setText("Modelo");
+        jPanel1.add(jLabel6);
+        jLabel6.setBounds(20, 150, 90, 32);
 
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField4.setText("jTextField1");
-        getContentPane().add(jTextField4);
-        jTextField4.setBounds(300, 150, 450, 30);
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel5.setText("Marca");
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(20, 200, 65, 32);
 
-        jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField5.setText("jTextField1");
-        getContentPane().add(jTextField5);
-        jTextField5.setBounds(300, 200, 450, 30);
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel4.setText("Código");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(20, 100, 150, 32);
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel9.setText("Estado de Uso");
-        getContentPane().add(jLabel9);
-        jLabel9.setBounds(20, 300, 160, 32);
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("CADASTRAR");
+        jLabel8.setMaximumSize(new java.awt.Dimension(260, 83));
+        jLabel8.setMinimumSize(new java.awt.Dimension(260, 83));
+        jLabel8.setPreferredSize(new java.awt.Dimension(260, 83));
+        jPanel1.add(jLabel8);
+        jLabel8.setBounds(470, 370, 260, 83);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estoque", "Emprestado", "Estragado" }));
-        getContentPane().add(jComboBox1);
-        jComboBox1.setBounds(300, 300, 450, 30);
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("ATUALIZAR EQUIPAMENTO");
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(0, 20, 770, 48);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(470, 370, 260, 83);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         pack();
         setLocationRelativeTo(null);
@@ -187,6 +207,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
