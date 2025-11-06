@@ -8,20 +8,24 @@ import controllers.EquipamentosDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
 import models.Equipamentos;
 import util.Fonte;
 
 /**
  *
- * @author ALUNO
+ * @author Hugo
  */
 public final class TelaEquipamentos extends javax.swing.JPanel {
 
     /**
      * Creates new form TelaEquipamentos
      */
+    private static TelaEquipamentos instancia;
+
     public TelaEquipamentos() {
         initComponents();
         carregarTabela();
@@ -30,8 +34,9 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         jTable1.setBackground(Color.WHITE); // fundo da área de dados
         jTable1.setFillsViewportHeight(true); // faz o fundo preencher até o fim
         JTableHeader header = jTable1.getTableHeader();
-        header.setBackground(new Color(30,58,138)); // azul exemplo
-        header.setForeground(Color.WHITE); // cor do texto
+        header.setBackground(new Color(30, 58, 138));
+        header.setForeground(Color.WHITE);
+        instancia = this;
     }
 
     /**
@@ -125,6 +130,22 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
             });
         }
         jTable1.repaint();
+    }
+
+    public static TelaEquipamentos getInstancia() {
+        return instancia;
+    }
+
+    public void filtrarEquipamentos(String texto) {
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+        jTable1.setRowSorter(sorter);
+
+        if (texto.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto)); // Busca em todas as colunas
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

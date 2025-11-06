@@ -16,7 +16,6 @@ import util.Fonte;
  *
  * @author Hugo, Alex
  */
-
 public class TelaPrincipal extends javax.swing.JFrame {
 
     /**
@@ -36,7 +35,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         UIManager.put("ToolTip.background", Color.white);
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 18));
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,6 +82,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         botaoPesquisar.setMaximumSize(new java.awt.Dimension(54, 54));
         botaoPesquisar.setMinimumSize(new java.awt.Dimension(54, 54));
         botaoPesquisar.setPreferredSize(new java.awt.Dimension(54, 54));
+        botaoPesquisar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoPesquisarMouseClicked(evt);
+            }
+        });
         jPanel2.add(botaoPesquisar);
         botaoPesquisar.setBounds(0, 20, 100, 54);
 
@@ -295,9 +299,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         selecionado.setLocation(0, 595);
         titulo.setText("RELATÓRIOS");
         cl.show(painelRecebedor, "Relatórios");    }//GEN-LAST:event_botaoRelatoriosMouseClicked
-    
-   
-    
+
+    private void botaoPesquisarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPesquisarMouseClicked
+        BarraPesquisar barra = new BarraPesquisar(this);
+        barra.setVisible(true);
+    }//GEN-LAST:event_botaoPesquisarMouseClicked
+
     /**
      * @param args the command line arguments
      */

@@ -17,7 +17,7 @@ import java.io.InputStream;
 
 public class Fonte {  
     public static Font inserirFonte() {
-        try (InputStream is = Fonte.class.getResourceAsStream("/ssrc/fonts/Baloo2-VariableFont_wght.ttf")) {
+        try (InputStream is = Fonte.class.getResourceAsStream("/fonts/Baloo2-VariableFont_wght.ttf")) {
             if (is == null) {
                 throw new IOException("Fonte não encontrada no caminho /fonts/Baloo2-VariableFont_wght.ttf");
             }

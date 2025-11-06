@@ -10,7 +10,7 @@ import models.Equipamentos;
         
 /**
  *
- * @author hugos
+ * @author Hugo
  */
 public class CadastroEquipamentos extends javax.swing.JFrame {
 

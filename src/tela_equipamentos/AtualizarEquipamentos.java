@@ -8,7 +8,7 @@ package tela_equipamentos;
 
 /**
  *
- * @author hugos
+ * @author Hugo
  */
 public class AtualizarEquipamentos extends javax.swing.JFrame {
 

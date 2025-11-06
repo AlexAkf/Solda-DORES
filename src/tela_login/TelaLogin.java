@@ -10,7 +10,6 @@ import util.Fonte;
  *
  * @author Hugo, Alex
  */
-
 public class TelaLogin extends javax.swing.JFrame {
 
     /**
@@ -184,20 +183,23 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_mostrarSenhaActionPerformed
 
     private void botaoEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoEntrarMouseClicked
-         // Verifica os dados inseridos para logar:
+        // Verifica os dados inseridos para logar:
         if (campoUsuario.getText() != null && !campoUsuario.getText().isEmpty() && campoSenha.getText() != null && !campoSenha.getText().isEmpty()) {
             Login.usuario = campoUsuario.getText();
             Login.senha = new String(campoSenha.getPassword());
             LoginConexao lg = new LoginConexao();
-            
+
             // Comando alterado para evitar fechamento do app quando der mensagens de erro
-            if(lg.verificarUsuario()){
-                dispose();  //fecha a tela de login apenas quando entrar no software
+            if (lg.verificarUsuario()) {
+
+                dispose(); //fecha a tela de login apenas quando entrar no software
+            }
+        }
     }//GEN-LAST:event_botaoEntrarMouseClicked
 
     /**
-     * @param args the command line arguments
-     */
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
