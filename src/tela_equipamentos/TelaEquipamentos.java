@@ -1,16 +1,23 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package tela_equipamentos;
 
 import controllers.EquipamentosDAO;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import models.Equipamentos;
+import util.Fonte;
 
 /**
  *
- * @author Hugo
+ * @author ALUNO
  */
-
-public class TelaEquipamentos extends javax.swing.JPanel {
+public final class TelaEquipamentos extends javax.swing.JPanel {
 
     /**
      * Creates new form TelaEquipamentos
@@ -18,6 +25,13 @@ public class TelaEquipamentos extends javax.swing.JPanel {
     public TelaEquipamentos() {
         initComponents();
         carregarTabela();
+        jTable1.setRowHeight(50);
+        jTable1.getTableHeader().setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 18f));
+        jTable1.setBackground(Color.WHITE); // fundo da área de dados
+        jTable1.setFillsViewportHeight(true); // faz o fundo preencher até o fim
+        JTableHeader header = jTable1.getTableHeader();
+        header.setBackground(new Color(30,58,138)); // azul exemplo
+        header.setForeground(Color.WHITE); // cor do texto
     }
 
     /**
@@ -56,8 +70,9 @@ public class TelaEquipamentos extends javax.swing.JPanel {
         add(jLabel2);
         jLabel2.setBounds(1530, 20, 260, 90);
 
-        jScrollPane1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
+        jTable1.setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 18f));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -81,6 +96,7 @@ public class TelaEquipamentos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setGridColor(new java.awt.Color(30, 58, 138));
         jScrollPane1.setViewportView(jTable1);
 
         add(jScrollPane1);
@@ -88,27 +104,28 @@ public class TelaEquipamentos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        CadastroEquipamentos Cadastro = new CadastroEquipamentos();
-        Cadastro.setVisible(true);
+        CadastroEquipamentos cadastro = new CadastroEquipamentos(this);
+        cadastro.setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 
-    private void carregarTabela() {
-    EquipamentosDAO dao = new EquipamentosDAO();
-    List<Equipamentos> lista = dao.listarTodos();
+    public void carregarTabela() {
+        EquipamentosDAO dao = new EquipamentosDAO();
+        List<Equipamentos> lista = dao.listarTodos();
 
-    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-    modelo.setRowCount(0); // limpa a tabela antes de preencher
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0); // limpa a tabela antes de preencher
 
-    for (Equipamentos eq : lista) {
-        modelo.addRow(new Object[]{
-            eq.getCodigo(),
-            eq.getModelo(),
-            eq.getMarca(),
-            eq.getSoldador(),
-            eq.getCondicao()   
-        });
+        for (Equipamentos eq : lista) {
+            modelo.addRow(new Object[]{
+                eq.getCodigo(),
+                eq.getModelo(),
+                eq.getMarca(),
+                eq.getSoldador(),
+                eq.getCondicao()
+            });
+        }
+        jTable1.repaint();
     }
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
