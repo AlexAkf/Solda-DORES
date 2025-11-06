@@ -184,16 +184,15 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_mostrarSenhaActionPerformed
 
     private void botaoEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoEntrarMouseClicked
-        // Verifica os dados inseridos para logar:
+         // Verifica os dados inseridos para logar:
         if (campoUsuario.getText() != null && !campoUsuario.getText().isEmpty() && campoSenha.getText() != null && !campoSenha.getText().isEmpty()) {
             Login.usuario = campoUsuario.getText();
             Login.senha = new String(campoSenha.getPassword());
             LoginConexao lg = new LoginConexao();
-            lg.verificarUsuario();//é o método de inserir o usuário
-            dispose();
-        } else {
-            JOptionPane.showMessageDialog(painel, "Verifique os dados!", "Aviso", JOptionPane.WARNING_MESSAGE);
-        }
+            
+            // Comando alterado para evitar fechamento do app quando der mensagens de erro
+            if(lg.verificarUsuario()){
+                dispose();  //fecha a tela de login apenas quando entrar no software
     }//GEN-LAST:event_botaoEntrarMouseClicked
 
     /**
