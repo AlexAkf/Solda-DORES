@@ -10,10 +10,9 @@ import javax.swing.JOptionPane;
 import models.Equipamentos;
 
 /**
- * 
+ *
  * @author Hugo
  */
-
 public class EquipamentosDAO {
 
     // Método para inserir novo equipamento
@@ -134,5 +133,29 @@ public class EquipamentosDAO {
         }
 
         return lista;
+    }
+
+    public boolean deletarEquipamento(String codigo) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        boolean sucesso = false;
+
+        String sql = "DELETE FROM equipamentos WHERE codigo = ?";
+
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, codigo);
+
+            int linhas = stmt.executeUpdate();
+            sucesso = linhas > 0;
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar equipamento: " + ex.getMessage());
+        } finally {
+            Conexao.fecharConexao(conn, stmt);
+        }
+
+        return sucesso;
     }
 }
