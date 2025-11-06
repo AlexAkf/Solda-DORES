@@ -11,9 +11,10 @@ import javax.swing.JOptionPane;
 import tela_principal.TelaPrincipal;
 
 /**
- *
- * @author fschi
+ * 
+ * @author Hugo, Alex
  */
+
 public class LoginConexao {
 
     public void InserirUsuario() {
@@ -41,42 +42,55 @@ public class LoginConexao {
         }
     }
 
-    public void verificarUsuario() {
+    public boolean verificarUsuario() {
 
         Connection conn = null;
-
-        String sql = "SELECT * FROM usuarios WHERE login = '" + Login.usuario + "'";
-
-        conn = Conexao.getConexao();//conectar ao banco de dados
-
         PreparedStatement stmt = null;
-
         ResultSet rs = null;
-
+        
+        // Comando alterado para validação de login com usuário ativo
         try {
-
-            stmt = conn.prepareStatement(sql);
-
+            
+            conn = Conexao.getConexao();//conectar ao banco de dados
+            
+            /* O banco mostra a senha e o status de atividade do login fornecido,
+             * se o SELECT não encontrar nada o rs.next retorna FALSE
+             */
+            String sqlUsuario = "SELECT senha, condicao FROM usuarios WHERE login = ?";
+            
+            stmt = conn.prepareStatement(sqlUsuario);
+            stmt.setString(1, Login.usuario);
             rs = stmt.executeQuery();
-
-            rs.next();
-
-            String usuario1 = rs.getString("login");
-            String senha1 = rs.getString("senha");
-            System.out.println(usuario1);
-            System.out.println(senha1);
-
-            //testar se o usuario é o mesmo digitado
-            if (usuario1.equals(Login.usuario) && senha1.equals(Login.senha)) {
-                TelaPrincipal tp = new TelaPrincipal();
-                tp.setVisible(true);
-
+            
+            // Confere se o login fornecido está no BD
+            if(!rs.next()){
+                JOptionPane.showMessageDialog(null, "Usuário incorreto.");
+                return false;
             }
+            
+            // Confere se é uma conta ativa
+            boolean contaAtiva = rs.getBoolean("condicao");
+            if(!contaAtiva){
+                JOptionPane.showMessageDialog(null, "Usuário inativo. Entre em contato com o administrador!");
+                return false;
+            }
+            
+            // Confere se a senha bate com o registro no BD
+            String sqlSenha = rs.getString("senha");
+            if(!sqlSenha.equals(Login.senha)){
+                JOptionPane.showMessageDialog(null, "Senha incorreta.");
+                return false;
+            }
+            
+            TelaPrincipal tp = new TelaPrincipal();
+            tp.setVisible(true);
+            return true;
+            
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao entrar no banco de dados. Erro: " + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao entrar no banco de dados. Contacte o suporte.\nErro:\n" + ex);
+            return false;
         } finally {
-            Conexao.fecharConexao(conn, stmt);
+            Conexao.fecharConexao(conn, stmt, rs);
         }
     }
-
 }

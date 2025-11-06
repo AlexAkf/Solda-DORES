@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package tela_relatorios;
 
 /**
  *
- * @author ALUNO
+ * @author Rafael Moreira
  */
+
 public class TelaRelatorios extends javax.swing.JPanel {
 
     /**

@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package tela_dashboard;
 
 /**
  *
- * @author ALUNO
+ * @author Hugo, Alex
  */
+
 public class TelaDashboard extends javax.swing.JPanel {
 
     /**

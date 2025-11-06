@@ -1,12 +1,13 @@
 /*
- * pegar os dados digitados pelo usuario no frmLogin
+ * pegar os dados digitados pelo usuario no login
  */
 package controllers;
 
 /**
  *
- * @author fschi
+ * @author Hugo
  */
+
 public class Login {
 
     //criar os atributos

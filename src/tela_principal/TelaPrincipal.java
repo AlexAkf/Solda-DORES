@@ -14,8 +14,9 @@ import util.Fonte;
 
 /**
  *
- * @author ALUNO
+ * @author Hugo, Alex
  */
+
 public class TelaPrincipal extends javax.swing.JFrame {
 
     /**

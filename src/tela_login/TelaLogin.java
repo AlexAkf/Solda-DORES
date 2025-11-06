@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package tela_login;
 
 import controllers.Login;
@@ -12,8 +8,9 @@ import util.Fonte;
 
 /**
  *
- * @author hugos
+ * @author Hugo, Alex
  */
+
 public class TelaLogin extends javax.swing.JFrame {
 
     /**

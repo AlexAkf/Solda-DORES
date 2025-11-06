@@ -7,12 +7,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *
- * @author fschi
+ * Classe para gerenciar a conexão com o MySQL
+ * 
+ * @author Hugo, Alex
  */
+
 public class Conexao {
 
-    //atributos static para a conexao e serão final = uma constante
+    /* Atributos static final para configurar a conexão com o BD
+     * final = uma constante = valor não alterável
+     *
+     * Manter constantes em CAPSLOCK
+     */
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/soldadores";
     private static final String USER = "root";
@@ -21,15 +27,14 @@ public class Conexao {
     public static Connection getConexao() {
         try {
             Class.forName(DRIVER);
-
-            return (Connection) DriverManager.getConnection(URL, USER, PASS);
+            return (Connection) DriverManager.getConnection(URL, USER, PASS);   // Cria a conexão
         } catch (ClassNotFoundException | SQLException ex) {
             throw new RuntimeException("Algo aconteceu de errado com a conexão com o banco, veja: " + ex);
         }
     }
 
     public static void fecharConexao(Connection conn) {
-        if (conn != null)//se estiver conectado
+        if (conn != null)   //se estiver conectado
         {
             try {
                 conn.close();
@@ -62,5 +67,4 @@ public class Conexao {
 
         fecharConexao(conn, stmt);
     }
-
 }

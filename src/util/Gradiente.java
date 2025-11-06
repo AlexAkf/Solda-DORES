@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package util;
 
 import java.awt.Color;
@@ -12,9 +8,11 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author ALUNO
+ * @author Hugo
+ * 
+ * criando um painel em degradê
  */
-// Criando painel com degradê:
+
 public class Gradiente extends JPanel {
     public Gradiente() {
     }

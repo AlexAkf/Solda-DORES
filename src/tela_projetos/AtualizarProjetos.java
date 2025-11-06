@@ -1,15 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package tela_projetos;
 
 
 
 /**
  *
- * @author hugos
+ * @author Rafael Silva
  */
+
 public class AtualizarProjetos extends javax.swing.JFrame {
 
     /**

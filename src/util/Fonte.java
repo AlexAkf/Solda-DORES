@@ -6,10 +6,14 @@ import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.io.InputStream;
 
-// Hugo
-// Classe para definir fonte personalizadas.
-// COMO USAR:
-// .setFont(Fonte.inserirFonte().deriveFont(Complementa aqui com tamanho e estilo da fonte));
+/**
+ *
+ * @author Hugo
+ * 
+ * Classe para definir fonte personalizadas.
+ * COMO USAR:
+ * .setFont(Fonte.inserirFonte().deriveFont(Complementa aqui com tamanho e estilo da fonte));
+ */
 
 public class Fonte {  
     public static Font inserirFonte() {

@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models;
 
 /**
  *
- * @author ALUNO
+ * @author Hugo
  */
+
 public class Equipamentos {
     private String codigo;
     private String modelo;

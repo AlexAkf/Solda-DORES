@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package tela_equipamentos;
 
 import controllers.EquipamentosDAO;
@@ -11,8 +7,9 @@ import models.Equipamentos;
 
 /**
  *
- * @author ALUNO
+ * @author Hugo
  */
+
 public class TelaEquipamentos extends javax.swing.JPanel {
 
     /**

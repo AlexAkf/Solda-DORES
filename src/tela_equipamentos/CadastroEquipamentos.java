@@ -1,17 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package tela_equipamentos;
 
 import controllers.EquipamentosDAO;
 import javax.swing.JOptionPane;
 import models.Equipamentos;
 import tela_principal.TelaPrincipal;
+
 /**
  *
- * @author hugos
+ * @author Hugo
  */
+
 public class CadastroEquipamentos extends javax.swing.JFrame {
 
     /**

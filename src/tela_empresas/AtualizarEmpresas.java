@@ -1,17 +1,10 @@
 package tela_empresas;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
-
-
-
 /**
  *
- * @author hugos
+ * @author Hugo
  */
+
 public class AtualizarEmpresas extends javax.swing.JFrame {
 
     /**
