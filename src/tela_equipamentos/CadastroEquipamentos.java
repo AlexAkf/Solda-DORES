@@ -42,7 +42,7 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        botaoCadastrar = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -127,20 +127,20 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jPanel1.add(jLabel4);
         jLabel4.setBounds(20, 100, 150, 32);
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("CADASTRAR");
-        jLabel8.setMaximumSize(new java.awt.Dimension(260, 83));
-        jLabel8.setMinimumSize(new java.awt.Dimension(260, 83));
-        jLabel8.setPreferredSize(new java.awt.Dimension(260, 83));
-        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+        botaoCadastrar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        botaoCadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        botaoCadastrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoCadastrar.setText("CADASTRAR");
+        botaoCadastrar.setMaximumSize(new java.awt.Dimension(260, 83));
+        botaoCadastrar.setMinimumSize(new java.awt.Dimension(260, 83));
+        botaoCadastrar.setPreferredSize(new java.awt.Dimension(260, 83));
+        botaoCadastrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel8MouseClicked(evt);
+                botaoCadastrarMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel8);
-        jLabel8.setBounds(470, 370, 260, 83);
+        jPanel1.add(botaoCadastrar);
+        botaoCadastrar.setBounds(470, 370, 260, 83);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -171,7 +171,7 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+    private void botaoCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCadastrarMouseClicked
         String codigo = txtCodigo.getText().trim();
         String modelo = txtModelo.getText().trim();
         String marca = txtMarca.getText().trim();
@@ -196,7 +196,7 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao cadastrar equipamento.");
         }
 
-    }//GEN-LAST:event_jLabel8MouseClicked
+    }//GEN-LAST:event_botaoCadastrarMouseClicked
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
         this.dispose();
@@ -220,6 +220,7 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel botaoCadastrar;
     private javax.swing.JComboBox<String> combo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
@@ -229,7 +230,6 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtCodigo;

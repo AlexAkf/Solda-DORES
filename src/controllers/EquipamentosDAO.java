@@ -74,26 +74,6 @@ public class EquipamentosDAO {
         }
     }
 
-    // 4️⃣ Atualizar devolução (quando equipamento sai das mãos do soldador)
-    public boolean devolverEquipamento(int idEquipamento) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
-        try {
-            conn = Conexao.getConexao();
-            String sql = "UPDATE emprestimos SET devolucao = CURRENT_DATE WHERE fk_equipamento = ? AND devolucao IS NULL";
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, idEquipamento);
-            int linhas = stmt.executeUpdate();
-            return linhas > 0;
-        } catch (SQLException ex) {
-            System.out.println("Erro ao atualizar devolução: " + ex.getMessage());
-            return false;
-        } finally {
-            Conexao.fecharConexao(conn, stmt);
-        }
-    }
-
     public List<Equipamentos> listarTodos() {
         List<Equipamentos> lista = new ArrayList<>();
         Connection conn = null;
@@ -117,13 +97,14 @@ public class EquipamentosDAO {
                 String codigo = rs.getString("codigo");
                 String modelo = rs.getString("modelo");
                 String marca = rs.getString("marca");
-                String condicao = rs.getString("condicao");
                 String soldador = rs.getString("soldador");
+                String condicao = rs.getString("condicao");
+
                 if (soldador == null) {
                     soldador = "";
                 }
 
-                Equipamentos eq = new Equipamentos(id, codigo, modelo, marca, condicao, soldador);
+                Equipamentos eq = new Equipamentos(id, codigo, modelo, marca, soldador, condicao);
                 lista.add(eq);
             }
 
@@ -136,7 +117,7 @@ public class EquipamentosDAO {
         return lista;
     }
 
-    public boolean deletarEquipamento(int id) {
+    public boolean excluirEquipamento(int id) {
         Connection conn = null;
         PreparedStatement stmt = null;
         boolean sucesso = false;
@@ -158,5 +139,79 @@ public class EquipamentosDAO {
         }
 
         return sucesso;
+    }
+
+    // 🔹 Atualizar equipamento existente
+    public void atualizar(Equipamentos equipamento) throws SQLException {
+        try (Connection con = Conexao.getConexao()) {
+
+            // Atualiza dados principais
+            String sqlEquip = "UPDATE equipamentos SET codigo=?, modelo=?, marca=?, condicao=? WHERE id=?";
+            try (PreparedStatement ps = con.prepareStatement(sqlEquip)) {
+                ps.setString(1, equipamento.getCodigo());
+                ps.setString(2, equipamento.getModelo());
+                ps.setString(3, equipamento.getMarca());
+                ps.setString(4, equipamento.getCondicao());
+                ps.setInt(5, equipamento.getId());
+                ps.executeUpdate();
+            }
+
+            // === Controle de empréstimo ===
+            if (equipamento.getSoldador() == null || equipamento.getSoldador().isEmpty()) {
+                // devolve o equipamento, se houver empréstimo ativo
+                String sqlDevolver = "UPDATE emprestimos SET devolucao = CURRENT_DATE "
+                                   + "WHERE fk_equipamento = ? AND devolucao IS NULL";
+                try (PreparedStatement ps = con.prepareStatement(sqlDevolver)) {
+                    ps.setInt(1, equipamento.getId());
+                    ps.executeUpdate();
+                }
+
+                // Garante que a condição fique como "estoque"
+                String sqlCond = "UPDATE equipamentos SET condicao = 'estoque' WHERE id = ?";
+                try (PreparedStatement ps = con.prepareStatement(sqlCond)) {
+                    ps.setInt(1, equipamento.getId());
+                    ps.executeUpdate();
+                }
+            } else {
+                // busca o ID do soldador pelo nome
+                String sqlBuscaSoldador = "SELECT id FROM usuarios WHERE nome = ?";
+                Integer idSoldador = null;
+
+                try (PreparedStatement ps = con.prepareStatement(sqlBuscaSoldador)) {
+                    ps.setString(1, equipamento.getSoldador());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            idSoldador = rs.getInt("id");
+                        }
+                    }
+                }
+
+                if (idSoldador != null) {
+                    // fecha qualquer empréstimo anterior aberto
+                    String sqlFecharAnterior = "UPDATE emprestimos SET devolucao = CURRENT_DATE "
+                                             + "WHERE fk_equipamento = ? AND devolucao IS NULL";
+                    try (PreparedStatement ps = con.prepareStatement(sqlFecharAnterior)) {
+                        ps.setInt(1, equipamento.getId());
+                        ps.executeUpdate();
+                    }
+
+                    // cria novo empréstimo
+                    String sqlNovoEmprestimo = "INSERT INTO emprestimos (fk_equipamento, fk_soldador, emprestimo) "
+                                             + "VALUES (?, ?, CURRENT_DATE)";
+                    try (PreparedStatement ps = con.prepareStatement(sqlNovoEmprestimo)) {
+                        ps.setInt(1, equipamento.getId());
+                        ps.setInt(2, idSoldador);
+                        ps.executeUpdate();
+                    }
+
+                    // Atualiza a condição
+                    String sqlCond = "UPDATE equipamentos SET condicao = 'emprestado' WHERE id = ?";
+                    try (PreparedStatement ps = con.prepareStatement(sqlCond)) {
+                        ps.setInt(1, equipamento.getId());
+                        ps.executeUpdate();
+                    }
+                }
+            }
+        }
     }
 }

@@ -21,8 +21,7 @@ import util.TabelaAcaoEvento;
 import util.TabelaAcaoRender;
 
 /**
- *  @author Hugo
- *  Tela do CRUD de EQUIPAMENTOS
+ * @author Hugo Tela do CRUD de EQUIPAMENTOS
  */
 public final class TelaEquipamentos extends javax.swing.JPanel {
 
@@ -42,27 +41,38 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         for (int i = 0; i < tabela.getColumnCount(); i++) {
             tabela.getColumnModel().getColumn(i).setCellRenderer(centralizar);
         }
-        
+
         // Cabeçalho:
         tabela.getTableHeader().setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 20f));
         tabela.getTableHeader().setBackground(new Color(30, 58, 138));
         tabela.getTableHeader().setForeground(Color.WHITE);
         tabela.getTableHeader().setReorderingAllowed(false);
         tabela.getTableHeader().setResizingAllowed(false);
-        
+
         // Altura, largura e cor:
         tabela.setBackground(Color.WHITE);
         tabela.setRowHeight(60);
         tabela.getColumnModel().getColumn(0).setMaxWidth(50);
-        
-        
-        
+
         TabelaAcaoEvento evento = new TabelaAcaoEvento() {
             @Override
             public void editando(int linha) {
-                AtualizarEquipamentos atualizar = new AtualizarEquipamentos();
-                atualizar.setVisible(true);
-               
+                try {
+                    // Pega os valores da linha clicada (ajuste os índices conforme sua tabela)
+                    int id = Integer.parseInt(tabela.getValueAt(linha, 0).toString());
+                    String codigo = tabela.getValueAt(linha, 1).toString();
+                    String modelo = tabela.getValueAt(linha, 2).toString();
+                    String marca = tabela.getValueAt(linha, 3).toString();
+                    String soldador = tabela.getValueAt(linha, 4) != null ? tabela.getValueAt(linha, 4).toString() : "";
+                    String condicao = tabela.getValueAt(linha, 5).toString();
+
+                    Equipamentos eq = new Equipamentos(id, codigo, modelo, marca, soldador, condicao);
+
+                    AtualizarEquipamentos atualizar = new AtualizarEquipamentos(eq);
+                    atualizar.setVisible(true);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Erro ao abrir tela de atualização: " + e.getMessage());
+                }
             }
 
             @Override
@@ -83,7 +93,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                             JOptionPane.YES_NO_OPTION
                     );
                     if (opcao == JOptionPane.YES_OPTION) {
-                        boolean sucesso = dao.deletarEquipamento(codigo);
+                        boolean sucesso = dao.excluirEquipamento(codigo);
                         if (sucesso) {
                             carregarTabela(); // atualiza a JTable
                         } else {
@@ -108,7 +118,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
         for (Equipamentos eq : lista) {
             modelo.addRow(new Object[]{
-                eq.getID(),
+                eq.getId(),
                 eq.getCodigo(),
                 eq.getModelo(),
                 eq.getMarca(),
