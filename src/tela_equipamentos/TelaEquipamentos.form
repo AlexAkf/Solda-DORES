@@ -78,18 +78,20 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="javax.swing.JTable" name="tabela">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Fonte.inserirFonte().deriveFont(Font.BOLD, 18f)" type="code"/>
+              <Connection code="Fonte.inserirFonte().deriveFont(Font.BOLD, 20f)" type="code"/>
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="5" rowCount="0">
+              <Table columnCount="7" rowCount="0">
+                <Column editable="false" title="ID" type="java.lang.Integer"/>
                 <Column editable="false" title="C&#xf3;digo" type="java.lang.String"/>
                 <Column editable="false" title="Modelo" type="java.lang.String"/>
                 <Column editable="false" title="Marca" type="java.lang.String"/>
                 <Column editable="false" title="Em posse do soldador" type="java.lang.String"/>
                 <Column editable="false" title="Condi&#xe7;&#xe3;o" type="java.lang.String"/>
+                <Column editable="true" title="A&#xe7;&#xf5;es" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

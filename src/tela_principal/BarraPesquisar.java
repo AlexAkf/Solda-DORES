@@ -24,7 +24,7 @@ public class BarraPesquisar extends javax.swing.JFrame {
     public BarraPesquisar(TelaPrincipal tp) {
         initComponents();
         this.tp = tp;
-        setLocation(128, 14);
+        setLocation(100, 14);
         setBackground(new java.awt.Color(0, 0, 0, 0));
 
         campo.addKeyListener(new KeyAdapter() {

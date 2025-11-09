@@ -12,11 +12,11 @@ package tela_equipamentos;
  */
 public class AtualizarEquipamentos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form CadastroEquipamentos
-     */
+    private TelaEquipamentos tp;
+    
     public AtualizarEquipamentos() {
         initComponents();
+        this.tp = tp;
     }
 
     /**
@@ -32,10 +32,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
+        botaoCancelar = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -44,12 +41,13 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        txtCodigo = new javax.swing.JTextField();
+        txtCodigo1 = new javax.swing.JTextField();
+        txtCodigo2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setFocusable(false);
-        setFocusableWindowState(false);
         setMaximumSize(new java.awt.Dimension(770, 480));
         setMinimumSize(new java.awt.Dimension(770, 480));
         setUndecorated(true);
@@ -73,30 +71,28 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jLabel9.setBounds(20, 300, 160, 32);
 
         jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jTextField3);
-        jTextField3.setBounds(300, 100, 450, 30);
+        jTextField3.setBounds(300, 150, 450, 30);
 
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jPanel1.add(jTextField4);
-        jTextField4.setBounds(300, 150, 450, 30);
-
-        jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jPanel1.add(jTextField5);
-        jTextField5.setBounds(300, 200, 450, 30);
-
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jPanel1.add(jTextField2);
-        jTextField2.setBounds(300, 250, 450, 30);
-
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("CANCELAR");
-        jLabel13.setMaximumSize(new java.awt.Dimension(260, 83));
-        jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
-        jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
-        jPanel1.add(jLabel13);
-        jLabel13.setBounds(40, 370, 260, 83);
+        botaoCancelar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoCancelar.setText("CANCELAR");
+        botaoCancelar.setMaximumSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.setMinimumSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.setPreferredSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoCancelarMouseClicked(evt);
+            }
+        });
+        jPanel1.add(botaoCancelar);
+        botaoCancelar.setBounds(40, 370, 260, 83);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel3);
@@ -142,6 +138,18 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(470, 370, 260, 83);
 
+        txtCodigo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jPanel1.add(txtCodigo);
+        txtCodigo.setBounds(300, 200, 450, 30);
+
+        txtCodigo1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jPanel1.add(txtCodigo1);
+        txtCodigo1.setBounds(300, 250, 450, 30);
+
+        txtCodigo2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jPanel1.add(txtCodigo2);
+        txtCodigo2.setBounds(300, 100, 450, 30);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,48 +165,18 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AtualizarEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AtualizarEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AtualizarEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AtualizarEquipamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCancelarMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_botaoCancelarMouseClicked
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AtualizarEquipamentos().setVisible(true);
-            }
-        });
-    }
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel botaoCancelar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -208,9 +186,9 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtCodigo1;
+    private javax.swing.JTextField txtCodigo2;
     // End of variables declaration//GEN-END:variables
 }

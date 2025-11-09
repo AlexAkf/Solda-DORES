@@ -7,9 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Classe para gerenciar a conexão com o MySQL
- * 
  * @author Hugo, Alex
+ * Classe para gerenciar a conexão com o MySQL
  */
 
 public class Conexao {

@@ -8,35 +8,131 @@ import controllers.EquipamentosDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import models.Equipamentos;
 import util.Fonte;
+import util.TabelaAcaoEditor;
+import util.TabelaAcaoEvento;
+import util.TabelaAcaoRender;
 
 /**
- *
- * @author Hugo
+ *  @author Hugo
+ *  Tela do CRUD de EQUIPAMENTOS
  */
 public final class TelaEquipamentos extends javax.swing.JPanel {
 
-    /**
-     * Creates new form TelaEquipamentos
-     */
     private static TelaEquipamentos instancia;
+    private static EquipamentosDAO dao;
 
     public TelaEquipamentos() {
         initComponents();
+        dao = new EquipamentosDAO();
         carregarTabela();
-        jTable1.setRowHeight(50);
-        jTable1.getTableHeader().setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 18f));
-        jTable1.setBackground(Color.WHITE); // fundo da área de dados
-        jTable1.setFillsViewportHeight(true); // faz o fundo preencher até o fim
-        JTableHeader header = jTable1.getTableHeader();
-        header.setBackground(new Color(30, 58, 138));
-        header.setForeground(Color.WHITE);
         instancia = this;
+
+        // ============= Personalização =============
+        // Centralizar dados:
+        DefaultTableCellRenderer centralizar = new DefaultTableCellRenderer();
+        centralizar.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < tabela.getColumnCount(); i++) {
+            tabela.getColumnModel().getColumn(i).setCellRenderer(centralizar);
+        }
+        
+        // Cabeçalho:
+        tabela.getTableHeader().setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 20f));
+        tabela.getTableHeader().setBackground(new Color(30, 58, 138));
+        tabela.getTableHeader().setForeground(Color.WHITE);
+        tabela.getTableHeader().setReorderingAllowed(false);
+        tabela.getTableHeader().setResizingAllowed(false);
+        
+        // Altura, largura e cor:
+        tabela.setBackground(Color.WHITE);
+        tabela.setRowHeight(60);
+        tabela.getColumnModel().getColumn(0).setMaxWidth(50);
+        
+        
+        
+        TabelaAcaoEvento evento = new TabelaAcaoEvento() {
+            @Override
+            public void editando(int linha) {
+                AtualizarEquipamentos atualizar = new AtualizarEquipamentos();
+                atualizar.setVisible(true);
+               
+            }
+
+            @Override
+            public void excluindo(int linha) {
+                try {
+                    Object valor = tabela.getValueAt(linha, 0);
+                    // Verifica se o valor não é nulo
+                    if (valor == null) {
+                        JOptionPane.showMessageDialog(null, "Código inválido para exclusão.");
+                        return;
+                    }
+                    // Converte de forma segura
+                    int codigo = Integer.parseInt(valor.toString());
+                    int opcao = JOptionPane.showConfirmDialog(
+                            null,
+                            "Deseja realmente excluir o equipamento ?",
+                            "Confirmação",
+                            JOptionPane.YES_NO_OPTION
+                    );
+                    if (opcao == JOptionPane.YES_OPTION) {
+                        boolean sucesso = dao.deletarEquipamento(codigo);
+                        if (sucesso) {
+                            carregarTabela(); // atualiza a JTable
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Falha ao excluir equipamento!");
+                        }
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro: código inválido (" + ex.getMessage() + ")");
+                }
+            }
+        };
+        tabela.getColumnModel().getColumn(6).setCellRenderer(new TabelaAcaoRender());
+        tabela.getColumnModel().getColumn(6).setCellEditor(new TabelaAcaoEditor(evento));
+    }
+
+    public void carregarTabela() {
+
+        List<Equipamentos> lista = dao.listarTodos();
+
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+        modelo.setRowCount(0); // limpa a tabela antes de preencher
+
+        for (Equipamentos eq : lista) {
+            modelo.addRow(new Object[]{
+                eq.getID(),
+                eq.getCodigo(),
+                eq.getModelo(),
+                eq.getMarca(),
+                eq.getSoldador(),
+                eq.getCondicao()
+            });
+        }
+        tabela.repaint();
+    }
+
+    public static TelaEquipamentos getInstancia() {
+        return instancia;
+    }
+
+    public void filtrarEquipamentos(String texto) {
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+        tabela.setRowSorter(sorter);
+
+        if (texto.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto)); // Busca em todas as colunas
+        }
     }
 
     /**
@@ -51,7 +147,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabela = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
@@ -77,20 +173,20 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 18f));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabela.setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 20f));
+        tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código", "Modelo", "Marca", "Em posse do soldador", "Condição"
+                "ID", "Código", "Modelo", "Marca", "Em posse do soldador", "Condição", "Ações"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -101,8 +197,8 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setGridColor(new java.awt.Color(30, 58, 138));
-        jScrollPane1.setViewportView(jTable1);
+        tabela.setGridColor(new java.awt.Color(30, 58, 138));
+        jScrollPane1.setViewportView(tabela);
 
         add(jScrollPane1);
         jScrollPane1.setBounds(20, 130, 1770, 870);
@@ -113,45 +209,10 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         cadastro.setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 
-    public void carregarTabela() {
-        EquipamentosDAO dao = new EquipamentosDAO();
-        List<Equipamentos> lista = dao.listarTodos();
-
-        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        modelo.setRowCount(0); // limpa a tabela antes de preencher
-
-        for (Equipamentos eq : lista) {
-            modelo.addRow(new Object[]{
-                eq.getCodigo(),
-                eq.getModelo(),
-                eq.getMarca(),
-                eq.getSoldador(),
-                eq.getCondicao()
-            });
-        }
-        jTable1.repaint();
-    }
-
-    public static TelaEquipamentos getInstancia() {
-        return instancia;
-    }
-
-    public void filtrarEquipamentos(String texto) {
-        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
-        jTable1.setRowSorter(sorter);
-
-        if (texto.isEmpty()) {
-            sorter.setRowFilter(null);
-        } else {
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto)); // Busca em todas as colunas
-        }
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
 }

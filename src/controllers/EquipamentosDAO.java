@@ -101,11 +101,11 @@ public class EquipamentosDAO {
         ResultSet rs = null;
 
         String sql
-                = "SELECT e.codigo, e.modelo, e.marca, e.condicao, u.nome AS soldador "
+                = "SELECT e.id, e.codigo, e.modelo, e.marca, e.condicao, u.nome AS soldador "
                 + "FROM equipamentos e "
                 + "LEFT JOIN emprestimos emp ON emp.fk_equipamento = e.id AND emp.devolucao IS NULL "
                 + "LEFT JOIN usuarios u ON u.id = emp.fk_soldador "
-                + "ORDER BY e.id DESC";
+                + "ORDER BY e.id ASC";
 
         try {
             conn = Conexao.getConexao();
@@ -113,6 +113,7 @@ public class EquipamentosDAO {
             rs = stmt.executeQuery();
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String codigo = rs.getString("codigo");
                 String modelo = rs.getString("modelo");
                 String marca = rs.getString("marca");
@@ -122,7 +123,7 @@ public class EquipamentosDAO {
                     soldador = "";
                 }
 
-                Equipamentos eq = new Equipamentos(codigo, modelo, marca, condicao, soldador);
+                Equipamentos eq = new Equipamentos(id, codigo, modelo, marca, condicao, soldador);
                 lista.add(eq);
             }
 
@@ -135,17 +136,17 @@ public class EquipamentosDAO {
         return lista;
     }
 
-    public boolean deletarEquipamento(String codigo) {
+    public boolean deletarEquipamento(int id) {
         Connection conn = null;
         PreparedStatement stmt = null;
         boolean sucesso = false;
 
-        String sql = "DELETE FROM equipamentos WHERE codigo = ?";
+        String sql = "DELETE FROM equipamentos WHERE id = ?";
 
         try {
             conn = Conexao.getConexao();
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, codigo);
+            stmt.setInt(1, id);
 
             int linhas = stmt.executeUpdate();
             sucesso = linhas > 0;
