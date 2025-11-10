@@ -212,6 +212,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
             dao.atualizar(equipamento);
 
             JOptionPane.showMessageDialog(this, "Equipamento atualizado com sucesso!");
+            TelaEquipamentos.getInstancia().carregarTabela();
             dispose();
 
         } catch (Exception e) {

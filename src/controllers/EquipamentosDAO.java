@@ -26,16 +26,20 @@ public class EquipamentosDAO {
 
             // 1️⃣ Verifica se soldador existe e tem cargo "soldador"
             Integer idSoldador = null;
-            if (eq.getSoldador() != null && !eq.getSoldador().isEmpty()) {
-                String sqlVerifica = "SELECT id FROM usuarios WHERE nome = ? AND cargo = 'soldador'";
+
+            if (eq.getSoldador() != null && !eq.getSoldador().trim().isEmpty()) {
+                String sqlVerifica = "SELECT id FROM usuarios WHERE LOWER(nome) = LOWER(?) AND cargo = 'soldador'";
                 stmt = conn.prepareStatement(sqlVerifica);
-                stmt.setString(1, eq.getSoldador());
+                stmt.setString(1, eq.getSoldador().trim());
                 rs = stmt.executeQuery();
+
                 if (rs.next()) {
                     idSoldador = rs.getInt("id");
                 } else {
-                    throw new SQLException("Soldador não encontrado ou não é do cargo 'soldador'.");
+                    JOptionPane.showMessageDialog(null, "Soldador não encontrado ou não é do cargo 'soldador'.");
+                    return false; // aborta apenas se o usuário realmente digitou algo inválido
                 }
+
                 stmt.close();
             }
 
@@ -67,7 +71,9 @@ public class EquipamentosDAO {
 
             return true;
         } catch (SQLException ex) {
-            System.out.println("Erro ao cadastrar equipamento: " + ex.getMessage());
+            ex.printStackTrace(); // <-- Mostra erro completo com linha e causa
+            JOptionPane.showMessageDialog(null,
+                    "Erro ao cadastrar equipamento:\n" + ex.getMessage());
             return false;
         } finally {
             Conexao.fecharConexao(conn, stmt, rs);
@@ -145,7 +151,7 @@ public class EquipamentosDAO {
     public void atualizar(Equipamentos equipamento) throws SQLException {
         try (Connection con = Conexao.getConexao()) {
 
-            // Atualiza dados principais
+            // 1️⃣ Atualiza os dados principais
             String sqlEquip = "UPDATE equipamentos SET codigo=?, modelo=?, marca=?, condicao=? WHERE id=?";
             try (PreparedStatement ps = con.prepareStatement(sqlEquip)) {
                 ps.setString(1, equipamento.getCodigo());
@@ -156,25 +162,22 @@ public class EquipamentosDAO {
                 ps.executeUpdate();
             }
 
-            // === Controle de empréstimo ===
+            // === CONTROLE DE EMPRÉSTIMO ===
             if (equipamento.getSoldador() == null || equipamento.getSoldador().isEmpty()) {
-                // devolve o equipamento, se houver empréstimo ativo
-                String sqlDevolver = "UPDATE emprestimos SET devolucao = CURRENT_DATE "
-                                   + "WHERE fk_equipamento = ? AND devolucao IS NULL";
+                // 🔸 Nenhum soldador: devolver equipamento (se estiver emprestado)
+                String sqlDevolver = """
+                UPDATE emprestimos 
+                SET devolucao = CURRENT_DATE 
+                WHERE fk_equipamento = ? AND devolucao IS NULL
+            """;
                 try (PreparedStatement ps = con.prepareStatement(sqlDevolver)) {
                     ps.setInt(1, equipamento.getId());
                     ps.executeUpdate();
                 }
 
-                // Garante que a condição fique como "estoque"
-                String sqlCond = "UPDATE equipamentos SET condicao = 'estoque' WHERE id = ?";
-                try (PreparedStatement ps = con.prepareStatement(sqlCond)) {
-                    ps.setInt(1, equipamento.getId());
-                    ps.executeUpdate();
-                }
             } else {
-                // busca o ID do soldador pelo nome
-                String sqlBuscaSoldador = "SELECT id FROM usuarios WHERE nome = ?";
+                // 🔹 Tem soldador → buscar ID
+                String sqlBuscaSoldador = "SELECT id FROM usuarios WHERE nome = ? AND cargo = 'soldador'";
                 Integer idSoldador = null;
 
                 try (PreparedStatement ps = con.prepareStatement(sqlBuscaSoldador)) {
@@ -182,34 +185,47 @@ public class EquipamentosDAO {
                     try (ResultSet rs = ps.executeQuery()) {
                         if (rs.next()) {
                             idSoldador = rs.getInt("id");
+                        } else {
+                            throw new SQLException("Soldador não encontrado ou inválido.");
                         }
                     }
                 }
 
-                if (idSoldador != null) {
-                    // fecha qualquer empréstimo anterior aberto
-                    String sqlFecharAnterior = "UPDATE emprestimos SET devolucao = CURRENT_DATE "
-                                             + "WHERE fk_equipamento = ? AND devolucao IS NULL";
-                    try (PreparedStatement ps = con.prepareStatement(sqlFecharAnterior)) {
-                        ps.setInt(1, equipamento.getId());
-                        ps.executeUpdate();
-                    }
+                // 🔸 Verifica se já há empréstimo ativo
+                String sqlCheck = "SELECT devolucao FROM emprestimos WHERE fk_equipamento = ? AND devolucao IS NULL";
+                boolean temEmprestimoAtivo = false;
 
-                    // cria novo empréstimo
-                    String sqlNovoEmprestimo = "INSERT INTO emprestimos (fk_equipamento, fk_soldador, emprestimo) "
-                                             + "VALUES (?, ?, CURRENT_DATE)";
-                    try (PreparedStatement ps = con.prepareStatement(sqlNovoEmprestimo)) {
-                        ps.setInt(1, equipamento.getId());
-                        ps.setInt(2, idSoldador);
-                        ps.executeUpdate();
+                try (PreparedStatement ps = con.prepareStatement(sqlCheck)) {
+                    ps.setInt(1, equipamento.getId());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            temEmprestimoAtivo = true;
+                        }
                     }
+                }
 
-                    // Atualiza a condição
-                    String sqlCond = "UPDATE equipamentos SET condicao = 'emprestado' WHERE id = ?";
-                    try (PreparedStatement ps = con.prepareStatement(sqlCond)) {
+                if (temEmprestimoAtivo) {
+                    // Se já estiver emprestado, devolve antes
+                    String sqlDevolver = """
+                    UPDATE emprestimos 
+                    SET devolucao = CURRENT_DATE 
+                    WHERE fk_equipamento = ? AND devolucao IS NULL
+                """;
+                    try (PreparedStatement ps = con.prepareStatement(sqlDevolver)) {
                         ps.setInt(1, equipamento.getId());
                         ps.executeUpdate();
                     }
+                }
+
+                // 🔸 Agora cria novo empréstimo (trigger ajusta condição)
+                String sqlEmprestimo = """
+                INSERT INTO emprestimos (fk_equipamento, fk_soldador, emprestimo)
+                VALUES (?, ?, CURRENT_DATE)
+            """;
+                try (PreparedStatement ps = con.prepareStatement(sqlEmprestimo)) {
+                    ps.setInt(1, equipamento.getId());
+                    ps.setInt(2, idSoldador);
+                    ps.executeUpdate();
                 }
             }
         }

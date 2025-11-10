@@ -7,7 +7,7 @@ package tela_equipamentos;
 import controllers.EquipamentosDAO;
 import javax.swing.JOptionPane;
 import models.Equipamentos;
-        
+
 /**
  *
  * @author Hugo
@@ -15,7 +15,7 @@ import models.Equipamentos;
 public class CadastroEquipamentos extends javax.swing.JFrame {
 
     private TelaEquipamentos tp;
-    
+
     public CadastroEquipamentos(TelaEquipamentos tp) {
         initComponents();
         this.tp = tp;
@@ -177,10 +177,21 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         String marca = txtMarca.getText().trim();
         String condicao = combo.getSelectedItem().toString().toLowerCase();
         String soldador = txtSoldador.getText().trim();
-
+        
+        
         if (codigo.isEmpty() || modelo.isEmpty() || marca.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios!");
             return;
+        }
+
+        // Se marcou como emprestado, precisa informar o soldador
+        if ("emprestado".equalsIgnoreCase(condicao) && soldador.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Para marcar como 'Emprestado' informe o soldador (nome ou sinete).");
+            return;
+        }
+        
+        if ("".equals(soldador)) {
+            soldador = null; // facilita lógica no DAO
         }
 
         Equipamentos eq = new Equipamentos(codigo, modelo, marca, condicao, soldador);
@@ -191,7 +202,7 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         if (sucesso) {
             JOptionPane.showMessageDialog(this, "Equipamento cadastrado com sucesso!");
             tp.carregarTabela();
-            this.dispose();  
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Erro ao cadastrar equipamento.");
         }
@@ -213,11 +224,10 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
             combo.setEnabled(true);
         }
     }//GEN-LAST:event_txtSoldadorKeyReleased
-   
+
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoCadastrar;

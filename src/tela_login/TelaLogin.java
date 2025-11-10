@@ -164,11 +164,11 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoSairMouseClicked
 
     private void campoSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoSenhaActionPerformed
-        // TODO add your handling code here:
+        botaoEntrarMouseClicked(null);
     }//GEN-LAST:event_campoSenhaActionPerformed
 
     private void campoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoUsuarioActionPerformed
-        // TODO add your handling code here:
+        botaoEntrarMouseClicked(null);
     }//GEN-LAST:event_campoUsuarioActionPerformed
 
     private void mostrarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarSenhaActionPerformed

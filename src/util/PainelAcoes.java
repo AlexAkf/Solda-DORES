@@ -48,9 +48,11 @@ public class PainelAcoes extends javax.swing.JPanel {
         botaoExcluir = new util.BotaoAcoes();
 
         botaoEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
+        botaoEditar.setToolTipText("");
         botaoEditar.setFocusable(false);
 
         botaoExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/excluir.png"))); // NOI18N
+        botaoExcluir.setToolTipText("");
         botaoExcluir.setFocusable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
