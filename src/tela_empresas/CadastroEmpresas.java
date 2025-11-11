@@ -2,7 +2,7 @@ package tela_empresas;
 
 /**
  *
- * @author Hugo
+ * @author Muzzi
  */
 
 public class CadastroEmpresas extends javax.swing.JFrame {

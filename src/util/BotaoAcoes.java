@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package util;
 
 import java.awt.event.MouseAdapter;
@@ -11,7 +7,7 @@ import javax.swing.border.EmptyBorder;
 
 /**
  *
- * @author hugos
+ * @author Hugo
  */
 public class BotaoAcoes extends JButton{
     
