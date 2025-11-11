@@ -27,7 +27,7 @@ public class BarraPesquisar extends javax.swing.JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 String texto = campo.getText().trim();
-                TelaEquipamentos.getInstancia().filtrarEquipamentos(texto);
+
             }
         });
 
@@ -35,7 +35,7 @@ public class BarraPesquisar extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                TelaEquipamentos.getInstancia().filtrarEquipamentos("");
+
             }
         });
 
@@ -43,7 +43,7 @@ public class BarraPesquisar extends javax.swing.JFrame {
         campo.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusLost(java.awt.event.FocusEvent evt) {
-                TelaEquipamentos.getInstancia().filtrarEquipamentos("");
+
                 dispose();
             }
         });

@@ -1,7 +1,6 @@
 package tela_equipamentos;
 
 import controllers.EquipamentosDAO;
-import javax.swing.JOptionPane;
 import models.Equipamentos;
 
 /**
@@ -61,11 +60,6 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jLabel9.setBounds(20, 300, 160, 32);
 
         txtModelo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtModelo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtModeloActionPerformed(evt);
-            }
-        });
         jPanel1.add(txtModelo);
         txtModelo.setBounds(300, 150, 450, 30);
 
@@ -169,12 +163,33 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botaoCancelarMouseClicked
 
-    private void txtModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtModeloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtModeloActionPerformed
-
     private void botaoAtualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoAtualizarMouseClicked
+        // Recebendo os valores cadastrados.
+        String codigo = txtCodigo.getText();
+        String modelo = txtModelo.getText();
+        String marca = txtMarca.getText();
+        String soldador = txtSoldador.getText();
+        String condicao = combo.getSelectedItem().toString().toLowerCase();
         
+        // Enviando o cadastro.
+        Equipamentos eq = new Equipamentos();
+        eq.setCodigo(codigo);
+        eq.setModelo(modelo);
+        eq.setMarca(marca);
+        eq.setSoldador(soldador);
+        eq.setCondicao(condicao);
+        
+        // Utilizando o método 'atualizarEquipamento' da classe DAO.
+        EquipamentosDAO dao = new EquipamentosDAO();
+        dao.atualizarEquipamento(eq);
+        
+        // Limpando os campos e resetando a combo box.
+        txtCodigo.setText("");
+        txtModelo.setText("");
+        txtMarca.setText("");
+        txtSoldador.setText("");
+        combo.setSelectedItem("Estoque");
+        combo.setEnabled(true);
     }//GEN-LAST:event_botaoAtualizarMouseClicked
 
     private void txtSoldadorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoldadorKeyReleased

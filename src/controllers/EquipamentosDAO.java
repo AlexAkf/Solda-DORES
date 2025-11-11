@@ -1,226 +1,241 @@
 package controllers;
 
-import java.util.List;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import models.Equipamentos;
 
-/**
- *
- * @author Hugo
- */
+// @author Hugo
+// Classe DAO (Data Acess Object). Responsável por conectar os dados da tabela
+// correspondente e realizar as operações CRUD.
 public class EquipamentosDAO {
 
-    // Método para inserir novo equipamento
-    public boolean inserirEquipamento(Equipamentos eq) {
-        
-        // 1. A Conexão é a primeira a ser aberta e fechada automaticamente.
-        try (Connection conn = Conexao.getConexao()) { 
+    private Connection conn;
 
-            // 1️⃣ Verifica se soldador existe e tem cargo "soldador"
-            Integer idSoldador = null;
+    // O construtor sempre será utilizado ao criar uma nova instancia dessa classe.
+    // EquipamentosDAO dao = new EquipamentosDAO();
+    public EquipamentosDAO() {
+        this.conn = Conexao.getConexao();
+    }
 
-            if (eq.getSoldador() != null && !eq.getSoldador().trim().isEmpty()) {
-                String sqlVerifica = "SELECT id FROM usuarios WHERE LOWER(nome) = LOWER(?) AND cargo = 'soldador'";
-                
-                // Os blocos internos de try-with-resources garantem que os PreparedStatement 
-                // e ResultSet sejam fechados imediatamente após o uso, mesmo que a conexão continue aberta.
-                try (PreparedStatement stmtVerifica = conn.prepareStatement(sqlVerifica)) {
-                    stmtVerifica.setString(1, eq.getSoldador().trim());
-                    
-                    try (ResultSet rsVerifica = stmtVerifica.executeQuery()) {
-                        if (rsVerifica.next()) {
-                            idSoldador = rsVerifica.getInt("id");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Soldador não encontrado ou não é do cargo 'soldador'.");
-                            return false; 
-                        }
-                    } // rsVerifica é fechado automaticamente
-                } // stmtVerifica é fechado automaticamente
+    // Antes dos métodos CRUD, faço um método para facilitar a buscar do soldador.
+    private int buscarIdSoldadorPorNome(String nomeSoldador) throws SQLException {
+        String sql = "SELECT id FROM usuarios WHERE nome = ? AND cargo = 'soldador'";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, nomeSoldador);
+
+        ResultSet rs = stmt.executeQuery();
+
+        int idSoldador = 0;
+        if (rs.next()) {
+            idSoldador = rs.getInt("id");
+        }
+
+        rs.close();
+        stmt.close();
+        return idSoldador;
+    }
+
+    //========= CREATE, INSERIR EQUIPAMENTO =========
+    // No cadastro do equipamento, o usuário poderá cadastrar com um soldador. 
+    // Caso cadastre com um soldador, o sistema irá atualizar a tabela de empréstimos.
+    // Colocamos o modelo "Equipamentos" e "idSoldador" como parâmetro para receber os dados, no cadastro, que serão inseridos no BD.
+    public void inserirEquipamento(Equipamentos eq) {
+        // Campos que serão preenchidos.
+        String sqlEquip = "INSERT INTO equipamentos (codigo, modelo, marca, condicao) VALUES (?, ?, ?, ?)";
+        String sqlEmprest = "INSERT INTO emprestimos (fk_equipamento, fk_soldador) VALUES (?, ?)";
+
+        try {
+            // Envio automático desativado.
+            // Desativo, pois o método precisa atualizar duas tabelas ao mesmo tempo com dados relacionados.
+            conn.setAutoCommit(false);
+
+            // Buscar ID do soldador pelo nome vindo do objeto
+            int idSoldador = 0;
+            if (eq.getSoldador() != null && !eq.getSoldador().equals("—") && !eq.getSoldador().isBlank()) {
+                idSoldador = buscarIdSoldadorPorNome(eq.getSoldador());
+                if (idSoldador == 0) {
+                    JOptionPane.showMessageDialog(null,
+                            "Erro: Soldador '" + eq.getSoldador() + "' não encontrado.",
+                            "Erro de atualização", JOptionPane.ERROR_MESSAGE);
+                    conn.rollback();
+                    return;
+                }
             }
 
-            // 2️⃣ Insere equipamento
+            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela 'equipamentos'.
+            PreparedStatement stmtEquip = conn.prepareStatement(sqlEquip, Statement.RETURN_GENERATED_KEYS);
+            stmtEquip.setString(1, eq.getCodigo());
+            stmtEquip.setString(2, eq.getModelo());
+            stmtEquip.setString(3, eq.getMarca());
+            stmtEquip.setString(4, eq.getCondicao());
+            stmtEquip.execute();
+
+            // Recupera o ID do equipamento gerado para inserir no fk_equipamento.
+            ResultSet rs = stmtEquip.getGeneratedKeys();
             int idEquipamento = 0;
-            String sqlInsert = "INSERT INTO equipamentos (codigo, modelo, marca, condicao) VALUES (?, ?, ?, ?)";
-            
-            try (PreparedStatement stmtInsert = conn.prepareStatement(sqlInsert, PreparedStatement.RETURN_GENERATED_KEYS)) {
-                stmtInsert.setString(1, eq.getCodigo());
-                stmtInsert.setString(2, eq.getModelo());
-                stmtInsert.setString(3, eq.getMarca());
-                stmtInsert.setString(4, eq.getCondicao());
-                stmtInsert.executeUpdate();
+            if (rs.next()) {
+                idEquipamento = rs.getInt(1);
+            }
+            rs.close();
+            stmtEquip.close();
 
-                // pega o id gerado
-                try (ResultSet rsGenerated = stmtInsert.getGeneratedKeys()) {
-                    if (rsGenerated.next()) {
-                        idEquipamento = rsGenerated.getInt(1);
-                    }
-                } // rsGenerated é fechado automaticamente
-            } // stmtInsert é fechado automaticamente
+            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela 'emprestimos'.
+            PreparedStatement stmtEmprest = conn.prepareStatement(sqlEmprest);
+            stmtEmprest.setInt(1, idEquipamento);
+            stmtEmprest.setInt(2, idSoldador);
+            stmtEmprest.executeUpdate();
+            stmtEmprest.close();
 
-            // 3️⃣ Se houver soldador → cria registro de empréstimo
-            if (idSoldador != null) {
-                String sqlEmprestimo = "INSERT INTO emprestimos (fk_equipamento, fk_soldador) VALUES (?, ?)";
-                try (PreparedStatement stmtEmprestimo = conn.prepareStatement(sqlEmprestimo)) {
-                    stmtEmprestimo.setInt(1, idEquipamento);
-                    stmtEmprestimo.setInt(2, idSoldador);
-                    stmtEmprestimo.executeUpdate();
-                } // stmtEmprestimo é fechado automaticamente
+            // Confirmar a inserção dos comandos no banco.
+            conn.commit();
+
+            System.out.println("Equipamento e empréstimo cadastrados com sucesso!");
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Erro ao realizar rollback: " + ex.getMessage());
+            }
+            System.out.println("Erro ao inserir equipamento/emprestimo: " + e.getMessage());
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Erro ao resetar auto-commit: " + ex.getMessage());
+            }
+        }
+    }
+
+    //========= UPDATE, ATUALIZAR EQUIPAMENTO =========
+    // Método para atualizar equipamento com as condições do banco.
+    // Se o equipamento estiver com um soldador cadastrado e quer repassar para outro, é necessário devolver ao estoque primeiro.   
+    public void atualizarEquipamento(Equipamentos eq) {
+        // Campos que serão preenchidos.
+        String sqlEquip = "UPDATE equipamentos SET codigo=?, modelo=?, marca=?, condicao=? WHERE id=?";
+        String sqlEmprest = "UPDATE emprestimos SET fk_soldador=? WHERE fk_equipamento=? AND devolucao IS NULL";
+
+        try {
+            // Envio automático desativado.
+            // Desativo, pois o método precisa atualizar duas tabelas ao mesmo tempo com dados relacionados.
+            conn.setAutoCommit(false);
+
+            // Buscar ID do soldador pelo nome vindo do objeto
+            int idSoldador = 0;
+            if (eq.getSoldador() != null && !eq.getSoldador().equals("—") && !eq.getSoldador().isBlank()) {
+                idSoldador = buscarIdSoldadorPorNome(eq.getSoldador());
+                if (idSoldador == 0) {
+                    JOptionPane.showMessageDialog(null,
+                            "Erro: Soldador '" + eq.getSoldador() + "' não encontrado.",
+                            "Erro de atualização", JOptionPane.ERROR_MESSAGE);
+                    conn.rollback();
+                    return;
+                }
             }
 
-            return true;
-        } catch (SQLException ex) {
-            ex.printStackTrace(); 
-            JOptionPane.showMessageDialog(null,
-                    "Erro ao cadastrar equipamento:\n" + ex.getMessage());
-            return false;
-        } 
-        // O bloco 'finally' não é mais necessário para fechar recursos
+            // Consulta a condição atual do equipamento
+            String sqlCheckCond = "SELECT condicao FROM equipamentos WHERE id = ?";
+            PreparedStatement stmtCheck = conn.prepareStatement(sqlCheckCond);
+            stmtCheck.setInt(1, eq.getId());
+            ResultSet rsCheck = stmtCheck.executeQuery();
+
+            String condicaoAtual = null;
+            if (rsCheck.next()) {
+                condicaoAtual = rsCheck.getString("condicao");
+            }
+            rsCheck.close();
+            stmtCheck.close();
+
+            // 🔹 Bloqueia troca direta de soldador sem devolver antes
+            if ("emprestado".equalsIgnoreCase(condicaoAtual)
+                    && !"estoque".equalsIgnoreCase(eq.getCondicao())
+                    && eq.getSoldador() != null
+                    && !eq.getSoldador().equals("—")) {
+                JOptionPane.showMessageDialog(null,
+                        "Este equipamento está emprestado. Devolva (coloque em 'estoque') antes de emprestar para outro soldador.",
+                        "Ação não permitida",
+                        JOptionPane.WARNING_MESSAGE);
+                conn.rollback();
+                return;
+            }
+
+            // Atualiza os dados do equipamento existente.
+            PreparedStatement stmtEquip = conn.prepareStatement(sqlEquip);
+            stmtEquip.setString(1, eq.getCodigo());
+            stmtEquip.setString(2, eq.getModelo());
+            stmtEquip.setString(3, eq.getMarca());
+            stmtEquip.setString(4, eq.getCondicao());
+            stmtEquip.setInt(5, eq.getId()); // usa o ID existente.
+            stmtEquip.execute();
+            stmtEquip.close();
+
+            // Se o equipamento está sendo entregue a um soldador, atualiza o empréstimo
+            if ("emprestado".equalsIgnoreCase(eq.getCondicao())) {
+                PreparedStatement stmtEmprest = conn.prepareStatement(sqlEmprest);
+                stmtEmprest.setInt(1, idSoldador);
+                stmtEmprest.setInt(2, eq.getId());
+                stmtEmprest.executeUpdate();
+                stmtEmprest.close();
+            }
+
+            // Confirmar a inserção dos comandos no banco.
+            conn.commit();
+            JOptionPane.showMessageDialog(null, "Equipamento atualizado com sucesso!");
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Erro ao realizar rollback: " + ex.getMessage());
+            }
+            System.out.println("Erro ao atualizar equipamento/emprestimo: " + e.getMessage());
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Erro ao resetar auto-commit: " + ex.getMessage());
+            }
+        }
     }
 
     public List<Equipamentos> listarTodos() {
         List<Equipamentos> lista = new ArrayList<>();
 
-        String sql
-                = "SELECT e.id, e.codigo, e.modelo, e.marca, e.condicao, u.nome AS soldador "
-                + "FROM equipamentos e "
-                + "LEFT JOIN emprestimos emp ON emp.fk_equipamento = e.id AND emp.devolucao IS NULL "
-                + "LEFT JOIN usuarios u ON u.id = emp.fk_soldador "
-                + "ORDER BY e.id ASC";
+        String sql = """
+        SELECT 
+            e.id,
+            e.codigo,
+            e.modelo,
+            e.marca,
+            e.condicao,
+            u.nome AS soldador
+        FROM equipamentos e
+        LEFT JOIN emprestimos em 
+            ON e.id = em.fk_equipamento AND em.devolucao IS NULL
+        LEFT JOIN usuarios u 
+            ON em.fk_soldador = u.id
+        ORDER BY e.id;
+    """;
 
-        // Todos os recursos (Conexão, Statement e ResultSet) são abertos na TWR
-        try (Connection conn = Conexao.getConexao(); 
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String codigo = rs.getString("codigo");
-                String modelo = rs.getString("modelo");
-                String marca = rs.getString("marca");
-                String soldador = rs.getString("soldador");
-                String condicao = rs.getString("condicao");
-
-                if (soldador == null) {
-                    soldador = "";
-                }
-
-                Equipamentos eq = new Equipamentos(id, codigo, modelo, marca, soldador, condicao);
+                Equipamentos eq = new Equipamentos();
+                eq.setId(rs.getInt("id"));
+                eq.setCodigo(rs.getString("codigo"));
+                eq.setModelo(rs.getString("modelo"));
+                eq.setMarca(rs.getString("marca"));
+                eq.setCondicao(rs.getString("condicao"));
+                eq.setSoldador(rs.getString("soldador") != null ? rs.getString("soldador") : "—");
                 lista.add(eq);
             }
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao listar equipamentos: " + ex.getMessage());
-        } 
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar equipamentos: " + e.getMessage());
+        }
 
         return lista;
-    }
-
-    public boolean excluirEquipamento(int id) {
-        boolean sucesso = false;
-        String sql = "DELETE FROM equipamentos WHERE id = ?";
-
-        // Conexão e Statement abertos e fechados automaticamente
-        try (Connection conn = Conexao.getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-
-            int linhas = stmt.executeUpdate();
-            sucesso = linhas > 0;
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao deletar equipamento: " + ex.getMessage());
-        } 
-
-        return sucesso;
-    }
-
-    // 🔹 Atualizar equipamento existente (Já estava no modelo TWR e foi mantido)
-    public void atualizar(Equipamentos equipamento) throws SQLException {
-        try (Connection con = Conexao.getConexao()) {
-
-            // 1️⃣ Atualiza os dados principais
-            String sqlEquip = "UPDATE equipamentos SET codigo=?, modelo=?, marca=?, condicao=? WHERE id=?";
-            try (PreparedStatement ps = con.prepareStatement(sqlEquip)) {
-                ps.setString(1, equipamento.getCodigo());
-                ps.setString(2, equipamento.getModelo());
-                ps.setString(3, equipamento.getMarca());
-                ps.setString(4, equipamento.getCondicao());
-                ps.setInt(5, equipamento.getId());
-                ps.executeUpdate();
-            }
-
-            // === CONTROLE DE EMPRÉSTIMO ===
-            if (equipamento.getSoldador() == null || equipamento.getSoldador().isEmpty()) {
-                // 🔸 Nenhum soldador: devolver equipamento (se estiver emprestado)
-                String sqlDevolver = """
-                UPDATE emprestimos 
-                SET devolucao = CURRENT_DATE 
-                WHERE fk_equipamento = ? AND devolucao IS NULL
-                """;
-                try (PreparedStatement ps = con.prepareStatement(sqlDevolver)) {
-                    ps.setInt(1, equipamento.getId());
-                    ps.executeUpdate();
-                }
-
-            } else {
-                // 🔹 Tem soldador → buscar ID
-                String sqlBuscaSoldador = "SELECT id FROM usuarios WHERE nome = ? AND cargo = 'soldador'";
-                Integer idSoldador = null;
-
-                try (PreparedStatement ps = con.prepareStatement(sqlBuscaSoldador)) {
-                    ps.setString(1, equipamento.getSoldador());
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
-                            idSoldador = rs.getInt("id");
-                        } else {
-                            throw new SQLException("Soldador não encontrado ou inválido.");
-                        }
-                    }
-                }
-
-                // 🔸 Verifica se já há empréstimo ativo
-                String sqlCheck = "SELECT devolucao FROM emprestimos WHERE fk_equipamento = ? AND devolucao IS NULL";
-                boolean temEmprestimoAtivo = false;
-
-                try (PreparedStatement ps = con.prepareStatement(sqlCheck)) {
-                    ps.setInt(1, equipamento.getId());
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
-                            temEmprestimoAtivo = true;
-                        }
-                    }
-                }
-
-                if (temEmprestimoAtivo) {
-                    // Se já estiver emprestado, devolve antes
-                    String sqlDevolver = """
-                    UPDATE emprestimos 
-                    SET devolucao = CURRENT_DATE 
-                    WHERE fk_equipamento = ? AND devolucao IS NULL
-                    """;
-                    try (PreparedStatement ps = con.prepareStatement(sqlDevolver)) {
-                        ps.setInt(1, equipamento.getId());
-                        ps.executeUpdate();
-                    }
-                }
-
-                // 🔸 Agora cria novo empréstimo (trigger ajusta condição)
-                String sqlEmprestimo = """
-                INSERT INTO emprestimos (fk_equipamento, fk_soldador, emprestimo)
-                VALUES (?, ?, CURRENT_DATE)
-                """;
-                try (PreparedStatement ps = con.prepareStatement(sqlEmprestimo)) {
-                    ps.setInt(1, equipamento.getId());
-                    ps.setInt(2, idSoldador);
-                    ps.executeUpdate();
-                }
-            }
-        }
     }
 }

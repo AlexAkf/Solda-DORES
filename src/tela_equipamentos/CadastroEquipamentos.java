@@ -1,7 +1,6 @@
 package tela_equipamentos;
 
 import controllers.EquipamentosDAO;
-import javax.swing.JOptionPane;
 import models.Equipamentos;
 
 /**
@@ -167,7 +166,32 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCadastrarMouseClicked
+        // Recebendo os valores cadastrados.
+        String codigo = txtCodigo.getText();
+        String modelo = txtModelo.getText();
+        String marca = txtMarca.getText();
+        String soldador = txtSoldador.getText();
+        String condicao = combo.getSelectedItem().toString().toLowerCase();
         
+        // Enviando o cadastro.
+        Equipamentos eq = new Equipamentos();
+        eq.setCodigo(codigo);
+        eq.setModelo(modelo);
+        eq.setMarca(marca);
+        eq.setSoldador(soldador);
+        eq.setCondicao(condicao);
+        
+        // Utilizando o método 'inserirEquipamento' da classe DAO.
+        EquipamentosDAO dao = new EquipamentosDAO();
+        dao.inserirEquipamento(eq);
+        
+        // Limpando os campos e resetando a combo box.
+        txtCodigo.setText("");
+        txtModelo.setText("");
+        txtMarca.setText("");
+        txtSoldador.setText("");
+        combo.setSelectedItem("Estoque");
+        combo.setEnabled(true);
     }//GEN-LAST:event_botaoCadastrarMouseClicked
 
     private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCancelarMouseClicked
@@ -175,6 +199,9 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCancelarMouseClicked
 
     private void txtSoldadorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoldadorKeyReleased
+        // Comando para ajudar o usuário com a logica do banco.
+        // Caso preencha o campo "soldador", a combo box será trancada no item "Emprestado".
+        // No contrario, irá para o item "Estoque".
         String soldador = txtSoldador.getText().trim();
 
         if (!soldador.isEmpty()) {
