@@ -31,39 +31,4 @@ public class Conexao {
             throw new RuntimeException("Algo aconteceu de errado com a conexão com o banco, veja: " + ex);
         }
     }
-
-    public static void fecharConexao(Connection conn) {
-        if (conn != null)   //se estiver conectado
-        {
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                throw new RuntimeException("Algo aconteceu de errado com o fechamento da conexão com o banco, veja: " + ex);
-            }
-        }
-    }
-
-    public static void fecharConexao(Connection conn, PreparedStatement stmt) {
-        if (stmt != null) {
-            try {
-                stmt.close();
-            } catch (SQLException ex) {
-                throw new RuntimeException("Algo aconteceu de errado com o fechamento da conexão com o banco, veja: " + ex);
-            }
-        }
-
-        fecharConexao(conn);
-    }
-
-    public static void fecharConexao(Connection conn, PreparedStatement stmt, ResultSet rs) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException ex) {
-                throw new RuntimeException("Algo aconteceu de errado com o fechamento da conexão com o banco, veja: " + ex);
-            }
-        }
-
-        fecharConexao(conn, stmt);
-    }
 }

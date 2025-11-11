@@ -14,33 +14,10 @@ import models.Equipamentos;
  */
 public class AtualizarEquipamentos extends javax.swing.JFrame {
 
-    private Equipamentos equipamento;
-
-    public AtualizarEquipamentos(Equipamentos equipamento) {
+    public AtualizarEquipamentos() {
         initComponents();
-        this.equipamento = equipamento;
-        preencherCampos();
-
-        // 👇 Verifica se o campo soldador já está preenchido
-        if (!txtSoldador.getText().trim().isEmpty()) {
-            combo.setSelectedItem("Emprestado");
-            combo.setEnabled(false);
-        } else {
-            combo.setSelectedItem("Estoque");
-            combo.setEnabled(true);
-        }
     }
-
-    private void preencherCampos() {
-        if (equipamento != null) {
-            txtCodigo.setText(equipamento.getCodigo());
-            txtModelo.setText(equipamento.getModelo());
-            txtMarca.setText(equipamento.getMarca());
-            txtSoldador.setText(equipamento.getSoldador());
-            combo.setSelectedItem(equipamento.getCondicao());
-        }
-    }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -201,23 +178,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
     }//GEN-LAST:event_txtModeloActionPerformed
 
     private void botaoAtualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoAtualizarMouseClicked
-        try {
-            // Atualiza apenas os campos editáveis
-            equipamento.setCodigo(txtCodigo.getText());
-            equipamento.setModelo(txtModelo.getText());
-            equipamento.setMarca(txtMarca.getText());
-            equipamento.setSoldador(txtSoldador.getText());
-            equipamento.setCondicao(combo.getSelectedItem().toString());
-            EquipamentosDAO dao = new EquipamentosDAO();
-            dao.atualizar(equipamento);
-
-            JOptionPane.showMessageDialog(this, "Equipamento atualizado com sucesso!");
-            TelaEquipamentos.getInstancia().carregarTabela();
-            dispose();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar: " + e.getMessage());
-        }
+        
     }//GEN-LAST:event_botaoAtualizarMouseClicked
 
     private void txtSoldadorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoldadorKeyReleased

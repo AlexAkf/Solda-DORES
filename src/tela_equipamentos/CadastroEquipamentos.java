@@ -18,7 +18,6 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
 
     public CadastroEquipamentos(TelaEquipamentos tp) {
         initComponents();
-        this.tp = tp;
     }
 
     /**
@@ -37,7 +36,7 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         txtModelo = new javax.swing.JTextField();
         txtCodigo = new javax.swing.JTextField();
         txtSoldador = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
+        botaoCancelar = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -92,20 +91,20 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jPanel1.add(txtSoldador);
         txtSoldador.setBounds(300, 250, 450, 30);
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("CANCELAR");
-        jLabel13.setMaximumSize(new java.awt.Dimension(260, 83));
-        jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
-        jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
-        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+        botaoCancelar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoCancelar.setText("CANCELAR");
+        botaoCancelar.setMaximumSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.setMinimumSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.setPreferredSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel13MouseClicked(evt);
+                botaoCancelarMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel13);
-        jLabel13.setBounds(40, 370, 260, 83);
+        jPanel1.add(botaoCancelar);
+        botaoCancelar.setBounds(40, 370, 260, 83);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel7.setText("Estado de Uso");
@@ -172,46 +171,12 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCadastrarMouseClicked
-        String codigo = txtCodigo.getText().trim();
-        String modelo = txtModelo.getText().trim();
-        String marca = txtMarca.getText().trim();
-        String condicao = combo.getSelectedItem().toString().toLowerCase();
-        String soldador = txtSoldador.getText().trim();
         
-        
-        if (codigo.isEmpty() || modelo.isEmpty() || marca.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios!");
-            return;
-        }
-
-        // Se marcou como emprestado, precisa informar o soldador
-        if ("emprestado".equalsIgnoreCase(condicao) && soldador.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Para marcar como 'Emprestado' informe o soldador (nome ou sinete).");
-            return;
-        }
-        
-        if ("".equals(soldador)) {
-            soldador = null; // facilita lógica no DAO
-        }
-
-        Equipamentos eq = new Equipamentos(codigo, modelo, marca, condicao, soldador);
-        EquipamentosDAO dao = new EquipamentosDAO();
-
-        boolean sucesso = dao.inserirEquipamento(eq);
-
-        if (sucesso) {
-            JOptionPane.showMessageDialog(this, "Equipamento cadastrado com sucesso!");
-            tp.carregarTabela();
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar equipamento.");
-        }
-
     }//GEN-LAST:event_botaoCadastrarMouseClicked
 
-    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCancelarMouseClicked
         this.dispose();
-    }//GEN-LAST:event_jLabel13MouseClicked
+    }//GEN-LAST:event_botaoCancelarMouseClicked
 
     private void txtSoldadorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoldadorKeyReleased
         String soldador = txtSoldador.getText().trim();
@@ -231,9 +196,9 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoCadastrar;
+    private javax.swing.JLabel botaoCancelar;
     private javax.swing.JComboBox<String> combo;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

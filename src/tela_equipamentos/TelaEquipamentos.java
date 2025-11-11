@@ -30,9 +30,6 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
     public TelaEquipamentos() {
         initComponents();
-        dao = new EquipamentosDAO();
-        carregarTabela();
-        instancia = this;
 
         // ============= Personalização =============
         // Centralizar dados:
@@ -57,80 +54,16 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         TabelaAcaoEvento evento = new TabelaAcaoEvento() {
             @Override
             public void editando(int linha) {
-                try {
-                    // Pega os valores da linha clicada (ajuste os índices conforme sua tabela)
-                    int id = Integer.parseInt(tabela.getValueAt(linha, 0).toString());
-                    String codigo = tabela.getValueAt(linha, 1).toString();
-                    String modelo = tabela.getValueAt(linha, 2).toString();
-                    String marca = tabela.getValueAt(linha, 3).toString();
-                    String soldador = tabela.getValueAt(linha, 4) != null ? tabela.getValueAt(linha, 4).toString() : "";
-                    String condicao = tabela.getValueAt(linha, 5).toString();
-
-                    Equipamentos eq = new Equipamentos(id, codigo, modelo, marca, soldador, condicao);
-
-                    AtualizarEquipamentos atualizar = new AtualizarEquipamentos(eq);
-                    atualizar.setVisible(true);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Erro ao abrir tela de atualização: " + e.getMessage());
-                }
+                
             }
 
             @Override
             public void excluindo(int linha) {
-                try {
-                    Object valor = tabela.getValueAt(linha, 0);
-                    // Verifica se o valor não é nulo
-                    if (valor == null) {
-                        JOptionPane.showMessageDialog(null, "Código inválido para exclusão.");
-                        return;
-                    }
-                    // Converte de forma segura
-                    int codigo = Integer.parseInt(valor.toString());
-                    int opcao = JOptionPane.showConfirmDialog(
-                            null,
-                            "Deseja realmente excluir o equipamento ?",
-                            "Confirmação",
-                            JOptionPane.YES_NO_OPTION
-                    );
-                    if (opcao == JOptionPane.YES_OPTION) {
-                        boolean sucesso = dao.excluirEquipamento(codigo);
-                        if (sucesso) {
-                            carregarTabela(); // atualiza a JTable
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Falha ao excluir equipamento!");
-                        }
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro: código inválido (" + ex.getMessage() + ")");
-                }
+                
             }
         };
         tabela.getColumnModel().getColumn(6).setCellRenderer(new TabelaAcaoRender());
         tabela.getColumnModel().getColumn(6).setCellEditor(new TabelaAcaoEditor(evento));
-    }
-
-    public void carregarTabela() {
-
-        List<Equipamentos> lista = dao.listarTodos();
-
-        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
-        modelo.setRowCount(0); // limpa a tabela antes de preencher
-
-        for (Equipamentos eq : lista) {
-            modelo.addRow(new Object[]{
-                eq.getId(),
-                eq.getCodigo(),
-                eq.getModelo(),
-                eq.getMarca(),
-                eq.getSoldador(),
-                eq.getCondicao()
-            });
-        }
-        tabela.repaint();
-    }
-
-    public static TelaEquipamentos getInstancia() {
-        return instancia;
     }
 
     public void filtrarEquipamentos(String texto) {
@@ -154,7 +87,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
+        botaoCadastro = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
@@ -165,17 +98,17 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1810, 1014));
         setLayout(null);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("+ NOVO CADASTRO");
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+        botaoCadastro.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        botaoCadastro.setForeground(new java.awt.Color(255, 255, 255));
+        botaoCadastro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoCadastro.setText("+ NOVO CADASTRO");
+        botaoCadastro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
+                botaoCadastroMouseClicked(evt);
             }
         });
-        add(jLabel3);
-        jLabel3.setBounds(1530, 20, 260, 90);
+        add(botaoCadastro);
+        botaoCadastro.setBounds(1530, 20, 260, 90);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         add(jLabel2);
@@ -214,14 +147,14 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         jScrollPane1.setBounds(20, 130, 1770, 870);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+    private void botaoCadastroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCadastroMouseClicked
         CadastroEquipamentos cadastro = new CadastroEquipamentos(this);
         cadastro.setVisible(true);
-    }//GEN-LAST:event_jLabel3MouseClicked
+    }//GEN-LAST:event_botaoCadastroMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel botaoCadastro;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
