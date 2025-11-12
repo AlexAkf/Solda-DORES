@@ -1,7 +1,6 @@
 package util;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  *
@@ -17,17 +16,11 @@ public class PainelAcoes extends javax.swing.JPanel {
     }
 
     public void iniciaEvento(TabelaAcaoEvento evento, int linha) {
-        botaoEditar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                evento.editando(linha);
-            }
+        botaoEditar.addActionListener((ActionEvent ae) -> {
+            evento.editando(linha);
         });
-        botaoExcluir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                evento.excluindo(linha);
-            }
+        botaoExcluir.addActionListener((ActionEvent ae) -> {
+            evento.excluindo(linha);
         });
     }
     

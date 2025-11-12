@@ -216,10 +216,8 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AtualizarFuncionarios().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new AtualizarFuncionarios().setVisible(true);
         });
     }
 

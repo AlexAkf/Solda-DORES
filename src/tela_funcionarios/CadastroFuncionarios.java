@@ -203,10 +203,8 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CadastroFuncionarios().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new CadastroFuncionarios().setVisible(true);
         });
     }
 

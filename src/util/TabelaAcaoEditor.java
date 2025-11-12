@@ -11,7 +11,7 @@ import javax.swing.DefaultCellEditor;
  */
 public class TabelaAcaoEditor extends DefaultCellEditor{
     
-    private TabelaAcaoEvento evento;
+    private final TabelaAcaoEvento evento;
         
     public TabelaAcaoEditor(TabelaAcaoEvento evento){
         

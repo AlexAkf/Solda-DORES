@@ -11,7 +11,7 @@ import models.Equipamentos;
 // correspondente e realizar as operações CRUD.
 public class EquipamentosDAO {
 
-    private Connection conn;
+    private final Connection conn;
 
     // O construtor sempre será utilizado ao criar uma nova instancia dessa classe.
     // EquipamentosDAO dao = new EquipamentosDAO();
@@ -22,18 +22,16 @@ public class EquipamentosDAO {
     // Antes dos métodos CRUD, faço um método para facilitar a buscar do soldador.
     private int buscarIdSoldadorPorNome(String nomeSoldador) throws SQLException {
         String sql = "SELECT id FROM usuarios WHERE nome = ? AND cargo = 'soldador'";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, nomeSoldador);
-
-        ResultSet rs = stmt.executeQuery();
-
-        int idSoldador = 0;
-        if (rs.next()) {
-            idSoldador = rs.getInt("id");
+        int idSoldador;
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nomeSoldador);
+            try (ResultSet rs = stmt.executeQuery()) {
+                idSoldador = 0;
+                if (rs.next()) {
+                    idSoldador = rs.getInt("id");
+                }
+            }
         }
-
-        rs.close();
-        stmt.close();
         return idSoldador;
     }
 
@@ -64,29 +62,29 @@ public class EquipamentosDAO {
                 }
             }
 
-            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela 'equipamentos'.
-            PreparedStatement stmtEquip = conn.prepareStatement(sqlEquip, Statement.RETURN_GENERATED_KEYS);
-            stmtEquip.setString(1, eq.getCodigo());
-            stmtEquip.setString(2, eq.getModelo());
-            stmtEquip.setString(3, eq.getMarca());
-            stmtEquip.setString(4, eq.getCondicao());
-            stmtEquip.execute();
-
-            // Recupera o ID do equipamento gerado para inserir no fk_equipamento.
-            ResultSet rs = stmtEquip.getGeneratedKeys();
-            int idEquipamento = 0;
-            if (rs.next()) {
-                idEquipamento = rs.getInt(1);
+            int idEquipamento;
+            try ( // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela 'equipamentos'.
+                    PreparedStatement stmtEquip = conn.prepareStatement(sqlEquip, Statement.RETURN_GENERATED_KEYS)) {
+                stmtEquip.setString(1, eq.getCodigo());
+                stmtEquip.setString(2, eq.getModelo());
+                stmtEquip.setString(3, eq.getMarca());
+                stmtEquip.setString(4, eq.getCondicao());
+                stmtEquip.execute();
+                try ( // Recupera o ID do equipamento gerado para inserir no fk_equipamento.
+                        ResultSet rs = stmtEquip.getGeneratedKeys()) {
+                    idEquipamento = 0;
+                    if (rs.next()) {
+                        idEquipamento = rs.getInt(1);
+                    }
+                }
             }
-            rs.close();
-            stmtEquip.close();
 
-            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela 'emprestimos'.
-            PreparedStatement stmtEmprest = conn.prepareStatement(sqlEmprest);
-            stmtEmprest.setInt(1, idEquipamento);
-            stmtEmprest.setInt(2, idSoldador);
-            stmtEmprest.executeUpdate();
-            stmtEmprest.close();
+            try ( // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela 'emprestimos'.
+                    PreparedStatement stmtEmprest = conn.prepareStatement(sqlEmprest)) {
+                stmtEmprest.setInt(1, idEquipamento);
+                stmtEmprest.setInt(2, idSoldador);
+                stmtEmprest.executeUpdate();
+            }
 
             // Confirmar a inserção dos comandos no banco.
             conn.commit();
@@ -137,16 +135,16 @@ public class EquipamentosDAO {
 
             // Consulta a condição atual do equipamento
             String sqlCheckCond = "SELECT condicao FROM equipamentos WHERE id = ?";
-            PreparedStatement stmtCheck = conn.prepareStatement(sqlCheckCond);
-            stmtCheck.setInt(1, eq.getId());
-            ResultSet rsCheck = stmtCheck.executeQuery();
-
-            String condicaoAtual = null;
-            if (rsCheck.next()) {
-                condicaoAtual = rsCheck.getString("condicao");
+            String condicaoAtual;
+            try (PreparedStatement stmtCheck = conn.prepareStatement(sqlCheckCond)) {
+                stmtCheck.setInt(1, eq.getId());
+                try (ResultSet rsCheck = stmtCheck.executeQuery()) {
+                    condicaoAtual = null;
+                    if (rsCheck.next()) {
+                        condicaoAtual = rsCheck.getString("condicao");
+                    }
+                }
             }
-            rsCheck.close();
-            stmtCheck.close();
 
             // 🔹 Bloqueia troca direta de soldador sem devolver antes
             if ("emprestado".equalsIgnoreCase(condicaoAtual)
@@ -161,23 +159,23 @@ public class EquipamentosDAO {
                 return;
             }
 
-            // Atualiza os dados do equipamento existente.
-            PreparedStatement stmtEquip = conn.prepareStatement(sqlEquip);
-            stmtEquip.setString(1, eq.getCodigo());
-            stmtEquip.setString(2, eq.getModelo());
-            stmtEquip.setString(3, eq.getMarca());
-            stmtEquip.setString(4, eq.getCondicao());
-            stmtEquip.setInt(5, eq.getId()); // usa o ID existente.
-            stmtEquip.executeUpdate();
-            stmtEquip.close();
+            try ( // Atualiza os dados do equipamento existente.
+                    PreparedStatement stmtEquip = conn.prepareStatement(sqlEquip)) {
+                stmtEquip.setString(1, eq.getCodigo());
+                stmtEquip.setString(2, eq.getModelo());
+                stmtEquip.setString(3, eq.getMarca());
+                stmtEquip.setString(4, eq.getCondicao());
+                stmtEquip.setInt(5, eq.getId()); // usa o ID existente.
+                stmtEquip.executeUpdate();
+            }
 
             // Se o equipamento está sendo entregue a um soldador, atualiza o empréstimo
             if ("emprestado".equalsIgnoreCase(eq.getCondicao())) {
-                PreparedStatement stmtEmprest = conn.prepareStatement(sqlEmprest);
-                stmtEmprest.setInt(1, idSoldador);
-                stmtEmprest.setInt(2, eq.getId());
-                stmtEmprest.executeUpdate();
-                stmtEmprest.close();
+                try (PreparedStatement stmtEmprest = conn.prepareStatement(sqlEmprest)) {
+                    stmtEmprest.setInt(1, idSoldador);
+                    stmtEmprest.setInt(2, eq.getId());
+                    stmtEmprest.executeUpdate();
+                }
             }
 
             // Confirmar a inserção dos comandos no banco.

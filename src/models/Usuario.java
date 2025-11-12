@@ -106,11 +106,8 @@ public class Usuario{
 
 
     // métodos auxiliares
-    public boolean certificadoValido(){
-      if(ultimaSolda.plusDays(30).isBefore(LocalDate.now())){   // se ele passar um mês sem soldar o certificado perde a validade
-          return false;
-      }
-      return true;
+    public boolean certificadoValido(){  
+      return !ultimaSolda.plusDays(30).isBefore(LocalDate.now());   // se ele passar um mês sem soldar o certificado perde a validade
     }
     
     @Override

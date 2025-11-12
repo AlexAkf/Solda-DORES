@@ -27,7 +27,6 @@ public class Fonte {
             ge.registerFont(fonte);
             return fonte;
         } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
             return new Font("SansSerif", Font.PLAIN, 12);
         }
     }

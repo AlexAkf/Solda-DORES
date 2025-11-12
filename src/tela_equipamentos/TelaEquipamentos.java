@@ -23,6 +23,12 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
     public TelaEquipamentos() {
         initComponents();
         carregarTabela();
+        
+        // Ocultando a coluna de ID
+        tabela.getColumnModel().getColumn(0).setMinWidth(0);
+        tabela.getColumnModel().getColumn(0).setMaxWidth(0);
+        tabela.getColumnModel().getColumn(0).setWidth(0);
+        tabela.getColumnModel().getColumn(0).setPreferredWidth(0);
 
         // ============= PERSONALIZAÇÃO =============
         // Centralizar dados:

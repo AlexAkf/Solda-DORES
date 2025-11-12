@@ -1,17 +1,122 @@
 package tela_funcionarios;
 
+import controllers.UsuarioDAO;
+import java.awt.Color;
+import java.awt.Font;
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import models.Usuario;
+import util.Fonte;
+import util.TabelaAcaoEditor;
+import util.TabelaAcaoEvento;
+import util.TabelaAcaoRender;
+
+
+
 /**
  *
  * @author Alex
  */
 
-public class TelaFuncionarios extends javax.swing.JPanel {
+public final class TelaFuncionarios extends javax.swing.JPanel {
 
     /**
      * Creates new form TelaFuncionarios
+     * @throws java.sql.SQLException
      */
-    public TelaFuncionarios() {
+    public TelaFuncionarios() throws SQLException {
         initComponents();
+        carregarTabela();
+        
+        // ============= PERSONALIZAÇÃO =============
+        // Ocultando a coluna de ID
+        tabela.getColumnModel().getColumn(0).setMinWidth(0);
+        tabela.getColumnModel().getColumn(0).setMaxWidth(0);
+        tabela.getColumnModel().getColumn(0).setWidth(0);
+        tabela.getColumnModel().getColumn(0).setPreferredWidth(0);
+        
+        // Centraliza os dados
+        DefaultTableCellRenderer centralizar = new DefaultTableCellRenderer();
+        centralizar.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < tabela.getColumnCount(); i++) {
+            tabela.getColumnModel().getColumn(i).setCellRenderer(centralizar);
+        }
+
+        // Cabeçalho
+        tabela.getTableHeader().setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 20f));
+        tabela.getTableHeader().setBackground(new Color(30, 58, 138));
+        tabela.getTableHeader().setForeground(Color.WHITE);
+        tabela.getTableHeader().setReorderingAllowed(false);
+        tabela.getTableHeader().setResizingAllowed(false);
+
+        // Altura, largura e cor das tabelas -> GERAL
+        tabela.setBackground(Color.WHITE);
+        tabela.setRowHeight(60);
+        
+        // Medidas da coluna de CPF
+        tabela.getColumnModel().getColumn(2).setMinWidth(125);
+        tabela.getColumnModel().getColumn(2).setMaxWidth(125);
+        tabela.getColumnModel().getColumn(2).setWidth(125);
+        tabela.getColumnModel().getColumn(2).setPreferredWidth(125);
+        
+        // Medidas da coluna de email
+        tabela.getColumnModel().getColumn(3).setMinWidth(300);
+        tabela.getColumnModel().getColumn(3).setMaxWidth(300);
+        tabela.getColumnModel().getColumn(3).setWidth(300);
+        tabela.getColumnModel().getColumn(3).setPreferredWidth(300);
+        
+        // Medidas da coluna de sinete
+        tabela.getColumnModel().getColumn(6).setMinWidth(125);
+        tabela.getColumnModel().getColumn(6).setMaxWidth(125);
+        tabela.getColumnModel().getColumn(6).setWidth(125);
+        tabela.getColumnModel().getColumn(6).setPreferredWidth(125);
+        
+        // Medidas da coluna de certificado
+        tabela.getColumnModel().getColumn(8).setMinWidth(125);
+        tabela.getColumnModel().getColumn(8).setMaxWidth(125);
+        tabela.getColumnModel().getColumn(8).setWidth(125);
+        tabela.getColumnModel().getColumn(8).setPreferredWidth(125);
+        
+        // ========== BOTÕES DE AÇÃO DA TABELA ==========
+        TabelaAcaoEvento evento = new TabelaAcaoEvento() {
+            @Override
+            public void editando(int linha) {
+                
+            }
+
+            @Override
+            public void excluindo(int linha) {
+
+            }
+        };
+        tabela.getColumnModel().getColumn(9).setCellRenderer(new TabelaAcaoRender());
+        tabela.getColumnModel().getColumn(9).setCellEditor(new TabelaAcaoEditor(evento));
+    }
+    
+    
+    public void carregarTabela() throws SQLException {
+        UsuarioDAO dao = new UsuarioDAO();
+        List<Usuario> lista = dao.listar();
+
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+        modelo.setRowCount(0); // limpa a tabela
+
+        for (Usuario usuario : lista) {
+            modelo.addRow(new Object[]{
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getCpf(),
+                usuario.getEmail(),
+                usuario.getLogin(),
+                usuario.getCargo(),
+                usuario.getSinete(),
+                usuario.getSupervisor(),
+                usuario.getValidadeCertificado(),
+            });
+        }
     }
 
     /**
@@ -26,7 +131,7 @@ public class TelaFuncionarios extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabela = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
@@ -47,19 +152,21 @@ public class TelaFuncionarios extends javax.swing.JPanel {
 
         jScrollPane1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabela.setFont(Fonte.inserirFonte().deriveFont(Font.BOLD, 15f)
+        );
+        tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nome", "CPF", "E-mail", "Login", "Cargo", "Sinete", "Última Solda", "Supervisor"
+                "ID", "Nome", "CPF", "E-mail", "Login", "Cargo", "Sinete", "Supervisor", "Certificado", "Ações"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -70,7 +177,7 @@ public class TelaFuncionarios extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabela);
 
         add(jScrollPane1);
         jScrollPane1.setBounds(20, 130, 1770, 870);
@@ -81,6 +188,6 @@ public class TelaFuncionarios extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,7 +1,6 @@
 package controllers;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import models.Usuario;
@@ -20,12 +19,13 @@ import javax.swing.JOptionPane;
 public class UsuarioDAO {
 
     // Abertura de conexão generalizada, pra não precisar abrir e fechar multiplas conexões e sobrecarregar o banco
-    private Connection conn;
+    private final Connection conn;
 
     /**
      * Basicamente quando o DAO for instanciado ele vai fazer uma conexão pelo conexao.java
      * e esse @throws SQLException vai fazer com que, 
      * quando haja um erro, ela irá para a tela de quem chamou, seja na de login, cadastro ou whatever
+     * @throws java.sql.SQLException
      */
     public UsuarioDAO() throws SQLException {
         conn = Conexao.getConexao();
@@ -57,7 +57,7 @@ public class UsuarioDAO {
     }
 
     
-    // ================================ CREATE ================================
+    // ================================ AUTENTICAR LOGIN ================================
     public void inserir(Usuario usuario) throws SQLException {
         /**
          * método que insere os usuários no banco de dados
@@ -120,71 +120,54 @@ public class UsuarioDAO {
     }
     
     
-    
-    
-    
-    
-    
-    // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // ================================
-    // READ (LISTAR TODOS)
-    // ================================
-    public List<Usuario> listarTodos() throws SQLException {
+    // ================================ READ ================================
+    public List<Usuario> listar() throws SQLException{
+        //método que lista todos os usuários do banco de dados
         List<Usuario> lista = new ArrayList<>();
 
         String sql = """
-            SELECT u.*, 
-                   e.id AS empresa_id, e.nome AS empresa_nome,
-                   s.id AS supervisor_id, s.nome AS supervisor_nome
-            FROM usuarios u
-            LEFT JOIN empresas e ON u.fk_empresa = e.id
-            LEFT JOIN usuarios s ON u.id_supervisor = s.id
+            SELECT 
+                usuarios.*, 
+                empresas.id AS empresa_id, 
+                empresas.nome AS empresa_nome,
+                usuarios_supervisor.id AS supervisor_id, 
+                usuarios_supervisor.nome AS supervisor_nome
+            FROM usuarios
+            LEFT JOIN empresas ON usuarios.fk_empresa = empresas.id
+            LEFT JOIN usuarios AS usuarios_supervisor ON usuarios.id_supervisor = usuarios_supervisor.id
         """;
 
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try(Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)){
+            while (rs.next()){
+                Usuario usuario = new Usuario();
 
-            while (rs.next()) {
-                Usuario u = new Usuario();
-
-                u.setId(rs.getInt("id"));
-                u.setNome(rs.getString("nome"));
-                u.setCpf(rs.getString("cpf"));
-                u.setEmail(rs.getString("email"));
-                u.setLogin(rs.getString("login"));
-                u.setSenha(rs.getString("senha"));
-                u.setSenhaPadrao(rs.getBoolean("senha_padrao"));
-                u.setCargo(rs.getString("cargo"));
-                u.setCondicao(rs.getBoolean("condicao"));
-                u.setPerfil(rs.getString("perfil"));
-                u.setSinete(rs.getString("sinete"));
+                usuario.setId(rs.getInt("id"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setCpf(rs.getString("cpf"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setLogin(rs.getString("login"));
+                usuario.setSenha(rs.getString("senha"));
+                usuario.setSenhaPadrao(rs.getBoolean("senha_padrao"));
+                usuario.setCargo(rs.getString("cargo"));
+                usuario.setCondicao(rs.getBoolean("condicao"));
+                usuario.setPerfil(rs.getString("perfil"));
+                usuario.setSinete(rs.getString("sinete"));
 
                 Date validade = rs.getDate("validade_certificado");
                 if (validade != null)
-                    u.setValidadeCertificado(validade.toLocalDate());
+                    usuario.setValidadeCertificado(validade.toLocalDate());
 
                 Date ultima = rs.getDate("ultima_solda");
                 if (ultima != null)
-                    u.setUltimaSolda(ultima.toLocalDate());
+                    usuario.setUltimaSolda(ultima.toLocalDate());
 
                 // Empresa (objeto interno)
                 if (rs.getObject("empresa_id") != null) {
                     Empresa emp = new Empresa();
                     emp.setId(rs.getInt("empresa_id"));
                     emp.setNome(rs.getString("empresa_nome"));
-                    u.setEmpresa(emp);
+                    usuario.setEmpresa(emp);
                 }
 
                 // Supervisor (objeto interno)
@@ -192,10 +175,10 @@ public class UsuarioDAO {
                     Usuario supervisor = new Usuario();
                     supervisor.setId(rs.getInt("supervisor_id"));
                     supervisor.setNome(rs.getString("supervisor_nome"));
-                    u.setSupervisor(supervisor);
+                    usuario.setSupervisor(supervisor);
                 }
 
-                lista.add(u);
+                lista.add(usuario);
             }
 
         } catch (SQLException ex) {
@@ -205,6 +188,20 @@ public class UsuarioDAO {
 
         return lista;
     }
+    
+    
+    
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
 
     // ================================
     // UPDATE (ATUALIZAR USUÁRIO)
@@ -272,61 +269,6 @@ public class UsuarioDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao deletar usuário.\n" + ex.getMessage());
             throw ex;
-        }
-    }
-
-    // ================================
-    // BUSCAR POR LOGIN
-    // ================================
-    public Usuario buscarPorLogin(String login) throws SQLException {
-        String sql = "SELECT * FROM usuarios WHERE login=?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, login);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Usuario u = new Usuario();
-                    u.setId(rs.getInt("id"));
-                    u.setNome(rs.getString("nome"));
-                    u.setSenha(rs.getString("senha"));
-                    u.setPerfil(rs.getString("perfil"));
-                    u.setCargo(rs.getString("cargo"));
-                    u.setCondicao(rs.getBoolean("condicao"));
-                    return u;
-                }
-            }
-        }
-        return null;
-    }
-
-    // ================================
-    // AUTENTICAÇÃO (LOGIN)
-    // ================================
-    public Usuario autenticar(String login, String senha) throws SQLException {
-        String sql = "SELECT * FROM usuarios WHERE login=?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, login);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    if (!rs.getBoolean("condicao"))
-                        throw new SQLException("Usuário inativo. Contate o administrador.");
-
-                    if (!rs.getString("senha").equals(senha))
-                        throw new SQLException("Senha incorreta.");
-
-                    Usuario u = new Usuario();
-                    u.setId(rs.getInt("id"));
-                    u.setNome(rs.getString("nome"));
-                    u.setPerfil(rs.getString("perfil"));
-                    u.setCargo(rs.getString("cargo"));
-                    u.setCondicao(true);
-                    return u;
-                } else {
-                    throw new SQLException("Usuário não encontrado.");
-                }
-            }
         }
     }
 }

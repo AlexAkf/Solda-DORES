@@ -4,7 +4,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import tela_equipamentos.TelaEquipamentos;
 
 /**
  *
@@ -15,7 +14,7 @@ public class BarraPesquisar extends javax.swing.JFrame {
     /**
      * Creates new form BarraPesquisar
      */
-    private TelaPrincipal tp;
+    private final TelaPrincipal tp;
 
     public BarraPesquisar(TelaPrincipal tp) {
         initComponents();
