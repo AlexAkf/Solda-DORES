@@ -9,7 +9,7 @@ import models.Equipamentos;
  */
 public class AtualizarEquipamentos extends javax.swing.JFrame {
 
-    private final TelaEquipamentos telaEquipamentos;
+    private TelaEquipamentos telaEquipamentos;
     // Passando a referência da tela.
     public AtualizarEquipamentos(TelaEquipamentos tela) {
         initComponents();

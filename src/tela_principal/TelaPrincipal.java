@@ -305,8 +305,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         cl.show(painelRecebedor, "Relatórios");    }//GEN-LAST:event_botaoRelatoriosMouseClicked
 
     private void botaoPesquisarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPesquisarMouseClicked
-        BarraPesquisar barra = new BarraPesquisar(this);
-        barra.setVisible(true);
+        new BarraPesquisar(this).setVisible(true);
     }//GEN-LAST:event_botaoPesquisarMouseClicked
 
     /**

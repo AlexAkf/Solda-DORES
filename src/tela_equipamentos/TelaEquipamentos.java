@@ -4,6 +4,7 @@ import controllers.EquipamentosDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -23,12 +24,6 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
     public TelaEquipamentos() {
         initComponents();
         carregarTabela();
-        
-        // Ocultando a coluna de ID
-        tabela.getColumnModel().getColumn(0).setMinWidth(0);
-        tabela.getColumnModel().getColumn(0).setMaxWidth(0);
-        tabela.getColumnModel().getColumn(0).setWidth(0);
-        tabela.getColumnModel().getColumn(0).setPreferredWidth(0);
 
         // ============= PERSONALIZAÇÃO =============
         // Centralizar dados:
@@ -78,7 +73,17 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
             @Override
             public void excluindo(int linha) {
+                int idEquipamento = (int) tabela.getValueAt(linha, 0);
 
+                int opcao = JOptionPane.showConfirmDialog(null,
+                        "Deseja realmente excluir o equipamento ID " + idEquipamento + "?",
+                        "Confirmação", JOptionPane.YES_NO_OPTION);
+
+                if (opcao == JOptionPane.YES_OPTION) {
+                    EquipamentosDAO dao = new EquipamentosDAO();
+                    dao.excluirEquipamento(idEquipamento);
+                    carregarTabela(); // atualiza a tabela após exclusão
+                }
             }
         };
         tabela.getColumnModel().getColumn(6).setCellRenderer(new TabelaAcaoRender());

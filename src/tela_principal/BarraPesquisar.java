@@ -1,9 +1,15 @@
 package tela_principal;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -11,10 +17,9 @@ import java.awt.event.WindowEvent;
  */
 public class BarraPesquisar extends javax.swing.JFrame {
 
-    /**
-     * Creates new form BarraPesquisar
-     */
-    private final TelaPrincipal tp;
+    // Referência à tela principal
+    private TelaPrincipal tp;
+    private JTable tabela; // tabela encontrada automaticamente
 
     public BarraPesquisar(TelaPrincipal tp) {
         initComponents();
@@ -22,30 +27,66 @@ public class BarraPesquisar extends javax.swing.JFrame {
         setLocation(100, 14);
         setBackground(new java.awt.Color(0, 0, 0, 0));
 
+        // 🔍 Procura automaticamente uma JTable dentro da tela principal
+        tabela = encontrarTabela(tp.getContentPane());
+
+        // Atualiza a tabela conforme o usuário digita
         campo.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 String texto = campo.getText().trim();
-
+                if (tabela != null) {
+                    aplicarFiltroTabela(tabela, texto);
+                }
             }
         });
 
-        // Eventos da janela
+        // Fecha a janela ao perder o foco
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-
-            }
-        });
-
-        // 🔹 Evento de foco no campo — fecha e limpa se clicar fora
-        campo.addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusLost(java.awt.event.FocusEvent evt) {
-
                 dispose();
             }
         });
+
+        // 🔹 Fecha ao clicar fora do campo
+        campo.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                dispose();
+            }
+        });
+    }
+
+    /**
+     * Procura uma JTable dentro do container (recursivamente)
+     */
+    private JTable encontrarTabela(Container container) {
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof JTable tabela) {
+                return tabela;
+            } else if (comp instanceof Container filho) {
+                JTable t = encontrarTabela(filho);
+                if (t != null) {
+                    return t;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Aplica o filtro digitado à tabela
+     */
+    private void aplicarFiltroTabela(JTable tabela, String texto) {
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabela.getModel());
+        tabela.setRowSorter(sorter);
+
+        if (texto.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto)); // busca ignorando maiúsculas/minúsculas
+        }
     }
 
     // Evento de digitação (pesquisa em tempo real)

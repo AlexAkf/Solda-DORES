@@ -9,10 +9,12 @@ import models.Equipamentos;
  */
 public class CadastroEquipamentos extends javax.swing.JFrame {
 
-    private TelaEquipamentos tp;
+    private TelaEquipamentos telaEquipamentos;
 
-    public CadastroEquipamentos(TelaEquipamentos tp) {
+    // Passando a referência da tela.
+    public CadastroEquipamentos(TelaEquipamentos tela) {
         initComponents();
+        this.telaEquipamentos = tela;
     }
 
     /**
@@ -181,17 +183,16 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         eq.setSoldador(soldador);
         eq.setCondicao(condicao);
         
-        // Utilizando o método 'inserirEquipamento' da classe DAO.
+        // Utilizando o método 'atualizarEquipamento' da classe DAO.
         EquipamentosDAO dao = new EquipamentosDAO();
         dao.inserirEquipamento(eq);
-        
-        // Limpando os campos e resetando a combo box.
-        txtCodigo.setText("");
-        txtModelo.setText("");
-        txtMarca.setText("");
-        txtSoldador.setText("");
-        combo.setSelectedItem("Estoque");
-        combo.setEnabled(true);
+
+        // Atualiza a tabela da tela principal
+        if (telaEquipamentos != null) {
+            telaEquipamentos.carregarTabela();
+        }
+
+        this.dispose(); // fecha a tela
     }//GEN-LAST:event_botaoCadastrarMouseClicked
 
     private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCancelarMouseClicked
