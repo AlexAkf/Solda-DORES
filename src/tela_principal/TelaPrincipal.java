@@ -9,6 +9,9 @@ import tela_dashboard.TelaDashboard;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 import util.Fonte;
 
@@ -20,8 +23,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     /**
      * Creates new form TelaDashboard
+     * @throws java.sql.SQLException
      */
-    public TelaPrincipal() {
+    public TelaPrincipal() throws SQLException {
         initComponents();
         this.setExtendedState(TelaPrincipal.MAXIMIZED_BOTH);
         painelRecebedor.add(new TelaDashboard(), "Dashboard");
@@ -341,7 +345,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new TelaPrincipal().setVisible(true);
+            try {
+                new TelaPrincipal().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
 
