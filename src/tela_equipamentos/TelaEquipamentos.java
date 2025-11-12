@@ -20,16 +20,11 @@ import util.TabelaAcaoRender;
  */
 public final class TelaEquipamentos extends javax.swing.JPanel {
 
-    private static TelaEquipamentos instancia;
-    private static EquipamentosDAO dao;
-
     public TelaEquipamentos() {
         initComponents();
-        dao = new EquipamentosDAO();
         carregarTabela();
-        instancia = this;
 
-        // ============= Personalização =============
+        // ============= PERSONALIZAÇÃO =============
         // Centralizar dados:
         DefaultTableCellRenderer centralizar = new DefaultTableCellRenderer();
         centralizar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -49,10 +44,29 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         tabela.setRowHeight(60);
         tabela.getColumnModel().getColumn(0).setMaxWidth(50);
 
+        // ========== BOTÕES DE AÇÃO DA TABELA ==========
         TabelaAcaoEvento evento = new TabelaAcaoEvento() {
             @Override
             public void editando(int linha) {
-                AtualizarEquipamentos atualizar = new AtualizarEquipamentos();
+                // Pega os dados da linha selecionada
+                int id = (int) tabela.getValueAt(linha, 0);
+                String codigo = (String) tabela.getValueAt(linha, 1);
+                String modelo = (String) tabela.getValueAt(linha, 2);
+                String marca = (String) tabela.getValueAt(linha, 3);
+                String soldador = (String) tabela.getValueAt(linha, 4);
+                String condicao = (String) tabela.getValueAt(linha, 5);
+
+                Equipamentos eq = new Equipamentos();
+                eq.setId(id);
+                eq.setCodigo(codigo);
+                eq.setModelo(modelo);
+                eq.setMarca(marca);
+                eq.setSoldador(soldador);
+                eq.setCondicao(condicao.toLowerCase());
+
+                AtualizarEquipamentos atualizar = new AtualizarEquipamentos(TelaEquipamentos.this);
+                atualizar.setIdEquipamentoSelecionado(id);
+                atualizar.preencherCampos(eq);
                 atualizar.setVisible(true);
             }
 
@@ -79,7 +93,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                 eq.getModelo(),
                 eq.getMarca(),
                 eq.getSoldador(),
-                eq.getCondicao()  
+                eq.getCondicao()
             });
         }
     }

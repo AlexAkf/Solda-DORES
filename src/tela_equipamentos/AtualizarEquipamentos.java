@@ -9,10 +9,27 @@ import models.Equipamentos;
  */
 public class AtualizarEquipamentos extends javax.swing.JFrame {
 
-    public AtualizarEquipamentos() {
+    private TelaEquipamentos telaEquipamentos;
+    // Passando a referência da tela.
+    public AtualizarEquipamentos(TelaEquipamentos tela) {
         initComponents();
+        this.telaEquipamentos = tela;
+    }
+
+    public void preencherCampos(Equipamentos eq) {
+        txtCodigo.setText(eq.getCodigo());
+        txtModelo.setText(eq.getModelo());
+        txtMarca.setText(eq.getMarca());
+        txtSoldador.setText(eq.getSoldador().equals("—") ? "" : eq.getSoldador());
+        combo.setSelectedItem(eq.getCondicao().substring(0, 1).toUpperCase() + eq.getCondicao().substring(1));
     }
     
+    private int idEquipamentoSelecionado;
+
+    public void setIdEquipamentoSelecionado(int id) {
+        this.idEquipamentoSelecionado = id;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -170,26 +187,26 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         String marca = txtMarca.getText();
         String soldador = txtSoldador.getText();
         String condicao = combo.getSelectedItem().toString().toLowerCase();
-        
+
         // Enviando o cadastro.
         Equipamentos eq = new Equipamentos();
+        eq.setId(idEquipamentoSelecionado);
         eq.setCodigo(codigo);
         eq.setModelo(modelo);
         eq.setMarca(marca);
         eq.setSoldador(soldador);
         eq.setCondicao(condicao);
-        
+
         // Utilizando o método 'atualizarEquipamento' da classe DAO.
         EquipamentosDAO dao = new EquipamentosDAO();
         dao.atualizarEquipamento(eq);
-        
-        // Limpando os campos e resetando a combo box.
-        txtCodigo.setText("");
-        txtModelo.setText("");
-        txtMarca.setText("");
-        txtSoldador.setText("");
-        combo.setSelectedItem("Estoque");
-        combo.setEnabled(true);
+
+        // Atualiza a tabela da tela principal
+        if (telaEquipamentos != null) {
+            telaEquipamentos.carregarTabela();
+        }
+
+        this.dispose(); // fecha a tela
     }//GEN-LAST:event_botaoAtualizarMouseClicked
 
     private void txtSoldadorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoldadorKeyReleased

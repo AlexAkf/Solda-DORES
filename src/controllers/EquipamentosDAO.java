@@ -168,7 +168,7 @@ public class EquipamentosDAO {
             stmtEquip.setString(3, eq.getMarca());
             stmtEquip.setString(4, eq.getCondicao());
             stmtEquip.setInt(5, eq.getId()); // usa o ID existente.
-            stmtEquip.execute();
+            stmtEquip.executeUpdate();
             stmtEquip.close();
 
             // Se o equipamento está sendo entregue a um soldador, atualiza o empréstimo
