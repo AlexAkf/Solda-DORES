@@ -7,10 +7,9 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 /**
- *
- * @author Hugo
- * 
  * criando um painel em degradê
+ * 
+ * @author Hugo
  */
 
 public class Gradiente extends JPanel {

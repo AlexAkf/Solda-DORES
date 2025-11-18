@@ -9,10 +9,10 @@ import javax.swing.border.EmptyBorder;
  *
  * @author Hugo
  */
-public class BotaoAcoes extends JButton{
-    
+public class BotaoAcoes extends JButton {
+
     private boolean click;
-    
+
     public BotaoAcoes() {
         setContentAreaFilled(false);
         setBorder(new EmptyBorder(3, 3, 3, 3));

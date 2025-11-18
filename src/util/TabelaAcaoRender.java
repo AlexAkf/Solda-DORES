@@ -10,9 +10,10 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author Hugo
  */
 public class TabelaAcaoRender extends DefaultTableCellRenderer {
-    
+
     @Override
-    public Component getTableCellRendererComponent(JTable jtable, Object o, boolean selecionado, boolean bln1, int linha, int coluna) {
+    public Component getTableCellRendererComponent(JTable jtable, Object o, boolean selecionado, boolean bln1,
+            int linha, int coluna) {
         Component com = super.getTableCellRendererComponent(jtable, o, selecionado, bln1, linha, coluna);
         PainelAcoes acoes = new PainelAcoes();
         acoes.setBackground(com.getBackground());

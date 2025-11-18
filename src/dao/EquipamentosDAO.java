@@ -1,14 +1,18 @@
-package controllers;
+package dao;
 
+import controllers.Conexao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import models.Equipamentos;
 
-// @author Hugo
-// Classe DAO (Data Acess Object). Responsável por conectar os dados da tabela
-// correspondente e realizar as operações CRUD.
+/**
+ * Classe DAO (Data Acess Object). Responsável por conectar os dados da tabela
+ * correspondente e realizar as operações CRUD.
+ * 
+ * @author Hugo
+ */
 public class EquipamentosDAO {
 
     private Connection conn;
@@ -37,10 +41,12 @@ public class EquipamentosDAO {
         return idSoldador;
     }
 
-    //========= CREATE, INSERIR EQUIPAMENTO =========
-    // No cadastro do equipamento, o usuário poderá cadastrar com um soldador. 
-    // Caso cadastre com um soldador, o sistema irá atualizar a tabela de empréstimos.
-    // Colocamos o modelo "Equipamentos" e "idSoldador" como parâmetro para receber os dados, no cadastro, que serão inseridos no BD.
+    // ========= CREATE, INSERIR EQUIPAMENTO =========
+    // No cadastro do equipamento, o usuário poderá cadastrar com um soldador.
+    // Caso cadastre com um soldador, o sistema irá atualizar a tabela de
+    // empréstimos.
+    // Colocamos o modelo "Equipamentos" e "idSoldador" como parâmetro para receber
+    // os dados, no cadastro, que serão inseridos no BD.
     public void inserirEquipamento(Equipamentos eq) {
         // Campos que serão preenchidos.
         String sqlEquip = "INSERT INTO equipamentos (codigo, modelo, marca, condicao) VALUES (?, ?, ?, ?)";
@@ -48,7 +54,8 @@ public class EquipamentosDAO {
 
         try {
             // Envio automático desativado.
-            // Desativo, pois o método precisa atualizar duas tabelas ao mesmo tempo com dados relacionados.
+            // Desativo, pois o método precisa atualizar duas tabelas ao mesmo tempo com
+            // dados relacionados.
             conn.setAutoCommit(false);
 
             // Se a condição for 'emprestado', é obrigatório ter um soldador.
@@ -75,7 +82,8 @@ public class EquipamentosDAO {
                 }
             }
 
-            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela 'equipamentos'.
+            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela
+            // 'equipamentos'.
             PreparedStatement stmtEquip = conn.prepareStatement(sqlEquip, Statement.RETURN_GENERATED_KEYS);
             stmtEquip.setString(1, eq.getCodigo());
             stmtEquip.setString(2, eq.getModelo());
@@ -92,7 +100,8 @@ public class EquipamentosDAO {
             rs.close();
             stmtEquip.close();
 
-            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela 'emprestimos'.
+            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela
+            // 'emprestimos'.
             // e tiver um soldador válido.
             if ("emprestado".equalsIgnoreCase(eq.getCondicao())
                     && idSoldador > 0) {
@@ -126,9 +135,10 @@ public class EquipamentosDAO {
         }
     }
 
-    //========= UPDATE, ATUALIZAR EQUIPAMENTO =========
+    // ========= UPDATE, ATUALIZAR EQUIPAMENTO =========
     // Método para atualizar equipamento com as condições do banco.
-    // Se o equipamento estiver com um soldador cadastrado e quer repassar para outro, é necessário devolver ao estoque primeiro.   
+    // Se o equipamento estiver com um soldador cadastrado e quer repassar para
+    // outro, é necessário devolver ao estoque primeiro.
     public void atualizarEquipamento(Equipamentos eq) {
         // Campos que serão preenchidos.
         String sqlEquip = "UPDATE equipamentos SET codigo=?, modelo=?, marca=?, condicao=? WHERE id=?";
@@ -136,7 +146,8 @@ public class EquipamentosDAO {
 
         try {
             // Envio automático desativado.
-            // Desativo, pois o método precisa atualizar duas tabelas ao mesmo tempo com dados relacionados.
+            // Desativo, pois o método precisa atualizar duas tabelas ao mesmo tempo com
+            // dados relacionados.
             conn.setAutoCommit(false);
 
             // Se for 'emprestado', precisa ter soldador
@@ -209,7 +220,8 @@ public class EquipamentosDAO {
                 stmtDev.close();
             }
 
-            // Se o equipamento está em estoque e agora está sendo emprestado, cria novo empréstimo.
+            // Se o equipamento está em estoque e agora está sendo emprestado, cria novo
+            // empréstimo.
             if ("estoque".equalsIgnoreCase(condicaoAtual)
                     && "emprestado".equalsIgnoreCase(eq.getCondicao())
                     && idSoldador != 0) {
@@ -249,28 +261,29 @@ public class EquipamentosDAO {
             }
         }
     }
-    //========= READ, LER DADOS DO EQUIPAMENTO =========
+
+    // ========= READ, LER DADOS DO EQUIPAMENTO =========
     // Aqui temos um método para listar todos os dados do banco em uma tabela.
     // Só os ativos!
     public List<Equipamentos> listarTodos() {
         List<Equipamentos> lista = new ArrayList<>();
 
         String sql = """
-        SELECT 
-            e.id,
-            e.codigo,
-            e.modelo,
-            e.marca,
-            e.condicao,
-            u.nome AS soldador
-        FROM equipamentos e
-        LEFT JOIN emprestimos em 
-            ON e.id = em.fk_equipamento AND em.devolucao IS NULL
-        LEFT JOIN usuarios u 
-            ON em.fk_soldador = u.id
-        WHERE e.situacao = 'ativo'
-        ORDER BY e.id;
-        """;
+                SELECT
+                    e.id,
+                    e.codigo,
+                    e.modelo,
+                    e.marca,
+                    e.condicao,
+                    u.nome AS soldador
+                FROM equipamentos e
+                LEFT JOIN emprestimos em
+                    ON e.id = em.fk_equipamento AND em.devolucao IS NULL
+                LEFT JOIN usuarios u
+                    ON em.fk_soldador = u.id
+                WHERE e.situacao = 'ativo'
+                ORDER BY e.id;
+                """;
 
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
@@ -293,7 +306,8 @@ public class EquipamentosDAO {
     }
 
     // ========= DELETE, EXCLUIR EQUIPAMENTO =========
-    // Não deleta do banco, torna o status do equipamento como 'inativo' e não será exibido na tabela.
+    // Não deleta do banco, torna o status do equipamento como 'inativo' e não será
+    // exibido na tabela.
     public void excluirEquipamento(int idEquipamento) {
         String sqlCheck = "SELECT condicao FROM equipamentos WHERE id = ?";
         String sqlDevolver = "UPDATE equipamentos SET condicao = 'estoque' WHERE id = ?";

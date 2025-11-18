@@ -1,6 +1,6 @@
 package tela_equipamentos;
 
-import controllers.EquipamentosDAO;
+import dao.EquipamentosDAO;
 import models.Equipamentos;
 
 /**
@@ -9,7 +9,8 @@ import models.Equipamentos;
  */
 public class AtualizarEquipamentos extends javax.swing.JFrame {
 
-    private TelaEquipamentos telaEquipamentos;
+    private final TelaEquipamentos telaEquipamentos;
+
     // Passando a referência da tela.
     public AtualizarEquipamentos(TelaEquipamentos tela) {
         initComponents();
@@ -23,7 +24,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         txtSoldador.setText(eq.getSoldador().equals("—") ? "" : eq.getSoldador());
         combo.setSelectedItem(eq.getCondicao().substring(0, 1).toUpperCase() + eq.getCondicao().substring(1));
     }
-    
+
     private int idEquipamentoSelecionado;
 
     public void setIdEquipamentoSelecionado(int id) {
@@ -31,7 +32,8 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -164,23 +166,23 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCancelarMouseClicked
+    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_botaoCancelarMouseClicked
         this.dispose();
-    }//GEN-LAST:event_botaoCancelarMouseClicked
+    }// GEN-LAST:event_botaoCancelarMouseClicked
 
-    private void botaoAtualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoAtualizarMouseClicked
+    private void botaoAtualizarMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_botaoAtualizarMouseClicked
         // Recebendo os valores cadastrados.
         String codigo = txtCodigo.getText();
         String modelo = txtModelo.getText();
@@ -207,9 +209,9 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         }
 
         this.dispose(); // fecha a tela
-    }//GEN-LAST:event_botaoAtualizarMouseClicked
+    }// GEN-LAST:event_botaoAtualizarMouseClicked
 
-    private void txtSoldadorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoldadorKeyReleased
+    private void txtSoldadorKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtSoldadorKeyReleased
         String soldador = txtSoldador.getText().trim();
 
         if (!soldador.isEmpty()) {
@@ -219,7 +221,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
             combo.setSelectedItem("Estoque");
             combo.setEnabled(true);
         }
-    }//GEN-LAST:event_txtSoldadorKeyReleased
+    }// GEN-LAST:event_txtSoldadorKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoAtualizar;
