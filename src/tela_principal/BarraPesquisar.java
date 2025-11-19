@@ -6,8 +6,7 @@ import tela_equipamentos.TelaEquipamentos;
 
 /**
  *
- * @author Hugo
- * @author Alex
+ * @author Hugo, Alex
  */
 public class BarraPesquisar extends javax.swing.JFrame {
 
@@ -61,8 +60,7 @@ public class BarraPesquisar extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         campo = new javax.swing.JTextField();
@@ -92,6 +90,7 @@ public class BarraPesquisar extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoFechar;

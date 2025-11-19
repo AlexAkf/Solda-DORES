@@ -2,6 +2,7 @@ package tela_equipamentos;
 
 import dao.EquipamentosDAO;
 import models.Equipamentos;
+import util.Fonte;
 
 /**
  *
@@ -33,7 +34,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -56,7 +57,6 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(new java.awt.Dimension(770, 480));
         setMinimumSize(new java.awt.Dimension(770, 480));
         setUndecorated(true);
         setResizable(false);
@@ -73,16 +73,16 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jPanel1.add(combo);
         combo.setBounds(300, 300, 450, 30);
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel9.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel9.setText("Estado de Uso");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(20, 300, 160, 32);
+        jLabel9.setBounds(20, 300, 160, 30);
 
         txtModelo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jPanel1.add(txtModelo);
         txtModelo.setBounds(300, 150, 450, 30);
 
-        botaoCancelar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        botaoCancelar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
         botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoCancelar.setText("CANCELAR");
@@ -101,27 +101,27 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jPanel1.add(jLabel3);
         jLabel3.setBounds(40, 370, 260, 83);
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel7.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel7.setText("Soldador");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(20, 250, 140, 32);
+        jLabel7.setBounds(20, 250, 140, 30);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel6.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel6.setText("Modelo");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 150, 90, 32);
+        jLabel6.setBounds(20, 150, 90, 30);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel5.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel5.setText("Marca");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(20, 200, 65, 32);
+        jLabel5.setBounds(20, 200, 60, 30);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel4.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel4.setText("Código");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(20, 100, 150, 32);
+        jLabel4.setBounds(20, 100, 150, 30);
 
-        botaoAtualizar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        botaoAtualizar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoAtualizar.setForeground(new java.awt.Color(255, 255, 255));
         botaoAtualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoAtualizar.setText("CADASTRAR");
@@ -136,11 +136,11 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jPanel1.add(botaoAtualizar);
         botaoAtualizar.setBounds(470, 370, 260, 83);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 40f));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ATUALIZAR EQUIPAMENTO");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 20, 770, 48);
+        jLabel1.setBounds(0, 20, 770, 60);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel2);
@@ -166,13 +166,13 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         pack();
         setLocationRelativeTo(null);

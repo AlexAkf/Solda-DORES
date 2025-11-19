@@ -1,5 +1,7 @@
 package tela_empresas;
 
+import util.Fonte;
+
 /**
  *
  * @author Rafhael Muzzi
@@ -21,9 +23,10 @@ public class AtualizarEmpresas extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -41,11 +44,15 @@ public class AtualizarEmpresas extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(30, 58, 138), 2, true));
+        jPanel1.setLayout(null);
+
+        jLabel1.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 48f));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ATUALIZAR EMPRESA");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 20, 770, 48);
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(0, 20, 770, 16);
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
@@ -55,7 +62,7 @@ public class AtualizarEmpresas extends javax.swing.JFrame {
         jLabel13.setMaximumSize(new java.awt.Dimension(260, 83));
         jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
-        getContentPane().add(jLabel13);
+        jPanel1.add(jLabel13);
         jLabel13.setBounds(40, 320, 260, 83);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
@@ -65,54 +72,57 @@ public class AtualizarEmpresas extends javax.swing.JFrame {
         jLabel7.setMaximumSize(new java.awt.Dimension(260, 83));
         jLabel7.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel7.setPreferredSize(new java.awt.Dimension(260, 83));
-        getContentPane().add(jLabel7);
+        jPanel1.add(jLabel7);
         jLabel7.setBounds(470, 320, 260, 83);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
-        getContentPane().add(jLabel2);
+        jPanel1.add(jLabel2);
         jLabel2.setBounds(470, 320, 260, 83);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
-        getContentPane().add(jLabel3);
+        jPanel1.add(jLabel3);
         jLabel3.setBounds(40, 320, 260, 83);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel5.setText("Empresa");
-        getContentPane().add(jLabel5);
+        jPanel1.add(jLabel5);
         jLabel5.setBounds(20, 100, 90, 32);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel6.setText("CNPJ");
-        getContentPane().add(jLabel6);
+        jPanel1.add(jLabel6);
         jLabel6.setBounds(20, 150, 90, 32);
 
         jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jTextField4.setText("jTextField1");
-        getContentPane().add(jTextField4);
+        jPanel1.add(jTextField4);
         jTextField4.setBounds(300, 100, 450, 30);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel8.setText("Telefone");
-        getContentPane().add(jLabel8);
+        jPanel1.add(jLabel8);
         jLabel8.setBounds(20, 200, 100, 32);
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel9.setText("E-mail");
-        getContentPane().add(jLabel9);
+        jPanel1.add(jLabel9);
         jLabel9.setBounds(20, 250, 100, 32);
 
         jTextField7.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jTextField7.setText("jTextField1");
-        getContentPane().add(jTextField7);
+        jPanel1.add(jTextField7);
         jTextField7.setBounds(300, 250, 450, 30);
 
         jFormattedTextField2.setText("jFormattedTextField1");
-        getContentPane().add(jFormattedTextField2);
+        jPanel1.add(jFormattedTextField2);
         jFormattedTextField2.setBounds(300, 150, 450, 30);
 
         jFormattedTextField3.setText("jFormattedTextField1");
-        getContentPane().add(jFormattedTextField3);
+        jPanel1.add(jFormattedTextField3);
         jFormattedTextField3.setBounds(300, 200, 450, 30);
+
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(0, 0, 770, 430);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -173,6 +183,7 @@ public class AtualizarEmpresas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables

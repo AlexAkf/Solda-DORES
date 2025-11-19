@@ -102,6 +102,17 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
         modelo.setRowCount(0); // limpa a tabela
+
+        for (Equipamentos eq : lista) {
+            modelo.addRow(new Object[]{
+                eq.getId(),
+                eq.getCodigo(),
+                eq.getModelo(),
+                eq.getMarca(),
+                eq.getSoldador(),
+                eq.getCondicao()
+            });
+        }
     }
 
     // Método para utilizar a instância da tela na barra de pesquisa.

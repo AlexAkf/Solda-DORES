@@ -82,8 +82,7 @@ public class EquipamentosDAO {
                 }
             }
 
-            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela
-            // 'equipamentos'.
+            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela 'equipamentos'.
             PreparedStatement stmtEquip = conn.prepareStatement(sqlEquip, Statement.RETURN_GENERATED_KEYS);
             stmtEquip.setString(1, eq.getCodigo());
             stmtEquip.setString(2, eq.getModelo());
@@ -100,8 +99,7 @@ public class EquipamentosDAO {
             rs.close();
             stmtEquip.close();
 
-            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela
-            // 'emprestimos'.
+            // Prepara o comando SQL, atribui os parâmetros e executa a instrução na tabela 'emprestimos'.
             // e tiver um soldador válido.
             if ("emprestado".equalsIgnoreCase(eq.getCondicao())
                     && idSoldador > 0) {
