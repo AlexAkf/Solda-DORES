@@ -6,6 +6,7 @@ import models.Usuarios;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
+import util.Fonte;
 
 /**
  *
@@ -78,7 +79,10 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         txtSupervisor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(770, 730));
+        setMinimumSize(new java.awt.Dimension(770, 730));
         setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(770, 730));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -86,13 +90,13 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(30, 58, 138), 2, true));
         jPanel1.setLayout(null);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 40f));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ATUALIZAR USUÁRIO");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 20, 770, 48);
+        jLabel1.setBounds(0, 20, 770, 50);
 
-        botaoCancelar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        botaoCancelar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
         botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoCancelar.setText("CANCELAR");
@@ -108,7 +112,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         jPanel1.add(botaoCancelar);
         botaoCancelar.setBounds(40, 620, 260, 83);
 
-        botaoAtualizar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        botaoAtualizar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoAtualizar.setForeground(new java.awt.Color(255, 255, 255));
         botaoAtualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoAtualizar.setText("CADASTRAR");
@@ -123,85 +127,93 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         jPanel1.add(botaoAtualizar);
         botaoAtualizar.setBounds(470, 620, 260, 83);
 
+        jLabel2.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel2);
         jLabel2.setBounds(470, 620, 260, 83);
 
+        jLabel3.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel3);
         jLabel3.setBounds(40, 620, 260, 83);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel5.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel5.setText("CPF");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(20, 150, 40, 32);
+        jLabel5.setBounds(20, 150, 70, 30);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel6.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel6.setText("Nome");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 100, 90, 32);
+        jLabel6.setBounds(20, 100, 90, 30);
 
-        txtNome.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        txtNome.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtNome);
         txtNome.setBounds(300, 100, 450, 30);
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel9.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel9.setText("Login");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(20, 250, 100, 32);
+        jLabel9.setBounds(20, 250, 100, 30);
+
+        txtCpf.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtCpf);
         txtCpf.setBounds(300, 150, 450, 30);
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel10.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel10.setText("E-mail");
         jPanel1.add(jLabel10);
-        jLabel10.setBounds(20, 200, 100, 32);
+        jLabel10.setBounds(20, 200, 100, 30);
 
-        txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        txtEmail.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtEmail);
         txtEmail.setBounds(300, 200, 450, 30);
 
-        txtLogin.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        txtLogin.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtLogin);
         txtLogin.setBounds(300, 250, 450, 30);
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel12.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel12.setText("Cargo");
         jPanel1.add(jLabel12);
         jLabel12.setBounds(20, 300, 250, 30);
 
+        txtCargo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         txtCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---", "Gestor", "Supervisor", "Soldador" }));
         jPanel1.add(txtCargo);
         txtCargo.setBounds(300, 300, 450, 30);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel4.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Campos para Soldador");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(0, 380, 770, 40);
 
-        txtSinete.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        txtSinete.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtSinete);
         txtSinete.setBounds(300, 450, 450, 30);
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel15.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel15.setText("Supervisor");
         jPanel1.add(jLabel15);
         jLabel15.setBounds(20, 550, 250, 30);
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel16.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel16.setText("Cod. Sinete");
         jPanel1.add(jLabel16);
         jLabel16.setBounds(20, 450, 250, 30);
 
         txtSolda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("##/##/####"))));
+        txtSolda.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtSolda);
         txtSolda.setBounds(300, 500, 450, 30);
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel17.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel17.setText("Última Solda");
         jPanel1.add(jLabel17);
         jLabel17.setBounds(20, 500, 250, 30);
+
+        txtSupervisor.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtSupervisor);
         txtSupervisor.setBounds(300, 550, 450, 30);
 

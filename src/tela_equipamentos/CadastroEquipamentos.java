@@ -2,6 +2,7 @@ package tela_equipamentos;
 
 import dao.EquipamentosDAO;
 import models.Equipamentos;
+import util.Fonte;
 
 /**
  *
@@ -56,30 +57,30 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(770, 480));
         jPanel1.setLayout(null);
 
-        combo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        combo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estoque", "Emprestado", "Estragado" }));
         jPanel1.add(combo);
         combo.setBounds(300, 300, 450, 30);
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel9.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel9.setText("Soldador");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(20, 250, 150, 32);
+        jLabel9.setBounds(20, 250, 150, 30);
 
-        txtMarca.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtMarca.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtMarca);
         txtMarca.setBounds(300, 200, 450, 30);
 
-        txtModelo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtModelo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         txtModelo.setToolTipText("");
         jPanel1.add(txtModelo);
         txtModelo.setBounds(300, 150, 450, 30);
 
-        txtCodigo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtCodigo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtCodigo);
         txtCodigo.setBounds(300, 100, 450, 30);
 
-        txtSoldador.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtSoldador.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         txtSoldador.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtSoldadorKeyReleased(evt);
@@ -88,7 +89,7 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jPanel1.add(txtSoldador);
         txtSoldador.setBounds(300, 250, 450, 30);
 
-        botaoCancelar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        botaoCancelar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
         botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoCancelar.setText("CANCELAR");
@@ -103,27 +104,27 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jPanel1.add(botaoCancelar);
         botaoCancelar.setBounds(40, 370, 260, 83);
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel7.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel7.setText("Estado de Uso");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(20, 300, 160, 32);
+        jLabel7.setBounds(20, 300, 160, 30);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel6.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel6.setText("Modelo");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 150, 90, 32);
+        jLabel6.setBounds(20, 150, 90, 30);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel5.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel5.setText("Marca");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(20, 200, 140, 32);
+        jLabel5.setBounds(20, 200, 140, 30);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel4.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel4.setText("Código");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(20, 100, 150, 32);
+        jLabel4.setBounds(20, 100, 150, 30);
 
-        botaoCadastrar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        botaoCadastrar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoCadastrar.setForeground(new java.awt.Color(255, 255, 255));
         botaoCadastrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoCadastrar.setText("CADASTRAR");
@@ -138,16 +139,18 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jPanel1.add(botaoCadastrar);
         botaoCadastrar.setBounds(470, 370, 260, 83);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 40f));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("CADASTRAR EQUIPAMENTO");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 20, 770, 48);
+        jLabel1.setBounds(0, 20, 770, 50);
 
+        jLabel3.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel3);
         jLabel3.setBounds(40, 370, 260, 83);
 
+        jLabel2.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel2);
         jLabel2.setBounds(470, 370, 260, 83);

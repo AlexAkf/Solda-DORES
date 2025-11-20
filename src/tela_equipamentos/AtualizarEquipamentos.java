@@ -68,7 +68,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(770, 480));
         jPanel1.setLayout(null);
 
-        combo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        combo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estoque", "Emprestado", "Estragado" }));
         jPanel1.add(combo);
         combo.setBounds(300, 300, 450, 30);
@@ -78,7 +78,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jPanel1.add(jLabel9);
         jLabel9.setBounds(20, 300, 160, 30);
 
-        txtModelo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtModelo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtModelo);
         txtModelo.setBounds(300, 150, 450, 30);
 
@@ -146,11 +146,11 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(470, 370, 260, 83);
 
-        txtMarca.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtMarca.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtMarca);
         txtMarca.setBounds(300, 200, 450, 30);
 
-        txtSoldador.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtSoldador.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         txtSoldador.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtSoldadorKeyReleased(evt);
@@ -159,7 +159,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         jPanel1.add(txtSoldador);
         txtSoldador.setBounds(300, 250, 450, 30);
 
-        txtCodigo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtCodigo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtCodigo);
         txtCodigo.setBounds(300, 100, 450, 30);
 

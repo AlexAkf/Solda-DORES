@@ -1,5 +1,7 @@
 package tela_empresas;
 
+import util.Fonte;
+
 /**
  *
  * @author Rafhael Muzzi
@@ -40,19 +42,25 @@ public class CadastroEmpresas extends javax.swing.JFrame {
         jFormattedTextField3 = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(770, 430));
+        setMinimumSize(new java.awt.Dimension(770, 430));
+        setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(770, 430));
+        setResizable(false);
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(30, 58, 138), 2, true));
+        jPanel1.setMaximumSize(new java.awt.Dimension(770, 430));
         jPanel1.setLayout(null);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 40f));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("CADASTRAR EMPRESA");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 20, 770, 48);
+        jLabel1.setBounds(0, 20, 770, 40);
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel13.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("CANCELAR");
@@ -63,7 +71,7 @@ public class CadastroEmpresas extends javax.swing.JFrame {
         jPanel1.add(jLabel13);
         jLabel13.setBounds(40, 320, 260, 83);
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel7.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("CADASTRAR");
@@ -73,49 +81,49 @@ public class CadastroEmpresas extends javax.swing.JFrame {
         jPanel1.add(jLabel7);
         jLabel7.setBounds(470, 320, 260, 83);
 
+        jLabel2.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel2);
         jLabel2.setBounds(470, 320, 260, 83);
 
+        jLabel3.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel3);
         jLabel3.setBounds(40, 320, 260, 83);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel5.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel5.setText("Empresa");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(20, 100, 90, 32);
+        jLabel5.setBounds(20, 100, 180, 30);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel6.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel6.setText("CNPJ");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 150, 90, 32);
+        jLabel6.setBounds(20, 150, 140, 30);
 
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jTextField4.setText("jTextField1");
+        jTextField4.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(jTextField4);
         jTextField4.setBounds(300, 100, 450, 30);
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel8.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel8.setText("Telefone");
         jPanel1.add(jLabel8);
-        jLabel8.setBounds(20, 200, 100, 32);
+        jLabel8.setBounds(20, 200, 170, 30);
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel9.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel9.setText("E-mail");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(20, 250, 100, 32);
+        jLabel9.setBounds(20, 250, 140, 30);
 
-        jTextField7.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jTextField7.setText("jTextField1");
+        jTextField7.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(jTextField7);
         jTextField7.setBounds(300, 250, 450, 30);
 
-        jFormattedTextField2.setText("jFormattedTextField1");
+        jFormattedTextField2.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(jFormattedTextField2);
         jFormattedTextField2.setBounds(300, 150, 450, 30);
 
-        jFormattedTextField3.setText("jFormattedTextField1");
+        jFormattedTextField3.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(jFormattedTextField3);
         jFormattedTextField3.setBounds(300, 200, 450, 30);
 
@@ -123,6 +131,7 @@ public class CadastroEmpresas extends javax.swing.JFrame {
         jPanel1.setBounds(0, 0, 770, 430);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
