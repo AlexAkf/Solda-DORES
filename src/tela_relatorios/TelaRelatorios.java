@@ -1,5 +1,10 @@
 package tela_relatorios;
 
+import java.awt.Color;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import util.Fonte;
+
 /**
  *
  * @author Rafael Moreira
@@ -12,6 +17,25 @@ public class TelaRelatorios extends javax.swing.JPanel {
      */
     public TelaRelatorios() {
         initComponents();
+        
+        // ============= PERSONALIZAÇÃO =============
+        // Centraliza os dados
+        DefaultTableCellRenderer centralizar = new DefaultTableCellRenderer();
+        centralizar.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < tabela.getColumnCount(); i++) {
+            tabela.getColumnModel().getColumn(i).setCellRenderer(centralizar);
+        }
+
+        // Cabeçalho
+        tabela.getTableHeader().setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
+        tabela.getTableHeader().setBackground(new Color(30, 58, 138));
+        tabela.getTableHeader().setForeground(Color.WHITE);
+        tabela.getTableHeader().setReorderingAllowed(false);
+        tabela.getTableHeader().setResizingAllowed(false);
+
+        // Altura, largura e cor das tabelas -> GERAL
+        tabela.setBackground(Color.WHITE);
+        tabela.setRowHeight(60);
     }
 
     /**
@@ -21,24 +45,97 @@ public class TelaRelatorios extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabela = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
         setMinimumSize(new java.awt.Dimension(1810, 1014));
         setPreferredSize(new java.awt.Dimension(1810, 1014));
+        setLayout(null);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1810, Short.MAX_VALUE));
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1014, Short.MAX_VALUE));
+        jScrollPane1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        tabela.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 15f));
+        tabela.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome", "CPF", "E-mail", "Login", "Cargo", "Sinete", "Supervisor", "Certificado", "Ações"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tabela);
+
+        add(jScrollPane1);
+        jScrollPane1.setBounds(20, 130, 1770, 870);
+
+        jLabel3.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("SHELL");
+        add(jLabel3);
+        jLabel3.setBounds(1530, 20, 260, 90);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
+        add(jLabel2);
+        jLabel2.setBounds(1530, 20, 260, 90);
+
+        jLabel5.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("VALE");
+        add(jLabel5);
+        jLabel5.setBounds(1230, 20, 260, 90);
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
+        add(jLabel4);
+        jLabel4.setBounds(1230, 20, 260, 90);
+
+        jLabel7.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("PETROBRAS");
+        add(jLabel7);
+        jLabel7.setBounds(930, 20, 260, 90);
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
+        add(jLabel6);
+        jLabel6.setBounds(930, 20, 260, 90);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
 }

@@ -176,7 +176,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
-        tabela.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
+        tabela.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 15f));
         tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

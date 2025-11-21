@@ -209,6 +209,11 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("+ NOVO CADASTRO");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
         add(jLabel3);
         jLabel3.setBounds(1530, 20, 260, 90);
 
@@ -247,6 +252,11 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
         add(jScrollPane1);
         jScrollPane1.setBounds(20, 130, 1770, 870);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        CadastroFuncionarios cadastro = new CadastroFuncionarios();
+        cadastro.setVisible(true);
+    }//GEN-LAST:event_jLabel3MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
