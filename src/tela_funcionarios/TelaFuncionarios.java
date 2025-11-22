@@ -6,9 +6,11 @@ import java.awt.Color;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import models.Usuarios;
 import util.Fonte;
 import util.TabelaAcaoEditor;
@@ -22,46 +24,12 @@ import util.TabelaAcaoRender;
 
 public final class TelaFuncionarios extends javax.swing.JPanel {
 
-    /**
-     * Creates new form TelaFuncionarios
-     * 
-     * @throws java.sql.SQLException
-     */
-
-    public void carregarTabela() throws SQLException {
-        var data = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Formata a data no padrão normal
-
-        UsuariosDAO dao = new UsuariosDAO();
-        List<Usuarios> lista = dao.listar();
-
-        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
-        modelo.setRowCount(0); // limpa a tabela
-
-        for (Usuarios usuario : lista) {
-
-            // Elvis operator para formatar as datas e o supervisor
-            String validade = (usuario.getValidade() != null) ? usuario.getValidade().format(data) : "—";
-            String supervisor = (usuario.getSupervisor() != null) ? usuario.getSupervisor().getNome() : "—";
-            String sinete = (usuario.getSinete() != null) ? usuario.getSinete() : "—";
-
-            modelo.addRow(new Object[] {
-                    usuario.getId(),
-                    usuario.getNome(),
-                    usuario.getCpf(),
-                    usuario.getEmail(),
-                    usuario.getLogin(),
-                    usuario.getCargo(),
-                    sinete,
-                    supervisor,
-                    validade,
-                    null
-            });
-        }
-    }
-
+    private static TelaFuncionarios instancia;
+    // Criando uma instância dessa tela para poder utilizar a barra de pesquisa.
     public TelaFuncionarios() throws SQLException {
         initComponents();
         carregarTabela();
+        instancia = this;
 
         // ============= PERSONALIZAÇÃO =============
         // Ocultando a coluna de ID
@@ -184,6 +152,58 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
         tabela.getColumnModel().getColumn(9).setCellEditor(new TabelaAcaoEditor(evento));
     }
 
+    public void carregarTabela() throws SQLException {
+        var data = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Formata a data no padrão normal
+
+        UsuariosDAO dao = new UsuariosDAO();
+        List<Usuarios> lista = dao.listar();
+
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+        modelo.setRowCount(0); // limpa a tabela
+
+        for (Usuarios usuario : lista) {
+
+            // Elvis operator para formatar as datas e o supervisor
+            String validade = (usuario.getValidade() != null) ? usuario.getValidade().format(data) : "—";
+            String supervisor = (usuario.getSupervisor() != null) ? usuario.getSupervisor().getNome() : "—";
+            String sinete = (usuario.getSinete() != null) ? usuario.getSinete() : "—";
+
+            modelo.addRow(new Object[] {
+                    usuario.getId(),
+                    usuario.getNome(),
+                    usuario.getCpf(),
+                    usuario.getEmail(),
+                    usuario.getLogin(),
+                    usuario.getCargo(),
+                    sinete,
+                    supervisor,
+                    validade,
+                    null
+            });
+        }
+    }
+    
+    // Método para utilizar a instância da tela na barra de pesquisa.
+    public static TelaFuncionarios getInstancia() throws SQLException {
+        if (instancia == null) {
+            instancia = new TelaFuncionarios();
+        }
+        return instancia;
+    }
+
+    // Método de filtragem da tabela.
+    // Pesquisa geral.
+    public void filtrarEquipamentos(String texto) {
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+        tabela.setRowSorter(sorter);
+
+        if (texto.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto)); // Busca em todas as colunas
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -66,7 +66,6 @@ public class RelatorioCorpo extends JFrame {
         btnVoltar.setBorderPainted(false);
         btnVoltar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnVoltar.addActionListener(e -> {
-            new TelaHuli().setVisible(true);
             dispose();
         });
         headerPanel.add(btnVoltar, BorderLayout.EAST);

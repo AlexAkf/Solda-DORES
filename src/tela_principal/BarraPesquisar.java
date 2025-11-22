@@ -2,7 +2,14 @@ package tela_principal;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import tela_empresas.TelaEmpresas;
 import tela_equipamentos.TelaEquipamentos;
+import tela_funcionarios.TelaFuncionarios;
+import tela_projetos.TelaProjetos;
+import tela_relatorios.TelaRelatorios;
 
 /**
  *
@@ -27,7 +34,20 @@ public class BarraPesquisar extends javax.swing.JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 String texto = campo.getText().trim();
+                
                 TelaEquipamentos.getInstancia().filtrarEquipamentos(texto);
+                
+                try {
+                    TelaFuncionarios.getInstancia().filtrarEquipamentos(texto);
+                } catch (SQLException ex) {
+                    Logger.getLogger(BarraPesquisar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                TelaEmpresas.getInstancia().filtrarEquipamentos(texto);
+                
+                TelaRelatorios.getInstancia().filtrarEquipamentos(texto);
+                
+                TelaProjetos.getInstancia().filtrarEquipamentos(texto);
             }
         });
 
@@ -48,9 +68,34 @@ public class BarraPesquisar extends javax.swing.JFrame {
                 campo.setText("");
 
                 // Restaura tabela completa
-                TelaEquipamentos tela = TelaEquipamentos.getInstancia();
-                if (tela != null) {
-                    tela.filtrarEquipamentos("");
+                TelaEquipamentos tela1 = TelaEquipamentos.getInstancia();
+                if (tela1 != null) {
+                    tela1.filtrarEquipamentos("");
+                }
+
+                TelaFuncionarios tela2;
+                try {
+                    tela2 = TelaFuncionarios.getInstancia();
+                    if (tela2 != null) {
+                        tela2.filtrarEquipamentos("");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(BarraPesquisar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                TelaEmpresas tela3 = TelaEmpresas.getInstancia();
+                if (tela3 != null) {
+                    tela3.filtrarEquipamentos("");
+                }
+
+                TelaRelatorios tela4 = TelaRelatorios.getInstancia();
+                if (tela4 != null) {
+                    tela4.filtrarEquipamentos("");
+                }
+
+                TelaProjetos tela5 = TelaProjetos.getInstancia();
+                if (tela5 != null) {
+                    tela5.filtrarEquipamentos("");
                 }
 
                 // Fecha barra

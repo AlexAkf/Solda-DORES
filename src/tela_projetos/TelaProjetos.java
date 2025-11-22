@@ -1,8 +1,11 @@
 package tela_projetos;
 
 import java.awt.Color;
+import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import util.Fonte;
 
 /**
@@ -12,11 +15,11 @@ import util.Fonte;
 
 public class TelaProjetos extends javax.swing.JPanel {
 
-    /**
-     * Creates new form TelaProjetos
-     */
+    private static TelaProjetos instancia;
+    // Criando uma instância dessa tela para poder utilizar a barra de pesquisa.
     public TelaProjetos() {
         initComponents();
+        instancia = this;
         
         // ============= PERSONALIZAÇÃO =============
         // Centraliza os dados
@@ -38,6 +41,27 @@ public class TelaProjetos extends javax.swing.JPanel {
         tabela.setRowHeight(60);
     }
 
+    // Método para utilizar a instância da tela na barra de pesquisa.
+    public static TelaProjetos getInstancia() {
+        if (instancia == null) {
+            instancia = new TelaProjetos();
+        }
+        return instancia;
+    }
+
+    // Método de filtragem da tabela.
+    // Pesquisa geral.
+    public void filtrarEquipamentos(String texto) {
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+        tabela.setRowSorter(sorter);
+
+        if (texto.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto)); // Busca em todas as colunas
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

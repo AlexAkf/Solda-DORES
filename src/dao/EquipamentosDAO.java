@@ -10,7 +10,7 @@ import models.Equipamentos;
 /**
  * Classe DAO (Data Acess Object). Responsável por conectar os dados da tabela
  * correspondente e realizar as operações CRUD.
- * 
+ *
  * @author Hugo
  */
 public class EquipamentosDAO {
@@ -52,6 +52,17 @@ public class EquipamentosDAO {
         String sqlEquip = "INSERT INTO equipamentos (codigo, modelo, marca, condicao) VALUES (?, ?, ?, ?)";
         String sqlEmprest = "INSERT INTO emprestimos (fk_equipamento, fk_soldador) VALUES (?, ?)";
 
+        if (eq.getCodigo() == null || eq.getCodigo().isBlank() || 
+            eq.getModelo() == null || eq.getModelo().isBlank() || 
+            eq.getMarca() == null || eq.getMarca().isBlank() || 
+            eq.getCondicao() == null || eq.getCondicao().isBlank()) {
+
+            JOptionPane.showMessageDialog(null,
+                    "Preencha todos os campos obrigatórios!", "Validação",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         try {
             // Envio automático desativado.
             // Desativo, pois o método precisa atualizar duas tabelas ao mesmo tempo com
@@ -141,6 +152,17 @@ public class EquipamentosDAO {
         // Campos que serão preenchidos.
         String sqlEquip = "UPDATE equipamentos SET codigo=?, modelo=?, marca=?, condicao=? WHERE id=?";
         String sqlUpdateEmprest = "UPDATE emprestimos SET fk_soldador=? WHERE fk_equipamento=? AND devolucao IS NULL";
+
+        if (eq.getCodigo() == null || eq.getCodigo().isBlank() || 
+            eq.getModelo() == null || eq.getModelo().isBlank() || 
+            eq.getMarca() == null || eq.getMarca().isBlank() || 
+            eq.getCondicao() == null || eq.getCondicao().isBlank()) {
+
+            JOptionPane.showMessageDialog(null,
+                    "Preencha todos os campos obrigatórios!", "Validação",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         try {
             // Envio automático desativado.
@@ -242,7 +264,6 @@ public class EquipamentosDAO {
 
             // Confirmar a inserção dos comandos no banco.
             conn.commit();
-            JOptionPane.showMessageDialog(null, "Equipamento atualizado com sucesso!");
 
         } catch (SQLException e) {
             try {
@@ -352,9 +373,6 @@ public class EquipamentosDAO {
                 stmtDevolver.setInt(1, idEquipamento);
                 stmtDevolver.executeUpdate();
                 stmtDevolver.close();
-
-                JOptionPane.showMessageDialog(null,
-                        "Equipamento devolvido ao estoque com sucesso.");
             }
 
             // 3️⃣ Marca o equipamento como inativo (exclusão lógica)
@@ -365,7 +383,7 @@ public class EquipamentosDAO {
 
             if (linhasAfetadas > 0) {
                 JOptionPane.showMessageDialog(null,
-                        "Equipamento excluído (marcado como inativo) com sucesso!");
+                        "Equipamento inativado com sucesso!");
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Nenhum equipamento encontrado com o ID informado.",

@@ -43,8 +43,8 @@ public class CadastroProjetos extends javax.swing.JFrame {
         jFormattedTextField2 = new javax.swing.JFormattedTextField();
         jLabel12 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(770, 590));
@@ -145,11 +145,12 @@ public class CadastroProjetos extends javax.swing.JFrame {
         jPanel1.add(jTextField6);
         jTextField6.setBounds(300, 150, 450, 30);
 
-        jEditorPane1.setBorder(null);
-        jScrollPane1.setViewportView(jEditorPane1);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
 
-        jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(300, 350, 450, 90);
+        jPanel1.add(jScrollPane2);
+        jScrollPane2.setBounds(300, 350, 450, 90);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 770, 590);
@@ -204,7 +205,6 @@ public class CadastroProjetos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel1;
@@ -219,7 +219,8 @@ public class CadastroProjetos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
