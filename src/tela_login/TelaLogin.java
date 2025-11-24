@@ -20,7 +20,7 @@ public class TelaLogin extends javax.swing.JFrame {
     public TelaLogin() {
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -215,6 +215,9 @@ public class TelaLogin extends javax.swing.JFrame {
                 return;
             }
 
+            // Guarda o usuário logado.
+            tela_conta.Sessao.usuarioLogado = usuario;
+            
             // Passou por todos os ifs, então temos senha correta, usuário ativo e correto,
             // o sistema entra e fecha a telinha de login
             new TelaPrincipal().setVisible(true);
