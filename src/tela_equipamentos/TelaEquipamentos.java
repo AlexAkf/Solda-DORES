@@ -3,33 +3,28 @@ package tela_equipamentos;
 import dao.EquipamentosDAO;
 import java.awt.Color;
 import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.*;
+import javax.swing.table.*;
 import models.Equipamentos;
-import util.Fonte;
-import util.TabelaAcaoEditor;
-import util.TabelaAcaoEvento;
-import util.TabelaAcaoRender;
+import util.*;
 
 /**
  * Tela do CRUD de EQUIPAMENTOS
- * 
+ *
  * @author Hugo
  */
+
 public final class TelaEquipamentos extends javax.swing.JPanel {
 
     private static TelaEquipamentos instancia;
+    private TabelaAcaoEvento evento;   // Guardar evento para reutilizar após recarregar
 
     // Criando uma instância dessa tela para poder utilizar a barra de pesquisa.
     public TelaEquipamentos() {
         initComponents();
-        carregarTabela();
-
+        iniciarEvento();    // Cria o evento apenas uma vez
         instancia = this;
+        carregarTabela();
 
         // ============= PERSONALIZAÇÃO =============
         // Centralizar dados:
@@ -51,35 +46,44 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         tabela.setRowHeight(60);
         tabela.getColumnModel().getColumn(0).setMaxWidth(50);
 
-        // ========== BOTÕES DE AÇÃO DA TABELA ==========
-        TabelaAcaoEvento evento = new TabelaAcaoEvento() {
+        renderizar();   // Recarrega os botões
+    }
+
+    /* ========== BOTÕES DE AÇÃO DA TABELA ==========
+     Cria o evento de ação dos botões apenas uma vez para evitar o bug */
+    private void iniciarEvento() {
+        evento = new TabelaAcaoEvento() {
             @Override
             public void editando(int linha) {
+                // Converte o índice da view para model
+                int model = tabela.convertRowIndexToModel(linha);
+
                 // Pega os dados da linha selecionada
-                int id = (int) tabela.getValueAt(linha, 0);
-                String codigo = (String) tabela.getValueAt(linha, 1);
-                String modelo = (String) tabela.getValueAt(linha, 2);
-                String marca = (String) tabela.getValueAt(linha, 3);
-                String soldador = (String) tabela.getValueAt(linha, 4);
-                String condicao = (String) tabela.getValueAt(linha, 5);
+                int id = (int) tabela.getModel().getValueAt(model, 0);
+                String codigo = (String) tabela.getModel().getValueAt(model, 1);
+                String modelo = (String) tabela.getModel().getValueAt(model, 2);
+                String marca = (String) tabela.getModel().getValueAt(model, 3);
+                String soldador = (String) tabela.getModel().getValueAt(model, 4);
+                String condicao = (String) tabela.getModel().getValueAt(model, 5);
 
-                Equipamentos eq = new Equipamentos();
-                eq.setId(id);
-                eq.setCodigo(codigo);
-                eq.setModelo(modelo);
-                eq.setMarca(marca);
-                eq.setSoldador(soldador);
-                eq.setCondicao(condicao.toLowerCase());
+                var equipamento = new Equipamentos();
+                equipamento.setId(id);
+                equipamento.setCodigo(codigo);
+                equipamento.setModelo(modelo);
+                equipamento.setMarca(marca);
+                equipamento.setSoldador(soldador);
+                equipamento.setCondicao(condicao);
 
-                AtualizarEquipamentos atualizar = new AtualizarEquipamentos(TelaEquipamentos.this);
+                var atualizar = new AtualizarEquipamentos(TelaEquipamentos.this);
+                atualizar.preencherCampos(equipamento);
                 atualizar.setIdEquipamentoSelecionado(id);
-                atualizar.preencherCampos(eq);
                 atualizar.setVisible(true);
             }
 
             @Override
             public void excluindo(int linha) {
-                int idEquipamento = (int) tabela.getValueAt(linha, 0);
+                int model = tabela.convertRowIndexToModel(linha);
+                int idEquipamento = (int) tabela.getModel().getValueAt(model, 0);
 
                 int opcao = JOptionPane.showConfirmDialog(null,
                         "Deseja realmente excluir o equipamento ID " + idEquipamento + "?",
@@ -88,31 +92,46 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                 if (opcao == JOptionPane.YES_OPTION) {
                     EquipamentosDAO dao = new EquipamentosDAO();
                     dao.excluirEquipamento(idEquipamento);
-                    carregarTabela(); // atualiza a tabela após exclusão
+                    carregarTabela();   // Atualiza a tabela após exclusão
+                    renderizar();   // Reaplica os botões de ação
                 }
             }
         };
+    }
+
+    private void renderizar() {
+        // Faz o famoso desliga e liga pra recarregar os botões da coluna Ações
         tabela.getColumnModel().getColumn(6).setCellRenderer(new TabelaAcaoRender());
         tabela.getColumnModel().getColumn(6).setCellEditor(new TabelaAcaoEditor(evento));
+
+        // Também ajudam no processo de recarregar
+        tabela.revalidate();
+        tabela.repaint();
     }
 
     public void carregarTabela() {
         EquipamentosDAO dao = new EquipamentosDAO();
         List<Equipamentos> lista = dao.listarTodos();
 
+        // Caso algum botão tenha sido clicado, encerra edição
+        if (tabela.isEditing() && tabela.getCellEditor() != null) {
+            tabela.getCellEditor().stopCellEditing();
+        }
+
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
         modelo.setRowCount(0); // limpa a tabela
 
-        for (Equipamentos eq : lista) {
+        for (Equipamentos equipamento : lista) {
             modelo.addRow(new Object[]{
-                eq.getId(),
-                eq.getCodigo(),
-                eq.getModelo(),
-                eq.getMarca(),
-                eq.getSoldador(),
-                eq.getCondicao()
+                equipamento.getId(),
+                equipamento.getCodigo(),
+                equipamento.getModelo(),
+                equipamento.getMarca(),
+                equipamento.getSoldador(),
+                equipamento.getCondicao()
             });
         }
+        tabela.clearSelection();
     }
 
     // Método para utilizar a instância da tela na barra de pesquisa.
@@ -125,7 +144,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
     // Método de filtragem da tabela.
     // Pesquisa geral.
-    public void filtrarEquipamentos(String texto) {
+    public void filtrar(String texto) {
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
         tabela.setRowSorter(sorter);

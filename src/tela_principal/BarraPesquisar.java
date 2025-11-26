@@ -13,13 +13,15 @@ import tela_relatorios.TelaRelatorios;
 
 /**
  *
- * @author Hugo, Alex
+ * @author Hugo
+ * @author Alex
  */
+
 public class BarraPesquisar extends javax.swing.JFrame {
 
     private TelaPrincipal tp;
 
-    // Referência a tela principal
+    // Referencia a tela principal
     public BarraPesquisar(TelaPrincipal tp) {
         initComponents();
 
@@ -34,20 +36,20 @@ public class BarraPesquisar extends javax.swing.JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 String texto = campo.getText().trim();
-                
-                TelaEquipamentos.getInstancia().filtrarEquipamentos(texto);
-                
+
+                TelaEquipamentos.getInstancia().filtrar(texto);
+
                 try {
-                    TelaFuncionarios.getInstancia().filtrarEquipamentos(texto);
+                    TelaFuncionarios.getInstancia().filtrar(texto);
                 } catch (SQLException ex) {
                     Logger.getLogger(BarraPesquisar.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                TelaEmpresas.getInstancia().filtrarEquipamentos(texto);
-                
-                TelaRelatorios.getInstancia().filtrarEquipamentos(texto);
-                
-                TelaProjetos.getInstancia().filtrarEquipamentos(texto);
+
+                TelaEmpresas.getInstancia().filtrar(texto);
+
+                TelaRelatorios.getInstancia().filtrar(texto);
+
+                TelaProjetos.getInstancia().filtrar(texto);
             }
         });
 
@@ -70,14 +72,14 @@ public class BarraPesquisar extends javax.swing.JFrame {
                 // Restaura tabela completa
                 TelaEquipamentos tela1 = TelaEquipamentos.getInstancia();
                 if (tela1 != null) {
-                    tela1.filtrarEquipamentos("");
+                    tela1.filtrar("");
                 }
 
                 TelaFuncionarios tela2;
                 try {
                     tela2 = TelaFuncionarios.getInstancia();
                     if (tela2 != null) {
-                        tela2.filtrarEquipamentos("");
+                        tela2.filtrar("");
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(BarraPesquisar.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,17 +87,17 @@ public class BarraPesquisar extends javax.swing.JFrame {
 
                 TelaEmpresas tela3 = TelaEmpresas.getInstancia();
                 if (tela3 != null) {
-                    tela3.filtrarEquipamentos("");
+                    tela3.filtrar("");
                 }
 
                 TelaRelatorios tela4 = TelaRelatorios.getInstancia();
                 if (tela4 != null) {
-                    tela4.filtrarEquipamentos("");
+                    tela4.filtrar("");
                 }
 
                 TelaProjetos tela5 = TelaProjetos.getInstancia();
                 if (tela5 != null) {
-                    tela5.filtrarEquipamentos("");
+                    tela5.filtrar("");
                 }
 
                 // Fecha barra

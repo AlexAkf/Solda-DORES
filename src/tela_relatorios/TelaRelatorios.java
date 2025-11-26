@@ -51,7 +51,7 @@ public class TelaRelatorios extends javax.swing.JPanel {
 
     // Método de filtragem da tabela.
     // Pesquisa geral.
-    public void filtrarEquipamentos(String texto) {
+    public void filtrar(String texto) {
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
         tabela.setRowSorter(sorter);

@@ -1,5 +1,12 @@
 package tela_funcionarios;
 
+import dao.UsuariosDAO;
+import java.awt.HeadlessException;
+import java.sql.SQLException;
+import models.Usuarios;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
 import util.Fonte;
 
 /**
@@ -9,13 +16,81 @@ import util.Fonte;
 
 public class CadastroFuncionarios extends javax.swing.JFrame {
 
-    /**
-     * Creates new form CadastroGestor
-     */
-    public CadastroFuncionarios() {
+    private final TelaFuncionarios TELA;
+    
+    public CadastroFuncionarios(TelaFuncionarios tela) {
+        this.TELA = tela;
         initComponents();
+        data();
+        formatar();
+        txtCargo.addActionListener(evt -> {
+            boolean isSoldador = "Soldador".equalsIgnoreCase(txtCargo.getSelectedItem().toString());
+            txtSinete.setEnabled(isSoldador);
+            txtSolda.setEnabled(isSoldador);
+            txtSupervisor.setEnabled(isSoldador);
+        });
     }
 
+    private void cadastrarUsuario() {
+        try {
+            UsuariosDAO dao = new UsuariosDAO();
+            Usuarios usuario = new Usuarios();
+
+            // Preenchendo os dados do usuário
+            usuario.setNome(txtNome.getText().trim());
+            usuario.setCpf(txtCpf.getText().trim());
+            usuario.setEmail(txtEmail.getText().trim());
+            usuario.setLogin(txtLogin.getText().trim());
+            usuario.setCargo(txtCargo.getSelectedItem().toString().trim());
+
+            switch (usuario.getCargo().toLowerCase()) {
+                case "gestor" -> usuario.setPerfil("adm");
+                case "supervisor" -> usuario.setPerfil("restrito");
+                case "soldador" -> usuario.setPerfil("comum");
+                default -> usuario.setPerfil("comum");
+            }
+
+            if ("soldador".equalsIgnoreCase(usuario.getCargo())) {
+                usuario.setSinete(txtSinete.getText().trim());
+
+                String supervisorNome = txtSupervisor.getText().trim();
+                Usuarios supervisor = null;
+                if (!supervisorNome.isEmpty()) {
+                    for (Usuarios u : dao.listar()) {
+                        if (u.getNome().equalsIgnoreCase(supervisorNome)) {
+                            supervisor = u;
+                            break;
+                        }
+                    }
+                }
+                usuario.setSupervisor(supervisor);
+
+                if (!txtSolda.getText().trim().isEmpty()) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    LocalDate ultimaSolda = LocalDate.parse(txtSolda.getText().trim(), formatter);
+                    usuario.setSolda(ultimaSolda);
+                    usuario.setValidade(ultimaSolda.plusDays(30));
+                }
+            }
+
+            usuario.setSenha("1");
+            dao.inserir(usuario);
+
+            JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
+
+            if (TELA != null) {
+                TELA.carregarTabela();
+            }
+
+            this.dispose();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar usuário: " + e.getMessage());
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "Erro inesperado: " + e.getMessage());
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,34 +103,32 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        botaoCancelar = new javax.swing.JLabel();
+        botaoCadastrar = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtNome = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        txtCpf = new javax.swing.JFormattedTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
-        jTextField10 = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
+        txtLogin = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        txtCargo = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        txtSinete = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        txtSolda = new javax.swing.JFormattedTextField();
         jLabel17 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtSupervisor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        setMaximumSize(new java.awt.Dimension(770, 730));
         setMinimumSize(new java.awt.Dimension(770, 730));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(770, 730));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -69,31 +142,36 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 20, 770, 50);
 
-        jLabel13.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("CANCELAR");
-        jLabel13.setToolTipText("");
-        jLabel13.setMaximumSize(new java.awt.Dimension(260, 83));
-        jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
-        jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
-        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+        botaoCancelar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
+        botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoCancelar.setText("CANCELAR");
+        botaoCancelar.setToolTipText("");
+        botaoCancelar.setMaximumSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.setMinimumSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.setPreferredSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel13MouseClicked(evt);
+                botaoCancelarMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel13);
-        jLabel13.setBounds(40, 620, 260, 83);
+        jPanel1.add(botaoCancelar);
+        botaoCancelar.setBounds(40, 620, 260, 83);
 
-        jLabel7.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("CADASTRAR");
-        jLabel7.setMaximumSize(new java.awt.Dimension(260, 83));
-        jLabel7.setMinimumSize(new java.awt.Dimension(260, 83));
-        jLabel7.setPreferredSize(new java.awt.Dimension(260, 83));
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(470, 620, 260, 83);
+        botaoCadastrar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
+        botaoCadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        botaoCadastrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoCadastrar.setText("CADASTRAR");
+        botaoCadastrar.setMaximumSize(new java.awt.Dimension(260, 83));
+        botaoCadastrar.setMinimumSize(new java.awt.Dimension(260, 83));
+        botaoCadastrar.setPreferredSize(new java.awt.Dimension(260, 83));
+        botaoCadastrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoCadastrarMouseClicked(evt);
+            }
+        });
+        jPanel1.add(botaoCadastrar);
+        botaoCadastrar.setBounds(470, 620, 260, 83);
 
         jLabel2.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
@@ -115,41 +193,41 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jPanel1.add(jLabel6);
         jLabel6.setBounds(20, 100, 90, 30);
 
-        jTextField4.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jTextField4);
-        jTextField4.setBounds(300, 100, 450, 30);
+        txtNome.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtNome);
+        txtNome.setBounds(300, 100, 450, 30);
 
         jLabel9.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel9.setText("Login");
         jPanel1.add(jLabel9);
         jLabel9.setBounds(20, 250, 100, 30);
 
-        jFormattedTextField2.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jFormattedTextField2);
-        jFormattedTextField2.setBounds(300, 150, 450, 30);
+        txtCpf.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtCpf);
+        txtCpf.setBounds(300, 150, 450, 30);
 
         jLabel10.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel10.setText("E-mail");
         jPanel1.add(jLabel10);
         jLabel10.setBounds(20, 200, 100, 30);
 
-        jTextField9.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jTextField9);
-        jTextField9.setBounds(300, 200, 450, 30);
+        txtEmail.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtEmail);
+        txtEmail.setBounds(300, 200, 450, 30);
 
-        jTextField10.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jTextField10);
-        jTextField10.setBounds(300, 250, 450, 30);
+        txtLogin.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtLogin);
+        txtLogin.setBounds(300, 250, 450, 30);
 
         jLabel12.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel12.setText("Cargo");
         jPanel1.add(jLabel12);
         jLabel12.setBounds(20, 300, 250, 30);
 
-        jComboBox1.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---", "Gestor", "Supervisor", "Soldador" }));
-        jPanel1.add(jComboBox1);
-        jComboBox1.setBounds(300, 300, 450, 30);
+        txtCargo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---", "Gestor", "Supervisor", "Soldador" }));
+        jPanel1.add(txtCargo);
+        txtCargo.setBounds(300, 300, 450, 30);
 
         jLabel4.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -157,9 +235,10 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jPanel1.add(jLabel4);
         jLabel4.setBounds(0, 380, 770, 40);
 
-        jTextField11.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jTextField11);
-        jTextField11.setBounds(300, 450, 450, 30);
+        txtSinete.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtSinete.setEnabled(false);
+        jPanel1.add(txtSinete);
+        txtSinete.setBounds(300, 450, 450, 30);
 
         jLabel15.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel15.setText("Supervisor");
@@ -171,18 +250,20 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jPanel1.add(jLabel16);
         jLabel16.setBounds(20, 450, 250, 30);
 
-        jFormattedTextField1.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jFormattedTextField1);
-        jFormattedTextField1.setBounds(300, 500, 450, 30);
+        txtSolda.setEnabled(false);
+        txtSolda.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtSolda);
+        txtSolda.setBounds(300, 500, 450, 30);
 
         jLabel17.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel17.setText("Última Solda");
         jPanel1.add(jLabel17);
         jLabel17.setBounds(20, 500, 250, 30);
 
-        jTextField1.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jTextField1);
-        jTextField1.setBounds(300, 550, 450, 30);
+        txtSupervisor.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtSupervisor.setEnabled(false);
+        jPanel1.add(txtSupervisor);
+        txtSupervisor.setBounds(300, 550, 450, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 770, 730);
@@ -191,62 +272,38 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCancelarMouseClicked
         this.dispose();
-    }//GEN-LAST:event_jLabel13MouseClicked
+    }//GEN-LAST:event_botaoCancelarMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-         * look and feel.
-         * For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
+    private void botaoCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCadastrarMouseClicked
+        cadastrarUsuario();
+    }//GEN-LAST:event_botaoCadastrarMouseClicked
+
+    private void data() {
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
+            javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("##/##/####");
+            mf.setPlaceholderCharacter('_');
+            txtSolda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
+        } catch (java.text.ParseException ex) {
         }
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
-        // </editor-fold>
+    }
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new CadastroFuncionarios().setVisible(true);
-        });
+private void formatar() {
+        try {
+            javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("###.###.###-##");
+            mf.setPlaceholderCharacter('_');
+            txtCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
+        } catch (java.text.ParseException ex) {
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
+    private javax.swing.JLabel botaoCadastrar;
+    private javax.swing.JLabel botaoCancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -255,13 +312,15 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JComboBox<String> txtCargo;
+    private javax.swing.JFormattedTextField txtCpf;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtLogin;
+    private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtSinete;
+    private javax.swing.JFormattedTextField txtSolda;
+    private javax.swing.JTextField txtSupervisor;
     // End of variables declaration//GEN-END:variables
 }

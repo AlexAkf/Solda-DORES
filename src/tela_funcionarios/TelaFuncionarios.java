@@ -5,34 +5,101 @@ import java.time.format.DateTimeFormatter;
 import java.awt.Color;
 import java.sql.SQLException;
 import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.*;
+import javax.swing.table.*;
 import models.Usuarios;
-import util.Fonte;
-import util.TabelaAcaoEditor;
-import util.TabelaAcaoEvento;
-import util.TabelaAcaoRender;
+import util.*;
 
 /**
+ * Classe que cuida da identidade visual da tela e comandos
  *
  * @author Alex
  */
 
 public final class TelaFuncionarios extends javax.swing.JPanel {
 
-    private static TelaFuncionarios instancia;
-    // Criando uma instância dessa tela para poder utilizar a barra de pesquisa.
+    private static TelaFuncionarios instancia;  // Instância da tela para poder utilizar a barra de pesquisa
+    private final TabelaAcaoEvento EVENTO;  // Guarda o evento para reaplicar quando recarregar
+
     public TelaFuncionarios() throws SQLException {
         initComponents();
+
+        /* ========== BOTÕES DE AÇÃO DA TABELA ==========
+         Inicia o evento de ação antes de aplicar o render */
+        EVENTO = new TabelaAcaoEvento() {
+            @Override
+            public void editando(int linha) {
+                // Converte o índice da view para model pra evitar o bug de excluir e editar
+                int model = tabela.convertRowIndexToModel(linha);
+
+                // Pega os dados da linha selecionada
+                int id = (int) tabela.getModel().getValueAt(model, 0);
+                String nome = (String) tabela.getModel().getValueAt(model, 1);
+                String cpf = (String) tabela.getModel().getValueAt(model, 2);
+                String email = (String) tabela.getModel().getValueAt(model, 3);
+                String login = (String) tabela.getModel().getValueAt(model, 4);
+                String cargo = (String) tabela.getModel().getValueAt(model, 5);
+                String sinete = (String) tabela.getModel().getValueAt(model, 6);
+                String supervisorNome = (String) tabela.getModel().getValueAt(model, 7);
+                String validadeStr = (String) tabela.getModel().getValueAt(model, 8);
+
+                // Cria o objeto Usuarios
+                var usuario = new Usuarios();
+                usuario.setId(id);
+                usuario.setNome(nome);
+                usuario.setCpf(cpf);
+                usuario.setEmail(email);
+                usuario.setLogin(login);
+                usuario.setCargo(cargo);
+                usuario.setSinete(sinete);
+
+                // Configura o supervisor se houver
+                if (!supervisorNome.equals("—")) {
+                    var supervisor = new Usuarios();
+                    supervisor.setNome(supervisorNome);
+                    usuario.setSupervisor(supervisor);
+                }
+
+                // Configura a validade se houver
+                if (!validadeStr.equals("—")) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    usuario.setValidade(java.time.LocalDate.parse(validadeStr, formatter));
+                }
+
+                // Abre a tela de atualização
+                var atualizar = new AtualizarFuncionarios(TelaFuncionarios.this);
+                atualizar.usuarioSelecionado(usuario);
+                atualizar.preencherCampos(usuario);
+                atualizar.setVisible(true);
+            }
+
+            @Override
+            public void excluindo(int linha) {
+                int model = tabela.convertRowIndexToModel(linha);
+                int idUsuario = (int) tabela.getModel().getValueAt(model, 0);
+                String nomeUsuario = (String) tabela.getModel().getValueAt(model, 1);
+
+                int opcao = JOptionPane.showConfirmDialog(null,
+                        "Deseja realmente excluir o usuário " + nomeUsuario + "?",
+                        "Confirmação", JOptionPane.YES_NO_OPTION);
+
+                if (opcao == JOptionPane.YES_OPTION) {
+                    try {
+                        UsuariosDAO dao = new UsuariosDAO();
+                        dao.deletar(idUsuario);
+                        carregarTabela(); // recarrega de forma segura
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null,
+                                "Erro ao excluir: " + e.getMessage());
+                    }
+                }
+            }
+        };
         carregarTabela();
         instancia = this;
 
-        // ============= PERSONALIZAÇÃO =============
-        // Ocultando a coluna de ID
+        /* ============= PERSONALIZAÇÃO =============
+         Ocultando a coluna de ID */
         tabela.getColumnModel().getColumn(0).setMinWidth(0);
         tabela.getColumnModel().getColumn(0).setMaxWidth(0);
         tabela.getColumnModel().getColumn(0).setWidth(0);
@@ -52,7 +119,7 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
         tabela.getTableHeader().setReorderingAllowed(false);
         tabela.getTableHeader().setResizingAllowed(false);
 
-        // Altura, largura e cor das tabelas -> GERAL
+        // Altura, largura e cor das tabelas em geral
         tabela.setBackground(Color.WHITE);
         tabela.setRowHeight(60);
 
@@ -80,83 +147,24 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
         tabela.getColumnModel().getColumn(8).setWidth(125);
         tabela.getColumnModel().getColumn(8).setPreferredWidth(125);
 
-        // ========== BOTÕES DE AÇÃO DA TABELA ==========
-        TabelaAcaoEvento evento;
-        evento = new TabelaAcaoEvento() {
-            @Override
-            public void editando(int linha) {
-                // Pega os dados da linha selecionada
-                int id = (int) tabela.getValueAt(linha, 0);
-                String nome = (String) tabela.getValueAt(linha, 1);
-                String cpf = (String) tabela.getValueAt(linha, 2);
-                String email = (String) tabela.getValueAt(linha, 3);
-                String login = (String) tabela.getValueAt(linha, 4);
-                String cargo = (String) tabela.getValueAt(linha, 5);
-                String sinete = (String) tabela.getValueAt(linha, 6);
-                String supervisorNome = (String) tabela.getValueAt(linha, 7);
-                String validadeStr = (String) tabela.getValueAt(linha, 8);
+        renderizar();
+    }
 
-                // Cria o objeto Usuarios
-                Usuarios usuario = new Usuarios();
-                usuario.setId(id);
-                usuario.setNome(nome);
-                usuario.setCpf(cpf);
-                usuario.setEmail(email);
-                usuario.setLogin(login);
-                usuario.setCargo(cargo);
-                usuario.setSinete(sinete);
-
-                // Configura o supervisor se houver
-                if (!supervisorNome.equals("—")) {
-                    Usuarios supervisor = new Usuarios();
-                    supervisor.setNome(supervisorNome);
-                    usuario.setSupervisor(supervisor);
-                }
-
-                // Configura a validade se houver
-                if (!validadeStr.equals("—")) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    usuario.setValidade(java.time.LocalDate.parse(validadeStr, formatter));
-                }
-
-                // Abre a tela de atualização
-                AtualizarFuncionarios atualizar = new AtualizarFuncionarios(TelaFuncionarios.this);
-                atualizar.setUsuarioSelecionado(usuario);
-                atualizar.preencherCampos(usuario);
-                atualizar.setVisible(true);
-            }
-
-            @Override
-            public void excluindo(int linha) {
-                int idUsuario = (int) tabela.getValueAt(linha, 0);
-
-                int opcao = JOptionPane.showConfirmDialog(null,
-                        "Deseja realmente excluir o usuário ID " + idUsuario + "?",
-                        "Confirmação", JOptionPane.YES_NO_OPTION);
-
-                if (opcao == JOptionPane.YES_OPTION) {
-                    try {
-                        UsuariosDAO dao = new UsuariosDAO();
-                        dao.deletar(idUsuario);
-                        carregarTabela();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        JOptionPane.showMessageDialog(null,
-                                "Erro ao excluir: " + e.getMessage());
-                    }
-                }
-            }
-        };
-
+    private void renderizar() {
+        // Faz o famoso desliga e liga pra recarregar os botões da coluna Ações
         tabela.getColumnModel().getColumn(9).setCellRenderer(new TabelaAcaoRender());
-        tabela.getColumnModel().getColumn(9).setCellEditor(new TabelaAcaoEditor(evento));
+        tabela.getColumnModel().getColumn(9).setCellEditor(new TabelaAcaoEditor(EVENTO));
     }
 
     public void carregarTabela() throws SQLException {
         var data = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Formata a data no padrão normal
-
-        UsuariosDAO dao = new UsuariosDAO();
+        var dao = new UsuariosDAO();
         List<Usuarios> lista = dao.listar();
+
+        // Se existe edição em andamento, finaliza para liberar editor
+        if (tabela.isEditing() && tabela.getCellEditor() != null) {
+            tabela.getCellEditor().stopCellEditing();
+        }
 
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
         modelo.setRowCount(0); // limpa a tabela
@@ -168,21 +176,28 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
             String supervisor = (usuario.getSupervisor() != null) ? usuario.getSupervisor().getNome() : "—";
             String sinete = (usuario.getSinete() != null) ? usuario.getSinete() : "—";
 
-            modelo.addRow(new Object[] {
-                    usuario.getId(),
-                    usuario.getNome(),
-                    usuario.getCpf(),
-                    usuario.getEmail(),
-                    usuario.getLogin(),
-                    usuario.getCargo(),
-                    sinete,
-                    supervisor,
-                    validade,
-                    null
+            modelo.addRow(new Object[]{
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getCpf(),
+                usuario.getEmail(),
+                usuario.getLogin(),
+                usuario.getCargo(),
+                sinete,
+                supervisor,
+                validade,
+                null
             });
         }
+
+        tabela.clearSelection();    // Garante que não haja seleções pendentes
+        renderizar();
+
+        // Também ajudam no processo de recarregar
+        tabela.revalidate();
+        tabela.repaint();
     }
-    
+
     // Método para utilizar a instância da tela na barra de pesquisa.
     public static TelaFuncionarios getInstancia() throws SQLException {
         if (instancia == null) {
@@ -191,9 +206,8 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
         return instancia;
     }
 
-    // Método de filtragem da tabela.
-    // Pesquisa geral.
-    public void filtrarEquipamentos(String texto) {
+    // Método de filtragem da tabela, com ela faço pesquisas em geral
+    public void filtrar(String texto) {
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
         tabela.setRowSorter(sorter);
@@ -204,6 +218,7 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto)); // Busca em todas as colunas
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -274,7 +289,7 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        CadastroFuncionarios cadastro = new CadastroFuncionarios();
+        var cadastro = new CadastroFuncionarios(this);
         cadastro.setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 

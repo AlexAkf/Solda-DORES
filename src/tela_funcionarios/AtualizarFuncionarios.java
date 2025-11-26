@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import models.Usuarios;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.util.List;
 import javax.swing.JOptionPane;
 import util.Fonte;
 
@@ -15,40 +16,60 @@ import util.Fonte;
 
 public class AtualizarFuncionarios extends javax.swing.JFrame {
 
-    private final TelaFuncionarios telaFuncionarios;
-    private int idUsuarioSelecionado;
+    private final TelaFuncionarios TELA;
+    private int selecionado;    // Guarda o id do usuário que foi selecionado
 
     public AtualizarFuncionarios(TelaFuncionarios telaFuncionarios) {
         initComponents();
-        this.telaFuncionarios = telaFuncionarios;
+        this.TELA = telaFuncionarios;
+        data();
     }
 
     // Preenche os campos da tela com os dados do usuário
     public void preencherCampos(Usuarios usuario) {
-        this.idUsuarioSelecionado = usuario.getId();
+        this.selecionado = usuario.getId();
 
         txtNome.setText(usuario.getNome());
         txtCpf.setText(usuario.getCpf());
         txtEmail.setText(usuario.getEmail());
         txtLogin.setText(usuario.getLogin());
-        txtCargo.setSelectedItem(usuario.getCargo());
 
-        txtSinete.setText(usuario.getSinete() != null ? usuario.getSinete() : "");
+        // Garantir que o combo box selecione corretamente o cargo do usuário
+        String cargoUsuario = usuario.getCargo();
+        if (cargoUsuario != null) {
+            switch (cargoUsuario.trim().toLowerCase()) {
+                case "gestor" ->
+                    txtCargo.setSelectedItem("Gestor");
+                case "supervisor" ->
+                    txtCargo.setSelectedItem("Supervisor");
+                case "soldador" ->
+                    txtCargo.setSelectedItem("Soldador");
+                default ->
+                    txtCargo.setSelectedItem("---"); // valor padrão se não encontrado
+            }
+        } else {
+            txtCargo.setSelectedItem("---");
+        }
+
+        boolean isSoldador = "soldador".equalsIgnoreCase(usuario.getCargo());
+        txtSinete.setEnabled(isSoldador);
+        txtSolda.setEnabled(isSoldador);
+        txtSupervisor.setEnabled(isSoldador);
+
+        txtSinete.setText(
+                usuario.getSinete() != null && !usuario.getSinete().equals("—") ? usuario.getSinete() : ""
+        );
         txtSupervisor.setText(usuario.getSupervisor() != null ? usuario.getSupervisor().getNome() : "");
 
         if (usuario.getSolda() != null) {
             txtSolda.setText(usuario.getSolda().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         }
     }
-
-    public void setIdUsuarioSelecionado(int id) {
-        this.idUsuarioSelecionado = id;
+    
+    public void usuarioSelecionado(Usuarios usuario) {
+        this.selecionado = usuario.getId();
     }
-
-    public void setUsuarioSelecionado(Usuarios usuario) {
-        this.idUsuarioSelecionado = usuario.getId();
-    }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -79,10 +100,8 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         txtSupervisor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(770, 730));
         setMinimumSize(new java.awt.Dimension(770, 730));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(770, 730));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -115,7 +134,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         botaoAtualizar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoAtualizar.setForeground(new java.awt.Color(255, 255, 255));
         botaoAtualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        botaoAtualizar.setText("CADASTRAR");
+        botaoAtualizar.setText("ATUALIZAR");
         botaoAtualizar.setMaximumSize(new java.awt.Dimension(260, 83));
         botaoAtualizar.setMinimumSize(new java.awt.Dimension(260, 83));
         botaoAtualizar.setPreferredSize(new java.awt.Dimension(260, 83));
@@ -156,6 +175,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         jPanel1.add(jLabel9);
         jLabel9.setBounds(20, 250, 100, 30);
 
+        txtCpf.setEnabled(false);
         txtCpf.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtCpf);
         txtCpf.setBounds(300, 150, 450, 30);
@@ -180,6 +200,11 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
 
         txtCargo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         txtCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---", "Gestor", "Supervisor", "Soldador" }));
+        txtCargo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCargoActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtCargo);
         txtCargo.setBounds(300, 300, 450, 30);
 
@@ -190,6 +215,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         jLabel4.setBounds(0, 380, 770, 40);
 
         txtSinete.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtSinete.setEnabled(false);
         jPanel1.add(txtSinete);
         txtSinete.setBounds(300, 450, 450, 30);
 
@@ -204,6 +230,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         jLabel16.setBounds(20, 450, 250, 30);
 
         txtSolda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("##/##/####"))));
+        txtSolda.setEnabled(false);
         txtSolda.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtSolda);
         txtSolda.setBounds(300, 500, 450, 30);
@@ -214,6 +241,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         jLabel17.setBounds(20, 500, 250, 30);
 
         txtSupervisor.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtSupervisor.setEnabled(false);
         jPanel1.add(txtSupervisor);
         txtSupervisor.setBounds(300, 550, 450, 30);
 
@@ -223,6 +251,15 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtCargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCargoActionPerformed
+        String cargoSelecionado = txtCargo.getSelectedItem().toString();
+        boolean isSoldador = cargoSelecionado.equalsIgnoreCase("Soldador");
+
+        txtSinete.setEnabled(isSoldador);
+        txtSolda.setEnabled(isSoldador);
+        txtSupervisor.setEnabled(isSoldador);
+    }//GEN-LAST:event_txtCargoActionPerformed
 
     private void botaoAtualizarMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_botaoAtualizarMouseClicked
         atualizarUsuario();
@@ -237,42 +274,93 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
      */
     private void atualizarUsuario() {
         try {
-            Usuarios usuario = new Usuarios();
-            usuario.setId(idUsuarioSelecionado);
-            usuario.setNome(txtNome.getText());
-            usuario.setCpf(txtCpf.getText());
-            usuario.setEmail(txtEmail.getText());
-            usuario.setLogin(txtLogin.getText());
-            usuario.setCargo(txtCargo.getSelectedItem().toString());
-            usuario.setSinete(txtSinete.getText());
+            var dao = new UsuariosDAO();
 
-            String supervisorNome = txtSupervisor.getText().trim();
-            if (!supervisorNome.isEmpty()) {
-                Usuarios supervisor = new Usuarios();
-                supervisor.setNome(supervisorNome);
-                usuario.setSupervisor(supervisor);
+            // Busca o usuário existente pelo id
+            Usuarios usuario = dao.buscar_id(selecionado);
+            if (usuario == null) {
+                JOptionPane.showMessageDialog(this, "Usuário não encontrado no banco.");
+                return;
             }
+            
+            // Atualiza campos com dados da tela
+            usuario.setNome(txtNome.getText().trim());
+            usuario.setCpf(txtCpf.getText().trim());
+            usuario.setEmail(txtEmail.getText().trim());
+            usuario.setLogin(txtLogin.getText().trim());
+            String cargo = txtCargo.getSelectedItem().toString().trim();
+            usuario.setCargo(cargo);
+            
+            if (!cargo.equalsIgnoreCase("Soldador")) {
 
-            // Última solda
-            String ultimaSoldaStr = txtSolda.getText().trim();
-            if (!ultimaSoldaStr.isEmpty()) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                LocalDate ultimaSolda = LocalDate.parse(ultimaSoldaStr, formatter);
-                usuario.setSolda(ultimaSolda);
+                // limpar do banco
+                usuario.setSinete(null);
+                usuario.setSupervisor(null);
+                usuario.setSolda(null);
+                usuario.setValidade(null);
+
+                // limpar da tela
+                txtSinete.setText("");
+                txtSupervisor.setText("");
+                txtSolda.setText("");
+
+            } else {
+                // Só processa dados de soldador se for soldador
+                usuario.setSinete(txtSinete.getText().trim());
+
+                // Atualiza supervisor
+                List<Usuarios> todosUsuarios = dao.listar();
+                String supervisorNome = txtSupervisor.getText().trim();
+                Usuarios supervisor = null;
+                if (!supervisorNome.isEmpty()) {
+                    for (Usuarios u : todosUsuarios) {
+                        if (u.getNome().equalsIgnoreCase(supervisorNome)) {
+                            supervisor = u;
+                            break;
+                        }
+                    }
+                }
+                usuario.setSupervisor(supervisor);
+
+                // Atualiza a última solda
+                String ultimaSoldaStr = txtSolda.getText().trim();
+                if (!ultimaSoldaStr.isEmpty()) {
+                    try {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        LocalDate ultimaSolda = LocalDate.parse(ultimaSoldaStr, formatter);
+                        usuario.setSolda(ultimaSolda);
+                        usuario.setValidade(ultimaSolda.plusDays(30));
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(this, "Formato de data inválido. Use dd/MM/yyyy.");
+                        return;
+                    }
+                } else {
+                    usuario.setSolda(null);
+                    usuario.setValidade(null);
+                }
             }
 
             // Atualiza no banco
-            UsuariosDAO dao = new UsuariosDAO();
             dao.atualizar(usuario);
 
             // Atualiza a tabela da tela principal
-            if (telaFuncionarios != null) {
-                telaFuncionarios.carregarTabela();
+            if (TELA != null) {
+                TELA.carregarTabela();
             }
 
             this.dispose();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar usuário: " + e.getMessage());
+
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar usuário: " + erro.getMessage());
+        }
+    }
+    
+private void data() {
+        try {
+            javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("##/##/####");
+            mf.setPlaceholderCharacter('_');
+            txtSolda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
+        } catch (java.text.ParseException ex) {
         }
     }
 
