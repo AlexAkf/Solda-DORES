@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import util.Fonte;
+import util.Hash;
+
 
 /**
  *
@@ -22,58 +24,92 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         this.TELA = tela;
         initComponents();
         data();
-        formatar();
-        txtCargo.addActionListener(evt -> {
-            boolean isSoldador = "Soldador".equalsIgnoreCase(txtCargo.getSelectedItem().toString());
-            txtSinete.setEnabled(isSoldador);
-            txtSolda.setEnabled(isSoldador);
-            txtSupervisor.setEnabled(isSoldador);
-        });
+        formatarCPF();
     }
 
     private void cadastrarUsuario() {
         try {
-            UsuariosDAO dao = new UsuariosDAO();
-            Usuarios usuario = new Usuarios();
+            var dao = new UsuariosDAO();
+            var usuario = new Usuarios();
 
             // Preenchendo os dados do usuário
-            usuario.setNome(txtNome.getText().trim());
             usuario.setCpf(txtCpf.getText().trim());
             usuario.setEmail(txtEmail.getText().trim());
-            usuario.setLogin(txtLogin.getText().trim());
             usuario.setCargo(txtCargo.getSelectedItem().toString().trim());
 
             switch (usuario.getCargo().toLowerCase()) {
                 case "gestor" -> usuario.setPerfil("adm");
                 case "supervisor" -> usuario.setPerfil("restrito");
-                case "soldador" -> usuario.setPerfil("comum");
                 default -> usuario.setPerfil("comum");
+            }
+            
+            String nome = txtNome.getText().trim();
+            if (!validaNome(nome)) {
+                JOptionPane.showMessageDialog(this, 
+                    "Por favor, insira um nome e sobrenome válido.");
+                return;
+            }
+            usuario.setNome(formatarNome(txtNome.getText()));
+
+            
+            String cpf = txtCpf.getText().trim();
+            if (!validaCPF(cpf)) {
+                JOptionPane.showMessageDialog(this, "CPF inválido! Verifique o número e tente novamente.");
+                return;
+            }
+            
+            String email = txtEmail.getText().trim();
+            if (!validaEmail(email)) {
+                JOptionPane.showMessageDialog(this, "E-mail inválido! Verifique o endereço e tente novamente.");
+                return;
             }
 
             if ("soldador".equalsIgnoreCase(usuario.getCargo())) {
-                usuario.setSinete(txtSinete.getText().trim());
+                usuario.setSinete(txtSinete.getText().toUpperCase().trim());
 
                 String supervisorNome = txtSupervisor.getText().trim();
                 Usuarios supervisor = null;
                 if (!supervisorNome.isEmpty()) {
-                    for (Usuarios u : dao.listar()) {
-                        if (u.getNome().equalsIgnoreCase(supervisorNome)) {
-                            supervisor = u;
-                            break;
-                        }
-                    }
-                }
-                usuario.setSupervisor(supervisor);
+                supervisor = dao.listar().stream()
+                                  .filter(u -> u.getNome().equalsIgnoreCase(supervisorNome))
+                                  .findFirst()
+                                  .orElse(null);
 
-                if (!txtSolda.getText().trim().isEmpty()) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate ultimaSolda = LocalDate.parse(txtSolda.getText().trim(), formatter);
-                    usuario.setSolda(ultimaSolda);
-                    usuario.setValidade(ultimaSolda.plusDays(30));
+                if (supervisor == null) {
+                    JOptionPane.showMessageDialog(this, "Supervisor não encontrado!");
+                    return;
                 }
             }
+            usuario.setSupervisor(supervisor);
 
-            usuario.setSenha("1");
+                if (!txtSolda.getText().trim().isEmpty()) {
+                    try {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        LocalDate ultimaSolda = LocalDate.parse(txtSolda.getText().trim(), formatter);
+
+                        // Aqui é a validação da data
+                        LocalDate hoje = LocalDate.now();
+                        if (ultimaSolda.isAfter(hoje)) {
+                            JOptionPane.showMessageDialog(this, "A data da última solda não pode ser no futuro!");
+                            return; // Para o cadastro
+                        }
+
+                        usuario.setSolda(ultimaSolda);
+                        usuario.setValidade(ultimaSolda.plusDays(30));
+                    } catch (HeadlessException e) {
+                        JOptionPane.showMessageDialog(this, "Data inválida! Use o formato dd/MM/yyyy.");
+                        return;
+                    }
+                }
+            }
+            
+            usuario.setLogin(gerarLogin(usuario.getNome(), usuario.getCargo()));
+            txtLogin.setText(usuario.getLogin());
+
+            String senha_padrao = "inicial";
+            String senha_hash = Hash.gerarHash(senha_padrao);
+            usuario.setSenha(senha_hash);
+            
             dao.inserir(usuario);
 
             JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
@@ -91,13 +127,6 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         }
     }
     
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -216,6 +245,7 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         txtEmail.setBounds(300, 200, 450, 30);
 
         txtLogin.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtLogin.setEnabled(false);
         jPanel1.add(txtLogin);
         txtLogin.setBounds(300, 250, 450, 30);
 
@@ -226,6 +256,11 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
 
         txtCargo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         txtCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---", "Gestor", "Supervisor", "Soldador" }));
+        txtCargo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCargoActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtCargo);
         txtCargo.setBounds(300, 300, 450, 30);
 
@@ -280,6 +315,19 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         cadastrarUsuario();
     }//GEN-LAST:event_botaoCadastrarMouseClicked
 
+    private void txtCargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCargoActionPerformed
+        boolean isSoldador = "Soldador".equalsIgnoreCase(txtCargo.getSelectedItem().toString());
+        txtSinete.setEnabled(isSoldador);
+        txtSolda.setEnabled(isSoldador);
+        txtSupervisor.setEnabled(isSoldador);
+
+        if (!isSoldador) {
+            txtSinete.setText("");
+            txtSolda.setText("");
+            txtSupervisor.setText("");
+        }
+    }//GEN-LAST:event_txtCargoActionPerformed
+
     private void data() {
         try {
             javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("##/##/####");
@@ -289,15 +337,118 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         }
     }
 
-private void formatar() {
+    private void formatarCPF() {
+            try {
+                javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("###.###.###-##");
+                mf.setPlaceholderCharacter('_');
+                txtCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
+            } catch (java.text.ParseException ex) {
+            }
+        }
+
+    private boolean validaCPF(String cpf) {
+        // Remove pontos e traço
+        cpf = cpf.replace(".", "").replace("-", "");
+
+        // Verifica se tem 11 dígitos
+        if (cpf.length() != 11) return false;
+
+        // Verifica se todos os dígitos são iguais
+        if (cpf.chars().distinct().count() == 1) return false;
+
         try {
-            javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("###.###.###-##");
-            mf.setPlaceholderCharacter('_');
-            txtCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
-        } catch (java.text.ParseException ex) {
+            int[] numeros = new int[11];
+            for (int i = 0; i < 11; i++) {
+                numeros[i] = Integer.parseInt(cpf.substring(i, i + 1));
+            }
+
+            // Calcula o primeiro dígito verificador
+            int soma = 0;
+            for (int i = 0; i < 9; i++) {
+                soma += numeros[i] * (10 - i);
+            }
+            int resto = 11 - (soma % 11);
+            int dig1 = (resto == 10 || resto == 11) ? 0 : resto;
+
+            // Calcula o segundo dígito verificador
+            soma = 0;
+            for (int i = 0; i < 10; i++) {
+                soma += numeros[i] * (11 - i);
+            }
+            resto = 11 - (soma % 11);
+            int dig2 = (resto == 10 || resto == 11) ? 0 : resto;
+
+            return numeros[9] == dig1 && numeros[10] == dig2;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
+    
+    private boolean validaNome(String nome) {
+        nome = nome.trim();
 
+        if (nome.isEmpty()) return false;
+
+        // Apenas letras e espaços
+        if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$")) return false;
+
+        // Precisa ter pelo menos duas palavras
+        String[] partes = nome.split("\\s+");
+        if (partes.length < 2) return false;
+
+        // Cada parte deve ter no mínimo 2 letras
+        for (String p : partes) {
+            if (p.length() < 2) return false;
+        }
+
+        return true;
+    }
+    
+    private String formatarNome(String nome) {
+        StringBuilder sb = new StringBuilder();
+        for (String p : nome.trim().toLowerCase().split("\\s+")) {
+            sb.append(Character.toUpperCase(p.charAt(0)))
+              .append(p.substring(1))
+              .append(" ");
+        }
+        return sb.toString().trim();
+    }
+    
+    private String sigla(String cargo) {
+        return switch (cargo.toLowerCase()) {
+            case "gestor" -> "adm";
+            case "supervisor" -> "sup";
+            default -> "usr";
+        };
+    }
+
+    private String gerarLogin(String nomeCompleto, String cargo) throws SQLException {
+        String[] partes = nomeCompleto.trim().split("\\s+");    // Picota o nome identificando o espaço entre strings
+
+        String primeiroNome = partes[0].toLowerCase();
+        String ultimoNome = partes[partes.length - 1].toLowerCase();
+
+        String baseLogin = primeiroNome + "." + ultimoNome + "@" + sigla(cargo); // Login padronizado, ex: Alex Silva -> alex.silva@adm
+        String login = baseLogin;
+        int contador = 1;
+
+        UsuariosDAO dao = new UsuariosDAO();
+        // Verifica se já existe no banco, se existir adicional o contador
+        while (dao.buscar_login(login) != null) {
+            login = primeiroNome + "." + ultimoNome + contador + "@" + sigla(cargo);
+            contador++;
+        }
+
+        return login;
+    }
+
+    private boolean validaEmail(String email) {
+        /* Aqui tem uma expressão regular para validar email, eu não entendi muito bem como funciona.
+           Mas ela vai conferir caracteres, permitir ponto, traço, obriga a ter arroba e o domínio */
+        String formato = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
+        return email.matches(formato);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoCadastrar;
     private javax.swing.JLabel botaoCancelar;

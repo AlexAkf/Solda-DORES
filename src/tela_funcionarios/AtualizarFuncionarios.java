@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import models.Usuarios;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
-import java.util.List;
 import javax.swing.JOptionPane;
 import util.Fonte;
 
@@ -18,11 +17,25 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
 
     private final TelaFuncionarios TELA;
     private int selecionado;    // Guarda o id do usuário que foi selecionado
+    private String loginOriginal;
+    private String nomeOriginal;
+    private String cargoOriginal;
 
     public AtualizarFuncionarios(TelaFuncionarios telaFuncionarios) {
         initComponents();
         this.TELA = telaFuncionarios;
         data();
+        
+         // Marca que o usuário alterou a data quando ele sair do campo
+        txtSolda.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                // Só marca se tiver algum valor digitado
+                String texto = txtSolda.getText().trim();
+                if (!texto.isEmpty() && !texto.equals("__/__/____")) {
+                }
+            }
+        });
     }
 
     // Preenche os campos da tela com os dados do usuário
@@ -33,6 +46,9 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         txtCpf.setText(usuario.getCpf());
         txtEmail.setText(usuario.getEmail());
         txtLogin.setText(usuario.getLogin());
+        nomeOriginal = usuario.getNome();
+        cargoOriginal = usuario.getCargo();
+        loginOriginal = usuario.getLogin();
 
         // Garantir que o combo box selecione corretamente o cargo do usuário
         String cargoUsuario = usuario.getCargo();
@@ -70,8 +86,6 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         this.selecionado = usuario.getId();
     }
     
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -190,6 +204,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         txtEmail.setBounds(300, 200, 450, 30);
 
         txtLogin.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtLogin.setEnabled(false);
         jPanel1.add(txtLogin);
         txtLogin.setBounds(300, 250, 450, 30);
 
@@ -261,17 +276,14 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         txtSupervisor.setEnabled(isSoldador);
     }//GEN-LAST:event_txtCargoActionPerformed
 
-    private void botaoAtualizarMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_botaoAtualizarMouseClicked
+    private void botaoAtualizarMouseClicked(java.awt.event.MouseEvent evt) {
         atualizarUsuario();
-    }// GEN-LAST:event_botaoAtualizarMouseClicked
+    }
 
-    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_botaoCancelarMouseClicked
+    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {
         this.dispose();
-    }// GEN-LAST:event_botaoCancelarMouseClicked
-
-    /**
-     * @param args the command line arguments
-     */
+    }
+    
     private void atualizarUsuario() {
         try {
             var dao = new UsuariosDAO();
@@ -283,11 +295,32 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
                 return;
             }
             
-            // Atualiza campos com dados da tela
-            usuario.setNome(txtNome.getText().trim());
-            usuario.setCpf(txtCpf.getText().trim());
-            usuario.setEmail(txtEmail.getText().trim());
-            usuario.setLogin(txtLogin.getText().trim());
+            String nome = txtNome.getText().trim();
+            if (!validaNome(nome)) {
+                JOptionPane.showMessageDialog(this,
+                    "Por favor, insira um nome e sobrenome válido.");
+                return;
+            }
+            usuario.setNome(formatarNome(nome));
+            
+            String email = txtEmail.getText().trim();
+            if (!validaEmail(email)) {
+                JOptionPane.showMessageDialog(this, "E-mail inválido! Verifique o endereço e tente novamente.");
+                return;
+            }
+            usuario.setEmail(email);
+            
+            String novoNome = formatarNome(nome);
+            String novoCargo = txtCargo.getSelectedItem().toString().trim();
+
+            // Atualiza login somente se nome ou cargo mudarem
+            if (!novoNome.equals(nomeOriginal) || !novoCargo.equalsIgnoreCase(cargoOriginal)) {
+                usuario.setLogin(gerarLogin(novoNome, novoCargo));
+                txtLogin.setText(usuario.getLogin());
+            } else {
+                usuario.setLogin(loginOriginal); // mantém o login original
+            }
+            
             String cargo = txtCargo.getSelectedItem().toString().trim();
             usuario.setCargo(cargo);
             
@@ -306,40 +339,46 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
 
             } else {
                 // Só processa dados de soldador se for soldador
-                usuario.setSinete(txtSinete.getText().trim());
+                if ("soldador".equalsIgnoreCase(usuario.getCargo())) {
+                    usuario.setSinete(txtSinete.getText().toUpperCase().trim());
 
-                // Atualiza supervisor
-                List<Usuarios> todosUsuarios = dao.listar();
-                String supervisorNome = txtSupervisor.getText().trim();
-                Usuarios supervisor = null;
-                if (!supervisorNome.isEmpty()) {
-                    for (Usuarios u : todosUsuarios) {
-                        if (u.getNome().equalsIgnoreCase(supervisorNome)) {
-                            supervisor = u;
-                            break;
+                    String supervisorNome = txtSupervisor.getText().trim();
+                    Usuarios supervisor = null;
+                    if (!supervisorNome.isEmpty()) {
+                        supervisor = dao.listar().stream()
+                                        .filter(u -> u.getNome().equalsIgnoreCase(supervisorNome))
+                                        .findFirst()
+                                        .orElse(null);
+
+                        if (supervisor == null) {
+                            JOptionPane.showMessageDialog(this, "Supervisor não encontrado!");
+                            return;
                         }
                     }
-                }
-                usuario.setSupervisor(supervisor);
+                    usuario.setSupervisor(supervisor);
 
                 // Atualiza a última solda
-                String ultimaSoldaStr = txtSolda.getText().trim();
-                if (!ultimaSoldaStr.isEmpty()) {
+                if (!txtSolda.getText().trim().isEmpty() && !txtSolda.getText().trim().equals("__/__/____")) {
                     try {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                        LocalDate ultimaSolda = LocalDate.parse(ultimaSoldaStr, formatter);
+                        LocalDate ultimaSolda = LocalDate.parse(txtSolda.getText().trim(), formatter);
+
+                        // Validação da data
+                        LocalDate hoje = LocalDate.now();
+                        if (ultimaSolda.isAfter(hoje)) {
+                            JOptionPane.showMessageDialog(this, "A data da última solda não pode ser no futuro!");
+                            return;
+                        }
+
                         usuario.setSolda(ultimaSolda);
                         usuario.setValidade(ultimaSolda.plusDays(30));
                     } catch (Exception e) {
-                        JOptionPane.showMessageDialog(this, "Formato de data inválido. Use dd/MM/yyyy.");
+                        JOptionPane.showMessageDialog(this, "Data inválida! Use o formato dd/MM/yyyy.");
                         return;
                     }
-                } else {
-                    usuario.setSolda(null);
-                    usuario.setValidade(null);
                 }
             }
-
+        }
             // Atualiza no banco
             dao.atualizar(usuario);
 
@@ -355,7 +394,37 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         }
     }
     
-private void data() {
+    private boolean validaNome(String nome) {
+        nome = nome.trim();
+
+        if (nome.isEmpty()) return false;
+
+        // Apenas letras e espaços
+        if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$")) return false;
+
+        // Precisa ter pelo menos duas palavras
+        String[] partes = nome.split("\\s+");
+        if (partes.length < 2) return false;
+
+        // Cada parte deve ter no mínimo 2 letras
+        for (String p : partes) {
+            if (p.length() < 2) return false;
+        }
+
+        return true;
+    }
+    
+    private String formatarNome(String nome) {
+        StringBuilder sb = new StringBuilder();
+        for (String p : nome.trim().toLowerCase().split("\\s+")) {
+            sb.append(Character.toUpperCase(p.charAt(0)))
+              .append(p.substring(1))
+              .append(" ");
+        }
+        return sb.toString().trim();
+    }
+    
+    private void data() {
         try {
             javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("##/##/####");
             mf.setPlaceholderCharacter('_');
@@ -363,7 +432,40 @@ private void data() {
         } catch (java.text.ParseException ex) {
         }
     }
+    
+    private String sigla(String cargo) {
+        return switch (cargo.toLowerCase()) {
+            case "gestor" -> "adm";
+            case "supervisor" -> "sup";
+            default -> "usr";
+        };
+    }
 
+    private String gerarLogin(String nomeCompleto, String cargo) throws SQLException {
+        String[] partes = nomeCompleto.trim().split("\\s+");    // Picota o nome identificando o espaço entre strings
+
+        String primeiroNome = partes[0].toLowerCase();
+        String ultimoNome = partes[partes.length - 1].toLowerCase();
+
+        String baseLogin = primeiroNome + "." + ultimoNome + "@" + sigla(cargo); // Login padronizado, ex: Alex Silva -> alex.silva@adm
+        String login = baseLogin;
+        int contador = 1;
+
+        UsuariosDAO dao = new UsuariosDAO();
+        // Verifica se já existe no banco, se existir adicional o contador
+        while (dao.buscar_login(login) != null) {
+            login = primeiroNome + "." + ultimoNome + contador + "@" + sigla(cargo);
+            contador++;
+        }
+
+        return login;
+    }
+    
+    private boolean validaEmail(String email) {
+        String formato = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
+        return email.matches(formato);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoAtualizar;
     private javax.swing.JLabel botaoCancelar;

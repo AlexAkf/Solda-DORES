@@ -54,7 +54,6 @@ public class UsuariosDAO {
                 }
             }
         } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro ao buscar usuário.\nErro: " + erro.getMessage());
             throw erro;
         }
         return null;    // Retorna null pra caso o login não exista
@@ -108,7 +107,6 @@ public class UsuariosDAO {
 
             stmt.executeUpdate(); // Executa o comando SQL no DB
         } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro ao inserir usuário.\nErro: " + erro.getMessage());
             throw erro;
         }
     }
@@ -233,7 +231,6 @@ public class UsuariosDAO {
             stmt.setInt(14, usuario.getId());
             stmt.executeUpdate();
         } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro ao atualizar usuário.\nErro: " + erro.getMessage());
             throw erro;
         }
     }
