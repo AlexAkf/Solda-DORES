@@ -294,4 +294,28 @@ public class UsuariosDAO {
         }
         return null;
     }
+    
+    public void atualizarSenha(int id, String novaSenha) throws SQLException {
+        String sql = "UPDATE usuarios SET senha = ?, senha_padrao = false WHERE id = ?";
+
+        try (PreparedStatement stmt = CONN.prepareStatement(sql)) {
+            stmt.setString(1, novaSenha);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+        }
+    }
+    
+    public boolean isSenhaPadrao(int id) throws SQLException {
+        String sql = "SELECT senha_padrao FROM usuarios WHERE id = ?";
+        try (PreparedStatement stmt = CONN.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("senha_padrao");
+                } else {
+                    throw new SQLException("Usuário não encontrado");
+                }
+            }
+        }
+    }
 }

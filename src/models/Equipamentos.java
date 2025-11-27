@@ -4,6 +4,7 @@ package models;
  *
  * @author Hugo
  */
+
 public class Equipamentos {
     private int id;
     private String codigo;

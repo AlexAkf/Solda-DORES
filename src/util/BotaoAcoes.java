@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
  *
  * @author Hugo
  */
+
 public class BotaoAcoes extends JButton {
 
     private boolean click;

@@ -8,6 +8,7 @@ import util.Fonte;
  *
  * @author Hugo
  */
+
 public class AtualizarEquipamentos extends javax.swing.JFrame {
 
     private final TelaEquipamentos telaEquipamentos;
@@ -32,8 +33,6 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         this.idEquipamentoSelecionado = id;
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -178,11 +177,11 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_botaoCancelarMouseClicked
+    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {
         this.dispose();
-    }// GEN-LAST:event_botaoCancelarMouseClicked
+    }
 
-    private void botaoAtualizarMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_botaoAtualizarMouseClicked
+    private void botaoAtualizarMouseClicked(java.awt.event.MouseEvent evt) {
         // Recebendo os valores cadastrados.
         String codigo = txtCodigo.getText();
         String modelo = txtModelo.getText();
@@ -209,9 +208,9 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         }
 
         this.dispose(); // fecha a tela
-    }// GEN-LAST:event_botaoAtualizarMouseClicked
+    }
 
-    private void txtSoldadorKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtSoldadorKeyReleased
+    private void txtSoldadorKeyReleased(java.awt.event.KeyEvent evt) {
         String soldador = txtSoldador.getText().trim();
 
         if (!soldador.isEmpty()) {
@@ -221,7 +220,7 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
             combo.setSelectedItem("Estoque");
             combo.setEnabled(true);
         }
-    }// GEN-LAST:event_txtSoldadorKeyReleased
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoAtualizar;

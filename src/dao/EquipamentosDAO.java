@@ -15,7 +15,7 @@ import models.Equipamentos;
  */
 public class EquipamentosDAO {
 
-    private Connection conn;
+    private final Connection conn;
 
     // O construtor sempre será utilizado ao criar uma nova instancia dessa classe.
     // EquipamentosDAO dao = new EquipamentosDAO();

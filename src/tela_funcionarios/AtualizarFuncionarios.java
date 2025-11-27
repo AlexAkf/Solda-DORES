@@ -436,8 +436,8 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
     private String sigla(String cargo) {
         return switch (cargo.toLowerCase()) {
             case "gestor" -> "adm";
-            case "supervisor" -> "sup";
-            default -> "usr";
+            case "supervisor" -> "res";
+            default -> "com";
         };
     }
 

@@ -9,6 +9,7 @@ import javax.swing.DefaultCellEditor;
  *
  * @author Hugo
  */
+
 public class TabelaAcaoEditor extends DefaultCellEditor {
 
     private final TabelaAcaoEvento evento;
