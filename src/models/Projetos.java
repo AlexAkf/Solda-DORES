@@ -36,7 +36,7 @@ public class Projetos {
         return id;
     }
 
-    public void setid(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -44,7 +44,7 @@ public class Projetos {
         return nome;
     }
 
-    public void setnome(String nome) {
+    public void setNome(String nome) {
         this.nome = nome;
     }
 
@@ -52,7 +52,7 @@ public class Projetos {
         return fk_empresa;
     }
 
-    public void setfk_empresa(int fk_empresa) {
+    public void setFk_empresa(int fk_empresa) {
         this.fk_empresa = fk_empresa;
     }
 
@@ -60,7 +60,7 @@ public class Projetos {
         return fk_supervisor;
     }
 
-    public void setfk_supervisor(int fk_supervisor) {
+    public void setFk_supervisor(int fk_supervisor) {
         this.fk_supervisor = fk_supervisor;
     }
 
@@ -68,7 +68,7 @@ public class Projetos {
         return inicio;
     }
 
-    public void setinicio(LocalDate inicio) {
+    public void setInicio(LocalDate inicio) {
         this.inicio = inicio;
     }
 
@@ -76,7 +76,7 @@ public class Projetos {
         return prazo;
     }
 
-    public void setprazo(LocalDate prazo) {
+    public void setPrazo(LocalDate prazo) {
         this.prazo = prazo;
     }
 
@@ -84,7 +84,7 @@ public class Projetos {
         return descricao;
     }
 
-    public void setdescricao(String descricao) {
+    public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
@@ -92,7 +92,7 @@ public class Projetos {
         return condicao;
     }
 
-    public void setcondicao(String condicao) {
+    public void setCondicao(String condicao) {
         this.condicao = condicao;
     }
 
@@ -100,37 +100,5 @@ public class Projetos {
     public String toString() {
         return id + " - " + nome + " - " + fk_empresa + " - " + fk_supervisor + " - " + inicio + " - " + prazo + " - "
                 + descricao + " - " + condicao;
-    }
-
-    public void setId(int aInt) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setNome(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setFk_empresa(int aInt) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setFk_supervisor(int aInt) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setInicio(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setPrazo(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setDescricao(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setCondicao(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

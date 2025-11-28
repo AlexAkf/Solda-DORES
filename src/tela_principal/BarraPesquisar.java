@@ -16,7 +16,6 @@ import tela_relatorios.TelaRelatorios;
  * @author Hugo
  * @author Alex
  */
-
 public class BarraPesquisar extends javax.swing.JFrame {
 
     private TelaPrincipal tp;
@@ -49,7 +48,11 @@ public class BarraPesquisar extends javax.swing.JFrame {
 
                 TelaRelatorios.getInstancia().filtrar(texto);
 
-                TelaProjetos.getInstancia().filtrar(texto);
+                try {
+                    TelaProjetos.getInstancia().filtrar(texto);
+                } catch (SQLException ex) {
+                    Logger.getLogger(BarraPesquisar.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -95,9 +98,14 @@ public class BarraPesquisar extends javax.swing.JFrame {
                     tela4.filtrar("");
                 }
 
-                TelaProjetos tela5 = TelaProjetos.getInstancia();
-                if (tela5 != null) {
-                    tela5.filtrar("");
+                TelaProjetos tela5;
+                try {
+                    tela5 = TelaProjetos.getInstancia();
+                    if (tela5 != null) {
+                        tela5.filtrar("");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(BarraPesquisar.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 // Fecha barra

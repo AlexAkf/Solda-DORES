@@ -49,8 +49,8 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         renderizar();   // Recarrega os botões
     }
 
-    /* ========== BOTÕES DE AÇÃO DA TABELA ==========
-     Cria o evento de ação dos botões apenas uma vez para evitar o bug */
+    // ========== BOTÕES DE AÇÃO DA TABELA ==========
+    // Cria o evento de ação dos botões apenas uma vez para evitar o bug
     private void iniciarEvento() {
         evento = new TabelaAcaoEvento() {
             @Override

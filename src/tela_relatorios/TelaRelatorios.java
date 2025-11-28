@@ -1,17 +1,22 @@
 package tela_relatorios;
 
+import dao.RelatoriosDAO;
 import java.awt.Color;
+import java.util.List;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import models.Relatorios;
 import util.Fonte;
 
 /**
  *
  * @author Rafael Moreira
  */
+
+
 
 public class TelaRelatorios extends javax.swing.JPanel {
 
@@ -39,6 +44,9 @@ public class TelaRelatorios extends javax.swing.JPanel {
         // Altura, largura e cor das tabelas -> GERAL
         tabela.setBackground(Color.WHITE);
         tabela.setRowHeight(60);
+        
+        carregarTabela();
+        
     }
 
     // Método para utilizar a instância da tela na barra de pesquisa.
@@ -61,15 +69,42 @@ public class TelaRelatorios extends javax.swing.JPanel {
         } else {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto)); // Busca em todas as colunas
         }
+        
+        
     }
+
+    public void carregarTabela() {
+    RelatoriosDAO dao = new RelatoriosDAO();
+    List<Relatorios> lista = dao.listarRelatorios();
+
+    DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+    modelo.setRowCount(0); // limpar
+
+    for (Relatorios r : lista) {
+        modelo.addRow(new Object[]{
+            r.getId(),
+            r.getNome(),
+            r.isCondicao() ? "Automático" : "Manual",
+            r.getDescricao(),
+            r.getCaminho(),
+            r.getCriadoEm() != null 
+                ? new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(r.getCriadoEm())
+                : ""
+        });
+    }
+}
     
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
         novoRelatorio = new javax.swing.JLabel();
+        botaoBackup = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
@@ -85,14 +120,14 @@ public class TelaRelatorios extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Nome", "CPF", "E-mail", "Login", "Cargo", "Sinete", "Supervisor", "Certificado", "Ações"
+                "ID", "Nome", "Tipo De Backup", "Descrição", "Caminho", "Hora"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, true
+                false, false, true, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -120,9 +155,26 @@ public class TelaRelatorios extends javax.swing.JPanel {
         add(novoRelatorio);
         novoRelatorio.setBounds(1530, 20, 260, 90);
 
+        botaoBackup.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
+        botaoBackup.setForeground(new java.awt.Color(255, 255, 255));
+        botaoBackup.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoBackup.setText("BACKUP");
+        botaoBackup.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoBackupMouseClicked(evt);
+            }
+        });
+        add(botaoBackup);
+        botaoBackup.setBounds(1240, 20, 260, 90);
+        botaoBackup.getAccessibleContext().setAccessibleName("");
+
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(1530, 20, 260, 90);
+        jLabel2.setBounds(1240, 20, 260, 90);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
+        add(jLabel3);
+        jLabel3.setBounds(1530, 20, 260, 90);
     }// </editor-fold>//GEN-END:initComponents
 
     private void novoRelatorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_novoRelatorioMouseClicked
@@ -130,8 +182,14 @@ public class TelaRelatorios extends javax.swing.JPanel {
         cadastro.setVisible(true);
     }//GEN-LAST:event_novoRelatorioMouseClicked
 
+    private void botaoBackupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoBackupMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botaoBackupMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel botaoBackup;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel novoRelatorio;
     private javax.swing.JTable tabela;

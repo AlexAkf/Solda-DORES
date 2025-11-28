@@ -1,25 +1,37 @@
 package tela_projetos;
 
+import dao.ProjetosDAO;
+import java.time.format.DateTimeFormatter;
 import java.awt.Color;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import models.Projetos;
 import util.Fonte;
+import util.TabelaAcaoEditor;
+import util.TabelaAcaoEvento;
+import util.TabelaAcaoRender;
 
 /**
  *
  * @author Rafael Silva
  */
-
 public class TelaProjetos extends javax.swing.JPanel {
 
     private static TelaProjetos instancia;
+    private TabelaAcaoEvento evento;   // Guardar evento para reutilizar após recarregar
+
     // Criando uma instância dessa tela para poder utilizar a barra de pesquisa.
-    public TelaProjetos() {
+    public TelaProjetos() throws SQLException {
         initComponents();
+        iniciarEvento();    // Cria o evento apenas uma vez
         instancia = this;
+        carregarTabela();
         
         // ============= PERSONALIZAÇÃO =============
         // Centraliza os dados
@@ -39,10 +51,57 @@ public class TelaProjetos extends javax.swing.JPanel {
         // Altura, largura e cor das tabelas -> GERAL
         tabela.setBackground(Color.WHITE);
         tabela.setRowHeight(60);
+
+        renderizar();
+    }
+
+    // ========== BOTÕES DE AÇÃO DA TABELA ==========
+    // Cria o evento de ação dos botões apenas uma vez para evitar o bug */
+    private void iniciarEvento() {
+        TabelaAcaoEvento evento;
+        evento = new TabelaAcaoEvento() {
+            @Override
+            public void editando(int linha) {
+                int id = (int) tabela.getValueAt(linha, 0);
+                String nome = (String) tabela.getValueAt(linha, 1);
+                int fk_empresa = (int) tabela.getValueAt(linha, 2);
+                int fk_supervisor = (int) tabela.getValueAt(linha, 3);
+                LocalDate inicio = (LocalDate) tabela.getValueAt(linha, 4);
+                LocalDate prazo = (LocalDate) tabela.getValueAt(linha, 5);
+                String descricao = (String) tabela.getValueAt(linha, 6);
+                String condicao = (String) tabela.getValueAt(linha, 7);
+
+                Projetos projeto = new Projetos();
+                projeto.setId(id);
+                projeto.setNome(nome);
+                projeto.setFk_empresa(fk_empresa);
+                projeto.setFk_supervisor(fk_supervisor);
+                projeto.setInicio(inicio);
+                projeto.setPrazo(prazo);
+                projeto.setDescricao(descricao);
+                projeto.setCondicao(condicao);
+
+            }
+
+            @Override
+            public void excluindo(int linha) {
+                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            }
+        };
+    }
+
+    private void renderizar() {
+        // Faz o famoso desliga e liga pra recarregar os botões da coluna Ações
+        tabela.getColumnModel().getColumn(8).setCellRenderer(new TabelaAcaoRender());
+        tabela.getColumnModel().getColumn(8).setCellEditor(new TabelaAcaoEditor(evento));
+
+        // Também ajudam no processo de recarregar
+        tabela.revalidate();
+        tabela.repaint();
     }
 
     // Método para utilizar a instância da tela na barra de pesquisa.
-    public static TelaProjetos getInstancia() {
+    public static TelaProjetos getInstancia() throws SQLException {
         if (instancia == null) {
             instancia = new TelaProjetos();
         }
@@ -62,7 +121,34 @@ public class TelaProjetos extends javax.swing.JPanel {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto)); // Busca em todas as colunas
         }
     }
-    
+
+    public void carregarTabela() throws SQLException {
+        var data = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        ProjetosDAO dao = new ProjetosDAO();
+        List<Projetos> lista = dao.listarTodos();
+
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+        modelo.setRowCount(0);
+
+        for (Projetos projeto : lista) {
+            String inicio = (projeto.getinicio() != null) ? projeto.getinicio().format(data) : "-";
+            String prazo = (projeto.getprazo() != null) ? projeto.getprazo().format(data) : "-";
+
+            modelo.addRow(new Object[]{
+                projeto.getid(),
+                projeto.getnome(),
+                projeto.getfk_empresa(),
+                projeto.getfk_supervisor(),
+                projeto.getinicio(),
+                projeto.getprazo(),
+                projeto.getdescricao(),
+                projeto.getcondicao(),
+                null
+            });
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -101,14 +187,14 @@ public class TelaProjetos extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Projeto", "Empresa", "Supervisor", "Data Inicial", "Prazo Final", "Descrição"
+                "ID", "Projeto", "Empresa", "Supervisor", "Data Inicial", "Prazo Final", "Descrição", "Condição", "Ações"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
