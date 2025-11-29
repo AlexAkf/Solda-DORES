@@ -1,6 +1,7 @@
 package tela_equipamentos;
 
 import dao.EquipamentosDAO;
+import javax.swing.JOptionPane;
 import models.Equipamentos;
 import util.Fonte;
 
@@ -8,7 +9,6 @@ import util.Fonte;
  *
  * @author Hugo
  */
-
 public class CadastroEquipamentos extends javax.swing.JFrame {
 
     private final TelaEquipamentos telaEquipamentos;
@@ -23,12 +23,10 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        combo = new javax.swing.JComboBox<>();
-        jLabel9 = new javax.swing.JLabel();
+        comboStatus = new javax.swing.JComboBox<>();
         txtMarca = new javax.swing.JTextField();
-        txtModelo = new javax.swing.JTextField();
+        txtEquipamento = new javax.swing.JTextField();
         txtCodigo = new javax.swing.JTextField();
-        txtSoldador = new javax.swing.JTextField();
         botaoCancelar = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -40,48 +38,35 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(770, 480));
+        setMaximumSize(new java.awt.Dimension(770, 430));
+        setMinimumSize(new java.awt.Dimension(770, 430));
         setUndecorated(true);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(30, 58, 138), 2, true));
-        jPanel1.setMaximumSize(new java.awt.Dimension(770, 480));
-        jPanel1.setMinimumSize(new java.awt.Dimension(770, 480));
-        jPanel1.setPreferredSize(new java.awt.Dimension(770, 480));
+        jPanel1.setMaximumSize(new java.awt.Dimension(770, 430));
+        jPanel1.setMinimumSize(new java.awt.Dimension(770, 430));
+        jPanel1.setPreferredSize(new java.awt.Dimension(770, 430));
         jPanel1.setLayout(null);
 
-        combo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estoque", "Emprestado", "Estragado" }));
-        jPanel1.add(combo);
-        combo.setBounds(300, 300, 450, 30);
-
-        jLabel9.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel9.setText("Soldador");
-        jPanel1.add(jLabel9);
-        jLabel9.setBounds(20, 250, 150, 30);
+        comboStatus.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "estoque", "estragado" }));
+        jPanel1.add(comboStatus);
+        comboStatus.setBounds(300, 250, 450, 30);
 
         txtMarca.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtMarca);
         txtMarca.setBounds(300, 200, 450, 30);
 
-        txtModelo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        txtModelo.setToolTipText("");
-        jPanel1.add(txtModelo);
-        txtModelo.setBounds(300, 150, 450, 30);
+        txtEquipamento.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtEquipamento.setToolTipText("");
+        jPanel1.add(txtEquipamento);
+        txtEquipamento.setBounds(300, 150, 450, 30);
 
         txtCodigo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtCodigo);
         txtCodigo.setBounds(300, 100, 450, 30);
-
-        txtSoldador.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        txtSoldador.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtSoldadorKeyReleased(evt);
-            }
-        });
-        jPanel1.add(txtSoldador);
-        txtSoldador.setBounds(300, 250, 450, 30);
 
         botaoCancelar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
@@ -96,17 +81,17 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
             }
         });
         jPanel1.add(botaoCancelar);
-        botaoCancelar.setBounds(40, 370, 260, 83);
+        botaoCancelar.setBounds(40, 320, 260, 83);
 
         jLabel7.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel7.setText("Estado de Uso");
+        jLabel7.setText("Status");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(20, 300, 160, 30);
+        jLabel7.setBounds(20, 250, 160, 30);
 
         jLabel6.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel6.setText("Modelo");
+        jLabel6.setText("Equipamento");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 150, 90, 30);
+        jLabel6.setBounds(20, 150, 130, 30);
 
         jLabel5.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel5.setText("Marca");
@@ -114,7 +99,7 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jLabel5.setBounds(20, 200, 140, 30);
 
         jLabel4.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel4.setText("Código");
+        jLabel4.setText("Código de Série");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(20, 100, 150, 30);
 
@@ -131,7 +116,7 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
             }
         });
         jPanel1.add(botaoCadastrar);
-        botaoCadastrar.setBounds(470, 370, 260, 83);
+        botaoCadastrar.setBounds(470, 320, 260, 83);
 
         jLabel1.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 40f));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -142,12 +127,12 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jLabel3.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(40, 370, 260, 83);
+        jLabel3.setBounds(40, 320, 260, 83);
 
         jLabel2.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(470, 370, 260, 83);
+        jLabel2.setBounds(470, 320, 260, 83);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -167,55 +152,42 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
     private void botaoCadastrarMouseClicked(java.awt.event.MouseEvent evt) {
         // Recebendo os valores cadastrados.
         String codigo = txtCodigo.getText();
-        String modelo = txtModelo.getText();
+        String equipamento = txtEquipamento.getText();
         String marca = txtMarca.getText();
-        String soldador = txtSoldador.getText();
-        String condicao = combo.getSelectedItem().toString().toLowerCase();
+        String status = comboStatus.getSelectedItem().toString();
 
         // Enviando o cadastro.
         Equipamentos eq = new Equipamentos();
         eq.setCodigo(codigo);
-        eq.setModelo(modelo);
+        eq.setModelo(equipamento);
         eq.setMarca(marca);
-        eq.setSoldador(soldador);
-        eq.setCondicao(condicao);
+        eq.setStatus(status);
 
-        // Utilizando o método 'atualizarEquipamento' da classe DAO.
+        // Utilizando o método 'inserirEquipamento' da classe DAO.
         EquipamentosDAO dao = new EquipamentosDAO();
-        dao.inserirEquipamento(eq);
 
-        // Atualiza a tabela da tela principal
-        if (telaEquipamentos != null) {
-            telaEquipamentos.carregarTabela();
+        // CORREÇÃO: Captura o resultado da operação
+        boolean sucesso = dao.inserirEquipamento(eq);
+
+        // CORREÇÃO: Só fecha a tela se a operação foi um sucesso (validou e inseriu)
+        if (sucesso) {
+            // Atualiza a tabela da tela principal
+            if (telaEquipamentos != null) {
+                telaEquipamentos.carregarTabela();
+            }
+
+            this.dispose(); // Fecha a tela SOMENTE se foi sucesso
         }
-
-        this.dispose(); // fecha a tela
     }
 
     private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {
         this.dispose();
     }
 
-    private void txtSoldadorKeyReleased(java.awt.event.KeyEvent evt) {
-        // Comando para ajudar o usuário com a logica do banco.
-        // Caso preencha o campo "soldador", a combo box será trancada no item
-        // "Emprestado".
-        // No contrario, irá para o item "Estoque".
-        String soldador = txtSoldador.getText().trim();
-
-        if (!soldador.isEmpty()) {
-            combo.setSelectedItem("Emprestado");
-            combo.setEnabled(false);
-        } else {
-            combo.setSelectedItem("Estoque");
-            combo.setEnabled(true);
-        }
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoCadastrar;
     private javax.swing.JLabel botaoCancelar;
-    private javax.swing.JComboBox<String> combo;
+    private javax.swing.JComboBox<String> comboStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -223,11 +195,9 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtEquipamento;
     private javax.swing.JTextField txtMarca;
-    private javax.swing.JTextField txtModelo;
-    private javax.swing.JTextField txtSoldador;
     // End of variables declaration//GEN-END:variables
 }

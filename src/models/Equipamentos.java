@@ -4,13 +4,14 @@ package models;
  *
  * @author Hugo
  */
-
 public class Equipamentos {
+
     private int id;
     private String codigo;
     private String modelo;
     private String marca;
     private String soldador;
+    private String status;
     private String condicao;
 
     // Getters
@@ -32,6 +33,10 @@ public class Equipamentos {
 
     public String getSoldador() {
         return soldador;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public String getCondicao() {
@@ -57,6 +62,10 @@ public class Equipamentos {
 
     public void setSoldador(String soldador) {
         this.soldador = soldador;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setCondicao(String condicao) {

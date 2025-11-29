@@ -192,7 +192,7 @@ public class RelatorioCorpo extends JFrame {
             document.add(new Paragraph("-----------------------------------------"));
 
             EquipamentosDAO equipamentosDAO = new EquipamentosDAO();
-            List<Equipamentos> listaEq = equipamentosDAO.listarTodos();
+            List<Equipamentos> listaEq = equipamentosDAO.listarEquipamentos();
 
             PdfPTable tabelaEq = new PdfPTable(6); // colunas
             tabelaEq.setWidthPercentage(100);
@@ -208,7 +208,7 @@ public class RelatorioCorpo extends JFrame {
                 tabelaEq.addCell(eq.getCodigo() != null ? eq.getCodigo() : "-");
                 tabelaEq.addCell(eq.getModelo() != null ? eq.getModelo() : "-");
                 tabelaEq.addCell(eq.getMarca() != null ? eq.getMarca() : "-");
-                tabelaEq.addCell(eq.getCondicao() != null ? eq.getCondicao() : "-");
+                tabelaEq.addCell(eq.getStatus() != null ? eq.getStatus() : "-");
                 tabelaEq.addCell(eq.getSoldador() != null ? eq.getSoldador() : "—");
             }
 

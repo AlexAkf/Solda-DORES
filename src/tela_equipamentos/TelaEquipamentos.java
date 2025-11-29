@@ -50,7 +50,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
     }
 
     // ========== BOTÕES DE AÇÃO DA TABELA ==========
-    // Cria o evento de ação dos botões apenas uma vez para evitar o bug
+    // Cria o evento de ação dos botões apenas uma vez para evitar o bug.
     private void iniciarEvento() {
         evento = new TabelaAcaoEvento() {
             @Override
@@ -58,12 +58,22 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                 // Converte o índice da view para model
                 int model = tabela.convertRowIndexToModel(linha);
 
+                // Pega a Condição (Ativo/Inativo) - Coluna 6
+                String status = (String) tabela.getModel().getValueAt(model, 6);
+                
+                // BLOQUEIO: Não pode editar se estiver Inativo
+                if ("Inativo".equalsIgnoreCase(status)) {
+                    JOptionPane.showMessageDialog(null, 
+                            "Não é possível editar equipamentos inativos.", 
+                            "Bloqueio", JOptionPane.WARNING_MESSAGE);
+                    return; // Sai do método
+                }
+                
                 // Pega os dados da linha selecionada
                 int id = (int) tabela.getModel().getValueAt(model, 0);
                 String codigo = (String) tabela.getModel().getValueAt(model, 1);
                 String modelo = (String) tabela.getModel().getValueAt(model, 2);
                 String marca = (String) tabela.getModel().getValueAt(model, 3);
-                String soldador = (String) tabela.getModel().getValueAt(model, 4);
                 String condicao = (String) tabela.getModel().getValueAt(model, 5);
 
                 var equipamento = new Equipamentos();
@@ -71,8 +81,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                 equipamento.setCodigo(codigo);
                 equipamento.setModelo(modelo);
                 equipamento.setMarca(marca);
-                equipamento.setSoldador(soldador);
-                equipamento.setCondicao(condicao);
+                equipamento.setStatus(condicao);
 
                 var atualizar = new AtualizarEquipamentos(TelaEquipamentos.this);
                 atualizar.preencherCampos(equipamento);
@@ -84,14 +93,25 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
             public void excluindo(int linha) {
                 int model = tabela.convertRowIndexToModel(linha);
                 int idEquipamento = (int) tabela.getModel().getValueAt(model, 0);
+                
+                // Pega a Condição (Ativo/Inativo) - Coluna 6
+                String condicao = (String) tabela.getModel().getValueAt(model, 6);
+
+                // BLOQUEIO: Não pode excluir/inativar se já estiver Inativo
+                if ("Inativo".equalsIgnoreCase(condicao)) {
+                    JOptionPane.showMessageDialog(null, 
+                            "O equipamento já está inativo.", 
+                            "Bloqueio", JOptionPane.WARNING_MESSAGE);
+                    return; // Sai do método
+                }
 
                 int opcao = JOptionPane.showConfirmDialog(null,
-                        "Deseja realmente excluir o equipamento ID " + idEquipamento + "?",
+                        "Deseja realmente inativar o equipamento ID " + idEquipamento + "?",
                         "Confirmação", JOptionPane.YES_NO_OPTION);
 
                 if (opcao == JOptionPane.YES_OPTION) {
                     EquipamentosDAO dao = new EquipamentosDAO();
-                    dao.excluirEquipamento(idEquipamento);
+                    dao.inativarEquipamento(idEquipamento);
                     carregarTabela();   // Atualiza a tabela após exclusão
                     renderizar();   // Reaplica os botões de ação
                 }
@@ -101,8 +121,8 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
     private void renderizar() {
         // Faz o famoso desliga e liga pra recarregar os botões da coluna Ações
-        tabela.getColumnModel().getColumn(6).setCellRenderer(new TabelaAcaoRender());
-        tabela.getColumnModel().getColumn(6).setCellEditor(new TabelaAcaoEditor(evento));
+        tabela.getColumnModel().getColumn(7).setCellRenderer(new TabelaAcaoRender());
+        tabela.getColumnModel().getColumn(7).setCellEditor(new TabelaAcaoEditor(evento));
 
         // Também ajudam no processo de recarregar
         tabela.revalidate();
@@ -111,7 +131,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
     public void carregarTabela() {
         EquipamentosDAO dao = new EquipamentosDAO();
-        List<Equipamentos> lista = dao.listarTodos();
+        List<Equipamentos> lista = dao.listarEquipamentos();
 
         // Caso algum botão tenha sido clicado, encerra edição
         if (tabela.isEditing() && tabela.getCellEditor() != null) {
@@ -128,6 +148,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                 equipamento.getModelo(),
                 equipamento.getMarca(),
                 equipamento.getSoldador(),
+                equipamento.getStatus(),
                 equipamento.getCondicao()
             });
         }
@@ -159,10 +180,12 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
+        botaoCadastro = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
@@ -170,17 +193,17 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1810, 1014));
         setLayout(null);
 
-        jLabel3.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("+ NOVO CADASTRO");
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+        botaoCadastro.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
+        botaoCadastro.setForeground(new java.awt.Color(255, 255, 255));
+        botaoCadastro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoCadastro.setText("+ NOVO CADASTRO");
+        botaoCadastro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
+                botaoCadastroMouseClicked(evt);
             }
         });
-        add(jLabel3);
-        jLabel3.setBounds(1530, 20, 260, 90);
+        add(botaoCadastro);
+        botaoCadastro.setBounds(1530, 20, 260, 90);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         add(jLabel2);
@@ -194,14 +217,14 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Código", "Modelo", "Marca", "Em posse do soldador", "Condição", "Ações"
+                "Código Interno", "Código de Série", "Equipamento", "Marca", "Em posse do soldador", "Status", "Condição", "Ações"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -217,16 +240,39 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
         add(jScrollPane1);
         jScrollPane1.setBounds(20, 130, 1770, 870);
+
+        jLabel4.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("+ NOVO EMPRESTIMO");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
+        add(jLabel4);
+        jLabel4.setBounds(1240, 20, 260, 90);
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
+        add(jLabel5);
+        jLabel5.setBounds(1240, 20, 260, 90);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        TelaEmprestimos emprestimo = new TelaEmprestimos(this);
+        emprestimo.setVisible(true);
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void botaoCadastroMouseClicked(java.awt.event.MouseEvent evt) {
         CadastroEquipamentos cadastro = new CadastroEquipamentos(this);
         cadastro.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel botaoCadastro;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
