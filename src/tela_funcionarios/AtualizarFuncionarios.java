@@ -1,11 +1,21 @@
 package tela_funcionarios;
 
 import dao.UsuariosDAO;
+import java.awt.Color;
+import java.awt.HeadlessException;
 import java.sql.SQLException;
 import models.Usuarios;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.function.Function;
+import javax.swing.BorderFactory;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import util.Fonte;
 
 /**
@@ -13,7 +23,7 @@ import util.Fonte;
  * @author Alex
  */
 
-public class AtualizarFuncionarios extends javax.swing.JFrame {
+public final class AtualizarFuncionarios extends javax.swing.JFrame {
 
     private final TelaFuncionarios TELA;
     private int selecionado;    // Guarda o id do usuário que foi selecionado
@@ -25,13 +35,66 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         initComponents();
         this.TELA = telaFuncionarios;
         data();
+
+        aplicarAutoComplete(txtSupervisor, termo -> {
+            try {
+                UsuariosDAO dao = new UsuariosDAO();
+
+                // Buscar todos usuários que sejam supervisores e combinem com o termo
+                return dao.listar().stream()
+                        .filter(u -> "supervisor".equalsIgnoreCase(u.getCargo()))
+                        .filter(u -> u.getNome().toLowerCase().contains(termo.toLowerCase()))
+                        .map(Usuarios::getNome)
+                        .toList();
+
+            } catch (SQLException e) {
+                return java.util.Collections.emptyList();
+            }
+        });
+
+        txtNome.addActionListener(e -> botaoAtualizarMouseClicked(null));
+        txtEmail.addActionListener(e -> botaoAtualizarMouseClicked(null));
+        txtSinete.addActionListener(e -> botaoAtualizarMouseClicked(null));
+        txtValidade.addActionListener(e -> botaoAtualizarMouseClicked(null));
+        txtSupervisor.addActionListener(e -> botaoAtualizarMouseClicked(null));
+
+        txtCargo.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+                    botaoAtualizarMouseClicked(null);
+                }
+            }
+        });
+
+        // Mapeia a tecla esc para fechar a janela
+        getRootPane().getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
+            .put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), "fechar");
+
+        getRootPane().getActionMap().put("fechar", new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                boolean popupFechado = false;
+
+                // Fechar popup de txtSoldador se estiver visível
+                if (txtSupervisor.isFocusOwner() && txtSupervisor.getClientProperty("popup") instanceof JPopupMenu popup1 && popup1.isVisible()) {
+                    popup1.setVisible(false);
+                    popupFechado = true;
+                }
+
+                // Se nenhum popup estava aberto, fecha a janela
+                if (!popupFechado) {
+                    botaoCancelarMouseClicked(null);
+                }
+            }
+        });
         
-         // Marca que o usuário alterou a data quando ele sair do campo
-        txtSolda.addFocusListener(new java.awt.event.FocusAdapter() {
+        // Marca que o usuário alterou a data quando ele sair do campo
+        txtValidade.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusLost(java.awt.event.FocusEvent evt) {
                 // Só marca se tiver algum valor digitado
-                String texto = txtSolda.getText().trim();
+                String texto = txtValidade.getText().trim();
                 if (!texto.isEmpty() && !texto.equals("__/__/____")) {
                 }
             }
@@ -69,7 +132,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
 
         boolean isSoldador = "soldador".equalsIgnoreCase(usuario.getCargo());
         txtSinete.setEnabled(isSoldador);
-        txtSolda.setEnabled(isSoldador);
+        txtValidade.setEnabled(isSoldador);
         txtSupervisor.setEnabled(isSoldador);
 
         txtSinete.setText(
@@ -78,14 +141,14 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         txtSupervisor.setText(usuario.getSupervisor() != null ? usuario.getSupervisor().getNome() : "");
 
         if (usuario.getSolda() != null) {
-            txtSolda.setText(usuario.getSolda().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            txtValidade.setText(usuario.getSolda().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         }
     }
-    
+
     public void usuarioSelecionado(Usuarios usuario) {
         this.selecionado = usuario.getId();
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -109,7 +172,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         txtSinete = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        txtSolda = new javax.swing.JFormattedTextField();
+        txtValidade = new javax.swing.JFormattedTextField();
         jLabel17 = new javax.swing.JLabel();
         txtSupervisor = new javax.swing.JTextField();
 
@@ -133,7 +196,6 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
         botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoCancelar.setText("CANCELAR");
-        botaoCancelar.setToolTipText("");
         botaoCancelar.setMaximumSize(new java.awt.Dimension(260, 83));
         botaoCancelar.setMinimumSize(new java.awt.Dimension(260, 83));
         botaoCancelar.setPreferredSize(new java.awt.Dimension(260, 83));
@@ -225,7 +287,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
 
         jLabel4.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Campos para Soldador");
+        jLabel4.setText("Campos exclusivos do Soldador");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(0, 380, 770, 40);
 
@@ -244,14 +306,14 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         jPanel1.add(jLabel16);
         jLabel16.setBounds(20, 450, 250, 30);
 
-        txtSolda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("##/##/####"))));
-        txtSolda.setEnabled(false);
-        txtSolda.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(txtSolda);
-        txtSolda.setBounds(300, 500, 450, 30);
+        txtValidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("##/##/####"))));
+        txtValidade.setEnabled(false);
+        txtValidade.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtValidade);
+        txtValidade.setBounds(300, 500, 450, 30);
 
         jLabel17.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel17.setText("Última Solda");
+        jLabel17.setText("Validade do Certificado");
         jPanel1.add(jLabel17);
         jLabel17.setBounds(20, 500, 250, 30);
 
@@ -272,7 +334,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
         boolean isSoldador = cargoSelecionado.equalsIgnoreCase("Soldador");
 
         txtSinete.setEnabled(isSoldador);
-        txtSolda.setEnabled(isSoldador);
+        txtValidade.setEnabled(isSoldador);
         txtSupervisor.setEnabled(isSoldador);
     }//GEN-LAST:event_txtCargoActionPerformed
 
@@ -283,7 +345,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
     private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {
         this.dispose();
     }
-    
+
     private void atualizarUsuario() {
         try {
             var dao = new UsuariosDAO();
@@ -294,22 +356,22 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Usuário não encontrado no banco.");
                 return;
             }
-            
+
             String nome = txtNome.getText().trim();
             if (!validaNome(nome)) {
                 JOptionPane.showMessageDialog(this,
-                    "Por favor, insira um nome e sobrenome válido.");
+                        "Por favor, insira um nome e sobrenome válido.");
                 return;
             }
             usuario.setNome(formatarNome(nome));
-            
+
             String email = txtEmail.getText().trim();
             if (!validaEmail(email)) {
                 JOptionPane.showMessageDialog(this, "E-mail inválido! Verifique o endereço e tente novamente.");
                 return;
             }
             usuario.setEmail(email);
-            
+
             String novoNome = formatarNome(nome);
             String novoCargo = txtCargo.getSelectedItem().toString().trim();
 
@@ -320,10 +382,10 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
             } else {
                 usuario.setLogin(loginOriginal); // mantém o login original
             }
-            
+
             String cargo = txtCargo.getSelectedItem().toString().trim();
             usuario.setCargo(cargo);
-            
+
             if (!cargo.equalsIgnoreCase("Soldador")) {
 
                 // limpar do banco
@@ -335,7 +397,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
                 // limpar da tela
                 txtSinete.setText("");
                 txtSupervisor.setText("");
-                txtSolda.setText("");
+                txtValidade.setText("");
 
             } else {
                 // Só processa dados de soldador se for soldador
@@ -346,9 +408,9 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
                     Usuarios supervisor = null;
                     if (!supervisorNome.isEmpty()) {
                         supervisor = dao.listar().stream()
-                                        .filter(u -> u.getNome().equalsIgnoreCase(supervisorNome))
-                                        .findFirst()
-                                        .orElse(null);
+                                .filter(u -> u.getNome().equalsIgnoreCase(supervisorNome))
+                                .findFirst()
+                                .orElse(null);
 
                         if (supervisor == null) {
                             JOptionPane.showMessageDialog(this, "Supervisor não encontrado!");
@@ -357,28 +419,30 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
                     }
                     usuario.setSupervisor(supervisor);
 
-                // Atualiza a última solda
-                if (!txtSolda.getText().trim().isEmpty() && !txtSolda.getText().trim().equals("__/__/____")) {
-                    try {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                        LocalDate ultimaSolda = LocalDate.parse(txtSolda.getText().trim(), formatter);
+                    // Só atualiza se o usuário digitou uma data válida
+                    String textoValidade = txtValidade.getText().trim();
+                    if (!textoValidade.isEmpty() && !textoValidade.equals("__/__/____")) {
+                        try {
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                            LocalDate validade = LocalDate.parse(textoValidade, formatter);
 
-                        // Validação da data
-                        LocalDate hoje = LocalDate.now();
-                        if (ultimaSolda.isAfter(hoje)) {
-                            JOptionPane.showMessageDialog(this, "A data da última solda não pode ser no futuro!");
+                            LocalDate hoje = LocalDate.now();
+                            if (validade.isBefore(hoje)) {
+                                JOptionPane.showMessageDialog(this, "A validade do certificado já expirou!");
+                                return;
+                            }
+
+                            usuario.setValidade(validade);
+                            usuario.setSolda(validade.minusDays(30));
+
+                        } catch (HeadlessException e) {
+                            JOptionPane.showMessageDialog(this, "Data inválida! Use o formato dd/MM/yyyy.");
                             return;
                         }
-
-                        usuario.setSolda(ultimaSolda);
-                        usuario.setValidade(ultimaSolda.plusDays(30));
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(this, "Data inválida! Use o formato dd/MM/yyyy.");
-                        return;
                     }
+                    // Caso o campo esteja vazio ou igual ao placeholder, mantém a data antiga do banco
                 }
             }
-        }
             // Atualiza no banco
             dao.atualizar(usuario);
 
@@ -393,51 +457,62 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao atualizar usuário: " + erro.getMessage());
         }
     }
-    
+
     private boolean validaNome(String nome) {
         nome = nome.trim();
 
-        if (nome.isEmpty()) return false;
+        if (nome.isEmpty()) {
+            return false;
+        }
 
         // Apenas letras e espaços
-        if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$")) return false;
+        if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$")) {
+            return false;
+        }
 
         // Precisa ter pelo menos duas palavras
         String[] partes = nome.split("\\s+");
-        if (partes.length < 2) return false;
+        if (partes.length < 2) {
+            return false;
+        }
 
         // Cada parte deve ter no mínimo 2 letras
         for (String p : partes) {
-            if (p.length() < 2) return false;
+            if (p.length() < 2) {
+                return false;
+            }
         }
 
         return true;
     }
-    
+
     private String formatarNome(String nome) {
         StringBuilder sb = new StringBuilder();
         for (String p : nome.trim().toLowerCase().split("\\s+")) {
             sb.append(Character.toUpperCase(p.charAt(0)))
-              .append(p.substring(1))
-              .append(" ");
+                    .append(p.substring(1))
+                    .append(" ");
         }
         return sb.toString().trim();
     }
-    
+
     private void data() {
         try {
             javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("##/##/####");
             mf.setPlaceholderCharacter('_');
-            txtSolda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
+            txtValidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
         } catch (java.text.ParseException ex) {
         }
     }
-    
+
     private String sigla(String cargo) {
         return switch (cargo.toLowerCase()) {
-            case "gestor" -> "adm";
-            case "supervisor" -> "res";
-            default -> "com";
+            case "gestor" ->
+                "adm";
+            case "supervisor" ->
+                "res";
+            default ->
+                "com";
         };
     }
 
@@ -460,12 +535,137 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
 
         return login;
     }
-    
+
     private boolean validaEmail(String email) {
         String formato = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         return email.matches(formato);
     }
-    
+
+    public void aplicarAutoComplete(JTextField campo, Function<String, List<String>> busca) {
+
+        JPopupMenu popup = new JPopupMenu();
+        popup.setFocusable(false);
+        popup.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 2));
+        popup.setBackground(Color.WHITE);
+
+        // índice do item selecionado
+        final int[] selecionado = {-1};
+
+        campo.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void mostrarSugestoes() {
+                if (!campo.isShowing()) {
+                    return; // evita crash
+                }
+                
+                String texto = campo.getText().trim();
+
+                popup.setVisible(false);
+                popup.removeAll();
+                selecionado[0] = -1;
+
+                if (texto.length() < 1) {
+                    return;
+                }
+
+                // Executa busca no DAO.
+                List<String> resultados = busca.apply(texto);
+                
+                if (resultados.isEmpty()) {
+                    return;
+                }
+
+                for (String item : resultados) {
+                    JMenuItem option = new JMenuItem(item);
+                    option.setFocusable(false);
+
+                    // Personalização:
+                    option.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 20f));
+                    option.setForeground(Color.WHITE);
+                    option.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                    option.setBackground(new Color(30, 58, 138));
+
+                    option.addActionListener(ev -> {
+                        campo.setText(item);
+                        javax.swing.SwingUtilities.invokeLater(() -> popup.setVisible(false));
+                    });
+
+
+                    popup.add(option);
+                }
+
+                // Mostra o popup no próximo ciclo de eventos para garantir que o componente esteja pronto
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    if (campo.isShowing()) {
+                        popup.show(campo, 0, campo.getHeight());
+                    }
+                });
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) { 
+                mostrarSugestoes(); 
+            }
+            
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                mostrarSugestoes(); 
+            }
+            
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                mostrarSugestoes();
+            }
+        });
+
+        campo.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                int count = popup.getComponentCount();
+                if (count == 0) return;
+
+                switch (evt.getKeyCode()) {
+                    case java.awt.event.KeyEvent.VK_DOWN -> {
+                        selecionado[0] = Math.min(selecionado[0] + 1, count - 1);
+                        atualizarSelecao(popup, selecionado[0]);
+                    }
+                    
+                    case java.awt.event.KeyEvent.VK_UP -> {
+                        selecionado[0] = Math.max(selecionado[0] - 1, 0);
+                        atualizarSelecao(popup, selecionado[0]);
+                    }
+                    
+                    case java.awt.event.KeyEvent.VK_ENTER -> {
+                        if (popup.isVisible() && selecionado[0] >= 0 && selecionado[0] < count) {
+                            // Só seleciona o item do popup
+                            JMenuItem item = (JMenuItem) popup.getComponent(selecionado[0]);
+                            campo.setText(item.getText());
+                            popup.setVisible(false);
+                            // NÃO chama botaoCadastrar aqui
+                        } else {
+                            // Se não houver popup visível, dispara o cadastro
+                            botaoAtualizarMouseClicked(null);
+                        }
+                        evt.consume();
+                    }
+                }
+            }
+        });
+        campo.putClientProperty("popup", popup);
+    }
+
+    // Atualiza a cor de fundo para indicar seleção
+    private void atualizarSelecao(JPopupMenu popup, int index) {
+        for (int i = 0; i < popup.getComponentCount(); i++) {
+            JMenuItem item = (JMenuItem) popup.getComponent(i);
+            if (i == index) {
+                item.setBackground(new Color(50, 100, 200));
+            } else {
+                item.setBackground(new Color(30, 58, 138));
+            }
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoAtualizar;
     private javax.swing.JLabel botaoCancelar;
@@ -488,7 +688,7 @@ public class AtualizarFuncionarios extends javax.swing.JFrame {
     private javax.swing.JTextField txtLogin;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtSinete;
-    private javax.swing.JFormattedTextField txtSolda;
     private javax.swing.JTextField txtSupervisor;
+    private javax.swing.JFormattedTextField txtValidade;
     // End of variables declaration//GEN-END:variables
 }

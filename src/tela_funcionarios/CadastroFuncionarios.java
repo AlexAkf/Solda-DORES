@@ -1,12 +1,21 @@
 package tela_funcionarios;
 
 import dao.UsuariosDAO;
+import java.awt.Color;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
 import models.Usuarios;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.function.Function;
+import javax.swing.BorderFactory;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import util.Fonte;
 import util.Hash;
 
@@ -16,7 +25,7 @@ import util.Hash;
  * @author Alex
  */
 
-public class CadastroFuncionarios extends javax.swing.JFrame {
+public final class CadastroFuncionarios extends javax.swing.JFrame {
 
     private final TelaFuncionarios TELA;
     
@@ -25,6 +34,61 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         initComponents();
         data();
         formatarCPF();
+        
+        aplicarAutoComplete(txtSupervisor, termo -> {
+            try {
+                UsuariosDAO dao = new UsuariosDAO();
+
+                // Buscar todos usuários que sejam supervisores e combinem com o termo
+                return dao.listar().stream()
+                    .filter(u -> "supervisor".equalsIgnoreCase(u.getCargo()))
+                    .filter(u -> u.getNome().toLowerCase().contains(termo.toLowerCase()))
+                    .map(Usuarios::getNome)
+                    .toList();
+
+            } catch (SQLException e) {
+                return java.util.Collections.emptyList();
+            }
+        });
+
+        // ENTER aciona o cadastrarUsuario()
+        txtNome.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        txtCpf.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        txtEmail.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        txtSinete.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        txtValidade.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        txtSupervisor.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        
+        txtCargo.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+                    botaoCadastrarMouseClicked(null);
+                }
+            }
+        });
+        
+        // Mapeia a tecla esc para fechar a janela
+        getRootPane().getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
+            .put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), "fechar");
+
+        getRootPane().getActionMap().put("fechar", new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                boolean popupFechado = false;
+
+                // Fechar popup de txtSoldador se estiver visível
+                if (txtSupervisor.isFocusOwner() && txtSupervisor.getClientProperty("popup") instanceof JPopupMenu popup1 && popup1.isVisible()) {
+                    popup1.setVisible(false);
+                    popupFechado = true;
+                }
+
+                // Se nenhum popup estava aberto, fecha a janela
+                if (!popupFechado) {
+                    botaoCancelarMouseClicked(null);
+                }
+            }
+        });
     }
 
     private void cadastrarUsuario() {
@@ -82,20 +146,21 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
             }
             usuario.setSupervisor(supervisor);
 
-                if (!txtSolda.getText().trim().isEmpty()) {
+                if (!txtValidade.getText().trim().isEmpty()) {
                     try {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                        LocalDate ultimaSolda = LocalDate.parse(txtSolda.getText().trim(), formatter);
+                        LocalDate validade = LocalDate.parse(txtValidade.getText().trim(), formatter);
 
-                        // Aqui é a validação da data
                         LocalDate hoje = LocalDate.now();
-                        if (ultimaSolda.isAfter(hoje)) {
-                            JOptionPane.showMessageDialog(this, "A data da última solda não pode ser no futuro!");
-                            return; // Para o cadastro
+                        if (validade.isBefore(hoje)) {
+                            JOptionPane.showMessageDialog(this, "A validade do certificado já expirou!");
+                            return;
                         }
 
-                        usuario.setSolda(ultimaSolda);
-                        usuario.setValidade(ultimaSolda.plusDays(30));
+                        usuario.setValidade(validade);
+
+                        usuario.setSolda(validade.minusDays(30));
+
                     } catch (HeadlessException e) {
                         JOptionPane.showMessageDialog(this, "Data inválida! Use o formato dd/MM/yyyy.");
                         return;
@@ -109,6 +174,31 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
             String senha_padrao = "inicial";
             String senha_hash = Hash.gerarHash(senha_padrao);
             usuario.setSenha(senha_hash);
+            
+            var usuarioExistente = dao.buscarPorCpf(usuario.getCpf()); // Verifica se o cpf já existe
+            if (usuarioExistente != null) { // Se existir reativa a conta
+                
+                // Atualiza os dados do usuário existente
+                usuarioExistente.setNome(usuario.getNome());
+                usuarioExistente.setEmail(usuario.getEmail());
+                usuarioExistente.setCargo(usuario.getCargo());
+                usuarioExistente.setPerfil(usuario.getPerfil());
+                usuarioExistente.setLogin(gerarLogin(usuario.getNome(), usuario.getCargo()));
+                usuarioExistente.setSenha(usuario.getSenha());
+                usuarioExistente.setAtivo(true);
+
+                // Campos exclusivos de soldador
+                usuarioExistente.setSinete(usuario.getSinete());
+                usuarioExistente.setSupervisor(usuario.getSupervisor());
+                usuarioExistente.setValidade(usuario.getValidade());
+                usuarioExistente.setSolda(usuario.getSolda());
+
+                // Reativa e atualiza
+                dao.atualizar(usuarioExistente);
+                if (TELA != null) TELA.carregarTabela();
+                this.dispose();
+                return;
+            }
             
             dao.inserir(usuario);
 
@@ -150,7 +240,7 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         txtSinete = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        txtSolda = new javax.swing.JFormattedTextField();
+        txtValidade = new javax.swing.JFormattedTextField();
         jLabel17 = new javax.swing.JLabel();
         txtSupervisor = new javax.swing.JTextField();
 
@@ -175,7 +265,6 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
         botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoCancelar.setText("CANCELAR");
-        botaoCancelar.setToolTipText("");
         botaoCancelar.setMaximumSize(new java.awt.Dimension(260, 83));
         botaoCancelar.setMinimumSize(new java.awt.Dimension(260, 83));
         botaoCancelar.setPreferredSize(new java.awt.Dimension(260, 83));
@@ -223,6 +312,7 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jLabel6.setBounds(20, 100, 90, 30);
 
         txtNome.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtNome.setText("Fulano de Tal");
         jPanel1.add(txtNome);
         txtNome.setBounds(300, 100, 450, 30);
 
@@ -231,6 +321,7 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jPanel1.add(jLabel9);
         jLabel9.setBounds(20, 250, 100, 30);
 
+        txtCpf.setText("123.456.789-10");
         txtCpf.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jPanel1.add(txtCpf);
         txtCpf.setBounds(300, 150, 450, 30);
@@ -241,10 +332,12 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jLabel10.setBounds(20, 200, 100, 30);
 
         txtEmail.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtEmail.setText("exemplo@email.com");
         jPanel1.add(txtEmail);
         txtEmail.setBounds(300, 200, 450, 30);
 
         txtLogin.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtLogin.setText("fulano.tal@cargo");
         txtLogin.setEnabled(false);
         jPanel1.add(txtLogin);
         txtLogin.setBounds(300, 250, 450, 30);
@@ -266,11 +359,12 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
 
         jLabel4.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Campos para Soldador");
+        jLabel4.setText("Campos exclusivos do Soldador");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(0, 380, 770, 40);
 
         txtSinete.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtSinete.setText("COD");
         txtSinete.setEnabled(false);
         jPanel1.add(txtSinete);
         txtSinete.setBounds(300, 450, 450, 30);
@@ -285,17 +379,19 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         jPanel1.add(jLabel16);
         jLabel16.setBounds(20, 450, 250, 30);
 
-        txtSolda.setEnabled(false);
-        txtSolda.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(txtSolda);
-        txtSolda.setBounds(300, 500, 450, 30);
+        txtValidade.setText("DD/MM/AAAA");
+        txtValidade.setEnabled(false);
+        txtValidade.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtValidade);
+        txtValidade.setBounds(300, 500, 450, 30);
 
         jLabel17.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel17.setText("Última Solda");
+        jLabel17.setText("Validade do Certificado");
         jPanel1.add(jLabel17);
         jLabel17.setBounds(20, 500, 250, 30);
 
         txtSupervisor.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtSupervisor.setText("Ciclano Silva");
         txtSupervisor.setEnabled(false);
         jPanel1.add(txtSupervisor);
         txtSupervisor.setBounds(300, 550, 450, 30);
@@ -318,12 +414,12 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
     private void txtCargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCargoActionPerformed
         boolean isSoldador = "Soldador".equalsIgnoreCase(txtCargo.getSelectedItem().toString());
         txtSinete.setEnabled(isSoldador);
-        txtSolda.setEnabled(isSoldador);
+        txtValidade.setEnabled(isSoldador);
         txtSupervisor.setEnabled(isSoldador);
 
         if (!isSoldador) {
             txtSinete.setText("");
-            txtSolda.setText("");
+            txtValidade.setText("");
             txtSupervisor.setText("");
         }
     }//GEN-LAST:event_txtCargoActionPerformed
@@ -332,7 +428,7 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         try {
             javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("##/##/####");
             mf.setPlaceholderCharacter('_');
-            txtSolda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
+            txtValidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
         } catch (java.text.ParseException ex) {
         }
     }
@@ -449,6 +545,131 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
         return email.matches(formato);
     }
     
+    public void aplicarAutoComplete(JTextField campo, Function<String, List<String>> busca) {
+
+        JPopupMenu popup = new JPopupMenu();
+        popup.setFocusable(false);
+        popup.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 2));
+        popup.setBackground(Color.WHITE);
+
+        // índice do item selecionado
+        final int[] selecionado = {-1};
+
+        campo.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void mostrarSugestoes() {
+                if (!campo.isShowing()) {
+                    return; // evita crash
+                }
+                
+                String texto = campo.getText().trim();
+
+                popup.setVisible(false);
+                popup.removeAll();
+                selecionado[0] = -1;
+
+                if (texto.length() < 1) {
+                    return;
+                }
+
+                // Executa busca no DAO.
+                List<String> resultados = busca.apply(texto);
+                
+                if (resultados.isEmpty()) {
+                    return;
+                }
+
+                for (String item : resultados) {
+                    JMenuItem option = new JMenuItem(item);
+                    option.setFocusable(false);
+
+                    // Personalização:
+                    option.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 20f));
+                    option.setForeground(Color.WHITE);
+                    option.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                    option.setBackground(new Color(30, 58, 138));
+
+                    option.addActionListener(ev -> {
+                        campo.setText(item);
+                        javax.swing.SwingUtilities.invokeLater(() -> popup.setVisible(false));
+                    });
+
+
+                    popup.add(option);
+                }
+
+                // Mostra o popup no próximo ciclo de eventos para garantir que o componente esteja pronto
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    if (campo.isShowing()) {
+                        popup.show(campo, 0, campo.getHeight());
+                    }
+                });
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) { 
+                mostrarSugestoes(); 
+            }
+            
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                mostrarSugestoes(); 
+            }
+            
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                mostrarSugestoes();
+            }
+        });
+
+        campo.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                int count = popup.getComponentCount();
+                if (count == 0) return;
+
+                switch (evt.getKeyCode()) {
+                    case java.awt.event.KeyEvent.VK_DOWN -> {
+                        selecionado[0] = Math.min(selecionado[0] + 1, count - 1);
+                        atualizarSelecao(popup, selecionado[0]);
+                    }
+                    
+                    case java.awt.event.KeyEvent.VK_UP -> {
+                        selecionado[0] = Math.max(selecionado[0] - 1, 0);
+                        atualizarSelecao(popup, selecionado[0]);
+                    }
+                    
+                    case java.awt.event.KeyEvent.VK_ENTER -> {
+                        if (popup.isVisible() && selecionado[0] >= 0 && selecionado[0] < count) {
+                            // Só seleciona o item do popup
+                            JMenuItem item = (JMenuItem) popup.getComponent(selecionado[0]);
+                            campo.setText(item.getText());
+                            popup.setVisible(false);
+                            // NÃO chama botaoCadastrar aqui
+                        } else {
+                            // Se não houver popup visível, dispara o cadastro
+                            botaoCadastrarMouseClicked(null);
+                        }
+                        evt.consume();
+                    }
+                }
+            }
+        });
+        campo.putClientProperty("popup", popup);
+    }
+
+    // Atualiza a cor de fundo para indicar seleção
+    private void atualizarSelecao(JPopupMenu popup, int index) {
+        for (int i = 0; i < popup.getComponentCount(); i++) {
+            JMenuItem item = (JMenuItem) popup.getComponent(i);
+            if (i == index) {
+                item.setBackground(new Color(50, 100, 200));
+            } else {
+                item.setBackground(new Color(30, 58, 138));
+            }
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoCadastrar;
     private javax.swing.JLabel botaoCancelar;
@@ -471,7 +692,7 @@ public class CadastroFuncionarios extends javax.swing.JFrame {
     private javax.swing.JTextField txtLogin;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtSinete;
-    private javax.swing.JFormattedTextField txtSolda;
     private javax.swing.JTextField txtSupervisor;
+    private javax.swing.JFormattedTextField txtValidade;
     // End of variables declaration//GEN-END:variables
 }

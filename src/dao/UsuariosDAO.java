@@ -318,4 +318,49 @@ public class UsuariosDAO {
             }
         }
     }
+    
+    public Usuarios buscarPorCpf(String cpf) throws SQLException {
+        String sql = "SELECT * FROM usuarios WHERE cpf = ?";
+        try (PreparedStatement stmt = CONN.prepareStatement(sql)) {
+            stmt.setString(1, cpf);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    var usuario = new Usuarios();
+
+                    usuario.setId(rs.getInt("id"));
+                    usuario.setNome(rs.getString("nome"));
+                    usuario.setCpf(rs.getString("cpf"));
+                    usuario.setEmail(rs.getString("email"));
+                    usuario.setLogin(rs.getString("login"));
+                    usuario.setSenha(rs.getString("senha"));
+                    usuario.setSenhaPadrao(rs.getBoolean("senha_padrao"));
+                    usuario.setCargo(rs.getString("cargo"));
+                    usuario.setAtivo(rs.getBoolean("condicao"));
+                    usuario.setPerfil(rs.getString("perfil"));
+                    usuario.setSinete(rs.getString("sinete"));
+
+                    if (rs.getDate("validade_certificado") != null) {
+                        usuario.setValidade(rs.getDate("valididade_certificado").toLocalDate());
+                    }
+
+                    if (rs.getDate("ultima_solda") != null) {
+                        usuario.setSolda(rs.getDate("ultima_solda").toLocalDate());
+                    }
+
+                    return usuario;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public void reativar(int id) throws SQLException {
+        String sql = "UPDATE usuarios SET condicao = true WHERE id = ?";
+
+        try (PreparedStatement stmt = CONN.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
 }

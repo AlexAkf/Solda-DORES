@@ -19,7 +19,30 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
     public AtualizarEquipamentos(TelaEquipamentos tela) {
         initComponents();
         this.telaEquipamentos = tela;
+        
+        // ENTER realiza a transação de empresitmo
+        txtEquipamento.addActionListener(e ->  botaoAtualizarMouseClicked(null));
+        txtCodigo.addActionListener(e ->  botaoAtualizarMouseClicked(null));
+        txtMarca.addActionListener(e ->  botaoAtualizarMouseClicked(null));
+        comboStatus.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+                    botaoAtualizarMouseClicked(null);
+                }
+            }
+        });
+        
+        // Mapeia a tecla esc para fechar a janela
+        getRootPane().getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
+            .put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), "fechar");
 
+        getRootPane().getActionMap().put("fechar", new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                botaoCancelarMouseClicked(null);
+            }
+        });
     }
 
     public void preencherCampos(Equipamentos eq) {

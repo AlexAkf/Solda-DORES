@@ -80,7 +80,6 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="CANCELAR"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[260, 83]"/>
             </Property>
@@ -190,6 +189,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="Fonte.inserirFonte(&quot;Poppins-Regular.ttf&quot;, 18f)" type="code"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="Fulano de Tal"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -212,6 +212,7 @@
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="txtCpf">
           <Properties>
+            <Property name="text" type="java.lang.String" value="123.456.789-10"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="Fonte.inserirFonte(&quot;Poppins-Regular.ttf&quot;, 18f)" type="code"/>
             </Property>
@@ -240,6 +241,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="Fonte.inserirFonte(&quot;Poppins-Regular.ttf&quot;, 18f)" type="code"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="exemplo@email.com"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -252,6 +254,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="Fonte.inserirFonte(&quot;Poppins-Regular.ttf&quot;, 18f)" type="code"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="fulano.tal@cargo"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Constraints>
@@ -305,7 +308,7 @@
               <Connection code="Fonte.inserirFonte(&quot;Baloo2-Bold.ttf&quot;, 20f)" type="code"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Campos para Soldador"/>
+            <Property name="text" type="java.lang.String" value="Campos exclusivos do Soldador"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -318,6 +321,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="Fonte.inserirFonte(&quot;Poppins-Regular.ttf&quot;, 18f)" type="code"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="COD"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Constraints>
@@ -352,8 +356,9 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="txtSolda">
+        <Component class="javax.swing.JFormattedTextField" name="txtValidade">
           <Properties>
+            <Property name="text" type="java.lang.String" value="DD/MM/AAAA"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="Fonte.inserirFonte(&quot;Poppins-Regular.ttf&quot;, 18f)" type="code"/>
@@ -370,7 +375,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="Fonte.inserirFonte(&quot;Baloo2-Bold.ttf&quot;, 20f)" type="code"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&#xda;ltima Solda"/>
+            <Property name="text" type="java.lang.String" value="Validade do Certificado"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -383,6 +388,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="Fonte.inserirFonte(&quot;Poppins-Regular.ttf&quot;, 18f)" type="code"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="Ciclano Silva"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Constraints>

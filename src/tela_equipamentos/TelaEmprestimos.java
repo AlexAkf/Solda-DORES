@@ -18,7 +18,8 @@ import util.Fonte;
  *
  * @author hugos
  */
-public class TelaEmprestimos extends javax.swing.JFrame {
+
+public final class TelaEmprestimos extends javax.swing.JFrame {
 
     private final TelaEquipamentos telaEquipamentos;
     // Passando a referência da tela.
@@ -27,6 +28,38 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         this.telaEquipamentos = telaEquipamentos;
         aplicarAutoComplete(txtSoldador, termo -> new EquipamentosDAO().buscarSoldadoresPorNome(termo));
         aplicarAutoComplete(txtEquipamento, termo -> new EquipamentosDAO().buscarEquipamentosPorNome(termo));
+        
+        // ENTER realiza a transação de empresitmo
+        txtEquipamento.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        txtSoldador.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        
+        // Mapeia a tecla esc para fechar a janela
+        getRootPane().getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
+            .put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), "fechar");
+
+        getRootPane().getActionMap().put("fechar", new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                boolean popupFechado = false;
+
+                // Fechar popup de txtSoldador se estiver visível
+                if (txtSoldador.isFocusOwner() && txtSoldador.getClientProperty("popup") instanceof JPopupMenu popup1 && popup1.isVisible()) {
+                    popup1.setVisible(false);
+                    popupFechado = true;
+                }
+
+                // Fechar popup de txtEquipamento se estiver visível
+                if (txtEquipamento.isFocusOwner() && txtEquipamento.getClientProperty("popup") instanceof JPopupMenu popup2 && popup2.isVisible()) {
+                    popup2.setVisible(false);
+                    popupFechado = true;
+                }
+
+                // Se nenhum popup estava aberto, fecha a janela
+                if (!popupFechado) {
+                    botaoCancelarMouseClicked(null);
+                }
+            }
+        });
     }
 
     public void aplicarAutoComplete(JTextField campo, Function<String, List<String>> busca) {
@@ -36,13 +69,21 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         popup.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 2));
         popup.setBackground(Color.WHITE);
 
+        // índice do item selecionado
+        final int[] selecionado = {-1};
+
         campo.getDocument().addDocumentListener(new DocumentListener() {
 
             private void mostrarSugestoes() {
+                if (!campo.isShowing()) {
+                    return; // evita crash
+                }
+                
                 String texto = campo.getText().trim();
 
                 popup.setVisible(false);
                 popup.removeAll();
+                selecionado[0] = -1;
 
                 if (texto.length() < 1) {
                     return;
@@ -50,7 +91,7 @@ public class TelaEmprestimos extends javax.swing.JFrame {
 
                 // Executa busca no DAO.
                 List<String> resultados = busca.apply(texto);
-
+                
                 if (resultados.isEmpty()) {
                     return;
                 }
@@ -58,39 +99,92 @@ public class TelaEmprestimos extends javax.swing.JFrame {
                 for (String item : resultados) {
                     JMenuItem option = new JMenuItem(item);
                     option.setFocusable(false);
-                    
+
                     // Personalização:
                     option.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 20f));
-                    option.setForeground(new Color(255, 255, 255)); 
-                    option.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); 
-                    option.setBackground(new Color(30, 58, 138)); 
-                    
+                    option.setForeground(Color.WHITE);
+                    option.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                    option.setBackground(new Color(30, 58, 138));
+
                     option.addActionListener(ev -> {
                         campo.setText(item);
-                        popup.setVisible(false);
+                        javax.swing.SwingUtilities.invokeLater(() -> popup.setVisible(false));
                     });
+
+
                     popup.add(option);
                 }
 
-                popup.show(campo, 0, campo.getHeight());
+                // Mostra o popup no próximo ciclo de eventos para garantir que o componente esteja pronto
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    if (campo.isShowing()) {
+                        popup.show(campo, 0, campo.getHeight());
+                    }
+                });
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                mostrarSugestoes();
+            public void insertUpdate(DocumentEvent e) { 
+                mostrarSugestoes(); 
             }
-
+            
             @Override
             public void removeUpdate(DocumentEvent e) {
-                mostrarSugestoes();
+                mostrarSugestoes(); 
             }
-
+            
             @Override
             public void changedUpdate(DocumentEvent e) {
                 mostrarSugestoes();
             }
         });
 
+        campo.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                int count = popup.getComponentCount();
+                if (count == 0) return;
+
+                switch (evt.getKeyCode()) {
+                    case java.awt.event.KeyEvent.VK_DOWN -> {
+                        selecionado[0] = Math.min(selecionado[0] + 1, count - 1);
+                        atualizarSelecao(popup, selecionado[0]);
+                    }
+                    
+                    case java.awt.event.KeyEvent.VK_UP -> {
+                        selecionado[0] = Math.max(selecionado[0] - 1, 0);
+                        atualizarSelecao(popup, selecionado[0]);
+                    }
+                    
+                    case java.awt.event.KeyEvent.VK_ENTER -> {
+                        if (popup.isVisible() && selecionado[0] >= 0 && selecionado[0] < count) {
+                            // Só seleciona o item do popup
+                            JMenuItem item = (JMenuItem) popup.getComponent(selecionado[0]);
+                            campo.setText(item.getText());
+                            popup.setVisible(false);
+                            // NÃO chama botaoCadastrar aqui
+                        } else {
+                            // Se não houver popup visível, dispara o cadastro
+                            botaoCadastrarMouseClicked(null);
+                        }
+                        evt.consume();
+                    }
+                }
+            }
+        });
+        campo.putClientProperty("popup", popup);
+    }
+
+    // Atualiza a cor de fundo para indicar seleção
+    private void atualizarSelecao(JPopupMenu popup, int index) {
+        for (int i = 0; i < popup.getComponentCount(); i++) {
+            JMenuItem item = (JMenuItem) popup.getComponent(i);
+            if (i == index) {
+                item.setBackground(new Color(50, 100, 200));
+            } else {
+                item.setBackground(new Color(30, 58, 138));
+            }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -108,7 +202,6 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(770, 330));
         setMinimumSize(new java.awt.Dimension(770, 330));
         setUndecorated(true);
         setResizable(false);
@@ -127,7 +220,6 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         jLabel1.setBounds(0, 20, 770, 50);
 
         txtEquipamento.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        txtEquipamento.setToolTipText("");
         jPanel1.add(txtEquipamento);
         txtEquipamento.setBounds(300, 150, 450, 30);
 

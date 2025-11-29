@@ -1,7 +1,6 @@
 package tela_equipamentos;
 
 import dao.EquipamentosDAO;
-import javax.swing.JOptionPane;
 import models.Equipamentos;
 import util.Fonte;
 
@@ -17,6 +16,30 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
     public CadastroEquipamentos(TelaEquipamentos tela) {
         initComponents();
         this.telaEquipamentos = tela;
+        
+        // ENTER realiza a transação de empresitmo
+        txtEquipamento.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        txtCodigo.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        txtMarca.addActionListener(e ->  botaoCadastrarMouseClicked(null));
+        comboStatus.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+                    botaoCadastrarMouseClicked(null);
+                }
+            }
+        });
+        
+        // Mapeia a tecla esc para fechar a janela
+        getRootPane().getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
+            .put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), "fechar");
+
+        getRootPane().getActionMap().put("fechar", new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                botaoCancelarMouseClicked(null);
+            }
+        });
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
