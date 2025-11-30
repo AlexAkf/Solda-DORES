@@ -202,6 +202,7 @@ public final class TelaEmprestimos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setMinimumSize(new java.awt.Dimension(770, 330));
         setUndecorated(true);
         setResizable(false);

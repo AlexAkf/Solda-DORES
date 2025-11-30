@@ -57,6 +57,7 @@ public class AtualizarEmpresas extends javax.swing.JFrame {
         txttelefone = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setMinimumSize(new java.awt.Dimension(770, 430));
         setUndecorated(true);
         setResizable(false);

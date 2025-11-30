@@ -177,6 +177,7 @@ public final class AtualizarFuncionarios extends javax.swing.JFrame {
         txtSupervisor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setMinimumSize(new java.awt.Dimension(770, 730));
         setUndecorated(true);
         setResizable(false);

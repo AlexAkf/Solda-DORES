@@ -78,9 +78,9 @@ public class AtualizarEquipamentos extends javax.swing.JFrame {
         comboStatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(new java.awt.Dimension(770, 430));
         setMinimumSize(new java.awt.Dimension(770, 430));
         setUndecorated(true);
         setResizable(false);

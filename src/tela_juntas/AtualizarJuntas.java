@@ -207,6 +207,7 @@ public class AtualizarJuntas extends javax.swing.JFrame {
         txtComprimento = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setMaximumSize(new java.awt.Dimension(770, 430));
         setMinimumSize(new java.awt.Dimension(770, 430));
         setUndecorated(true);

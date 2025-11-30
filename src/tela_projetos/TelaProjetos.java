@@ -1,10 +1,10 @@
 package tela_projetos;
 
 import dao.ProjetosDAO;
-import java.time.format.DateTimeFormatter;
 import java.awt.Color;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -22,7 +22,7 @@ import util.TabelaAcaoRender;
  *
  * @author Rafael Silva
  */
-public class TelaProjetos extends javax.swing.JPanel {
+public final class TelaProjetos extends javax.swing.JPanel {
 
     private static TelaProjetos instancia;
     private TabelaAcaoEvento evento;   // Guardar evento para reutilizar após recarregar
@@ -48,6 +48,12 @@ public class TelaProjetos extends javax.swing.JPanel {
         tabela.getTableHeader().setForeground(Color.WHITE);
         tabela.getTableHeader().setReorderingAllowed(false);
         tabela.getTableHeader().setResizingAllowed(false);
+        
+        // Ocultando a coluna de ID 
+        tabela.getColumnModel().getColumn(0).setMinWidth(0);
+        tabela.getColumnModel().getColumn(0).setMaxWidth(0);
+        tabela.getColumnModel().getColumn(0).setWidth(0);
+        tabela.getColumnModel().getColumn(0).setPreferredWidth(0);
 
         // Altura, largura e cor das tabelas -> GERAL
         tabela.setBackground(Color.WHITE);
@@ -69,8 +75,15 @@ public class TelaProjetos extends javax.swing.JPanel {
                 String nome = (String) tabela.getModel().getValueAt(model, 1);
                 int fk_empresa = (int) tabela.getModel().getValueAt(model, 2);
                 int fk_supervisor = (int) tabela.getModel().getValueAt(model, 3);
-                LocalDate inicio = (LocalDate) tabela.getModel().getValueAt(model, 4);
-                LocalDate prazo = (LocalDate) tabela.getModel().getValueAt(model, 5);
+                
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                
+                String inicioStr = tabela.getModel().getValueAt(model, 4).toString();
+                String prazoStr = tabela.getModel().getValueAt(model, 5).toString();
+                
+                LocalDate inicio = LocalDate.parse(inicioStr, formato);
+                LocalDate prazo = LocalDate.parse(prazoStr, formato);
+                
                 String descricao = (String) tabela.getModel().getValueAt(model, 6);
                 String condicao = (String) tabela.getModel().getValueAt(model, 7);
 
@@ -138,25 +151,30 @@ public class TelaProjetos extends javax.swing.JPanel {
     }
 
     public void carregarTabela() throws SQLException {
-        var data = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         ProjetosDAO dao = new ProjetosDAO();
         List<Projetos> lista = dao.listarTodos();
 
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
         modelo.setRowCount(0);
+        
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         for (Projetos projeto : lista) {
-            String inicio = (projeto.getinicio() != null) ? projeto.getinicio().format(data) : "-";
-            String prazo = (projeto.getprazo() != null) ? projeto.getprazo().format(data) : "-";
+            String dataInicio = projeto.getinicio() != null
+                    ? projeto.getinicio().format(formato)
+                    : "";
+            String dataPrazo = projeto.getprazo() != null
+                    ? projeto.getprazo().format(formato)
+                    : "";
 
             modelo.addRow(new Object[]{
                 projeto.getid(),
                 projeto.getnome(),
                 projeto.getfk_empresa(),
                 projeto.getfk_supervisor(),
-                projeto.getinicio(),
-                projeto.getprazo(),
+                dataInicio,
+                dataPrazo,
                 projeto.getdescricao(),
                 projeto.getcondicao(),
                 null

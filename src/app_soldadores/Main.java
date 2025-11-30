@@ -1,5 +1,6 @@
 package app_soldadores;
 
+import javax.swing.ImageIcon;
 import tela_login.TelaLogin;
 
 /**

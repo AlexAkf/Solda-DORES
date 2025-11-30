@@ -65,6 +65,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         titulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setMinimumSize(new java.awt.Dimension(1920, 1080));
         setUndecorated(true);
         setResizable(false);
@@ -152,9 +153,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         botaoJuntas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoJuntas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_juntas.png"))); // NOI18N
         botaoJuntas.setToolTipText("Juntas");
-        botaoJuntas.setMaximumSize(new java.awt.Dimension(54, 54));
-        botaoJuntas.setMinimumSize(new java.awt.Dimension(54, 54));
-        botaoJuntas.setPreferredSize(new java.awt.Dimension(54, 54));
         botaoJuntas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botaoJuntasMouseClicked(evt);

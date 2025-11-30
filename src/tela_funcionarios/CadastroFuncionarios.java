@@ -245,6 +245,7 @@ public final class CadastroFuncionarios extends javax.swing.JFrame {
         txtSupervisor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         setMinimumSize(new java.awt.Dimension(770, 730));
         setUndecorated(true);

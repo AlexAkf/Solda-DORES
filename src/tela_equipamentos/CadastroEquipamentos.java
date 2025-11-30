@@ -61,6 +61,7 @@ public class CadastroEquipamentos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setMinimumSize(new java.awt.Dimension(770, 430));
         setUndecorated(true);
         setResizable(false);

@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class ProjetosDAO {
 
-    private Connection conn;
+    private final Connection conn;
 
     public ProjetosDAO() throws SQLException {
         conn = Conexao.getConexao();
@@ -151,7 +151,7 @@ public class ProjetosDAO {
                 lista.add(u);
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "AAAAAAAAAAAAAAAAAAAA.\n"
+            JOptionPane.showMessageDialog(null, "Erro ao ler o projeto.\nErro: "
                     + ex.getMessage());
             throw ex;
         }
@@ -162,8 +162,8 @@ public class ProjetosDAO {
     public void atualizar(Projetos projetos) throws SQLException {
         String sql = """
   UPDATE projetos SET
-  nome=?, fk_empresa=?, fk_supervisor=?, descricao=?,
-  condicao=?, inicio=?, prazo=?
+  nome=?, fk_empresa=?, fk_supervisor=?, inicio=?,
+  prazo=?, descricao=?, condicao=?
   WHERE id = ?
   """;
 
@@ -173,18 +173,19 @@ public class ProjetosDAO {
             ps.setInt(3, projetos.getfk_supervisor());
 
             if (projetos.getinicio() != null) {
-                ps.setDate(6, Date.valueOf(projetos.getinicio()));
+                ps.setDate(4, Date.valueOf(projetos.getinicio()));
             } else {
-                ps.setNull(6, Types.DATE);
+                ps.setNull(4, Types.DATE);
             }
 
             if (projetos.getprazo() != null) {
-                ps.setDate(7, Date.valueOf(projetos.getprazo()));
+                ps.setDate(5, Date.valueOf(projetos.getprazo()));
             } else {
-                ps.setNull(7, Types.DATE);
+                ps.setNull(5, Types.DATE);
             }
-            ps.setString(4, projetos.getdescricao());
-            ps.setString(5, projetos.getcondicao());
+            ps.setString(6, projetos.getdescricao());
+            ps.setString(7, projetos.getcondicao());
+            ps.setInt(8, projetos.getid());
 
             ps.executeUpdate();
         } catch (SQLException ex) {

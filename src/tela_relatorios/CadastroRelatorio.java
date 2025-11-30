@@ -51,15 +51,18 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jList1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setMaximumSize(new java.awt.Dimension(500, 570));
         setMinimumSize(new java.awt.Dimension(500, 570));
+        setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(500, 570));
         setResizable(false);
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(30, 58, 138), 2, true));
         jPanel1.setMaximumSize(new java.awt.Dimension(500, 570));
-        jPanel1.setMinimumSize(new java.awt.Dimension(5000, 570));
+        jPanel1.setMinimumSize(new java.awt.Dimension(500, 570));
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 570));
         jPanel1.setLayout(null);
 
@@ -95,7 +98,7 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         jLabel6.setBounds(110, 70, 160, 30);
 
         jTextField4.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jTextField4.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+        jTextField4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.add(jTextField4);
         jTextField4.setBounds(110, 100, 290, 30);
 
@@ -109,7 +112,7 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         jComboBox1.setBounds(310, 190, 90, 30);
 
         jTextField5.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jTextField5.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+        jTextField5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField5ActionPerformed(evt);
@@ -128,7 +131,7 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         jPanel1.add(jLabel10);
         jLabel10.setBounds(110, 260, 190, 30);
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);

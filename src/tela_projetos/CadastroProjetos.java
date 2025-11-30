@@ -1,9 +1,13 @@
 package tela_projetos;
 
 import dao.ProjetosDAO;
+import java.awt.HeadlessException;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
+import javax.swing.text.MaskFormatter;
 import models.Projetos;
 import util.Fonte;
 
@@ -13,11 +17,22 @@ import util.Fonte;
  */
 public class CadastroProjetos extends javax.swing.JFrame {
 
-    private final TelaProjetos telaProjetos;
+    private final TelaProjetos tela_projetos;
 
-    public CadastroProjetos(TelaProjetos telaProjetos) {
+    public CadastroProjetos(TelaProjetos tela_projetos) {
         initComponents();
-        this.telaProjetos = telaProjetos;
+
+        this.tela_projetos = tela_projetos;
+
+        try {
+            MaskFormatter dataMask = new MaskFormatter("##/##/####");
+            dataMask.setPlaceholderCharacter('_');
+
+            txtInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(dataMask));
+            txtFinal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(dataMask));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -31,21 +46,21 @@ public class CadastroProjetos extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtSupervisor = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        txtProjeto = new javax.swing.JTextField();
+        txtInicial = new javax.swing.JFormattedTextField();
         jLabel12 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jFormattedTextField3 = new javax.swing.JFormattedTextField();
+        txtDescricao = new javax.swing.JTextField();
+        txtFinal = new javax.swing.JFormattedTextField();
         jLabel14 = new javax.swing.JLabel();
         condicaotxt = new javax.swing.JComboBox<>();
+        txtEmpresa = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setMaximumSize(new java.awt.Dimension(770, 590));
         setMinimumSize(new java.awt.Dimension(770, 590));
         setUndecorated(true);
@@ -113,9 +128,9 @@ public class CadastroProjetos extends javax.swing.JFrame {
         jPanel1.add(jLabel6);
         jLabel6.setBounds(20, 100, 90, 30);
 
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jPanel1.add(jTextField4);
-        jTextField4.setBounds(300, 200, 450, 30);
+        txtSupervisor.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtSupervisor);
+        txtSupervisor.setBounds(300, 200, 450, 30);
 
         jLabel8.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel8.setText("Supervisor");
@@ -130,37 +145,35 @@ public class CadastroProjetos extends javax.swing.JFrame {
         jLabel11.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel11.setText("Condição");
         jPanel1.add(jLabel11);
-        jLabel11.setBounds(20, 420, 120, 30);
+        jLabel11.setBounds(20, 400, 120, 30);
 
-        jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jPanel1.add(jTextField5);
-        jTextField5.setBounds(300, 100, 450, 30);
-        jPanel1.add(jFormattedTextField2);
-        jFormattedTextField2.setBounds(300, 250, 450, 30);
+        txtProjeto.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtProjeto);
+        txtProjeto.setBounds(300, 100, 450, 30);
+
+        txtInicial.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtInicial);
+        txtInicial.setBounds(300, 250, 450, 30);
 
         jLabel12.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel12.setText("Prazo Final");
         jPanel1.add(jLabel12);
         jLabel12.setBounds(20, 300, 250, 30);
 
-        jTextField6.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jPanel1.add(jTextField6);
-        jTextField6.setBounds(300, 150, 450, 30);
+        txtDescricao.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtDescricao);
+        txtDescricao.setBounds(300, 350, 450, 30);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
-
-        jPanel1.add(jScrollPane2);
-        jScrollPane2.setBounds(300, 340, 450, 70);
-        jPanel1.add(jFormattedTextField3);
-        jFormattedTextField3.setBounds(300, 300, 450, 30);
+        txtFinal.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtFinal);
+        txtFinal.setBounds(300, 300, 450, 30);
 
         jLabel14.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel14.setText("Descrição");
         jPanel1.add(jLabel14);
         jLabel14.setBounds(20, 350, 120, 30);
 
+        condicaotxt.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         condicaotxt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ativo", "avaliacao", "finalizado", "cancelado" }));
         condicaotxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -168,7 +181,11 @@ public class CadastroProjetos extends javax.swing.JFrame {
             }
         });
         jPanel1.add(condicaotxt);
-        condicaotxt.setBounds(300, 420, 450, 30);
+        condicaotxt.setBounds(300, 400, 450, 30);
+
+        txtEmpresa.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtEmpresa);
+        txtEmpresa.setBounds(300, 150, 450, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 770, 590);
@@ -184,12 +201,12 @@ public class CadastroProjetos extends javax.swing.JFrame {
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         try {
             // 1 - Pegar valores
-            String nomeProjeto = jTextField5.getText();
-            String empresa = jTextField6.getText();
-            String supervisor = jTextField4.getText();
-            String dataInicioStr = jFormattedTextField2.getText();
-            String prazoStr = jFormattedTextField3.getText();
-            String descricao = jTextArea1.getText();
+            String nomeProjeto = txtProjeto.getText();
+            String empresa = txtEmpresa.getText();
+            String supervisor = txtSupervisor.getText();
+            String InicioStr = txtInicial.getText();
+            String prazoStr = txtFinal.getText();
+            String descricao = txtDescricao.getText();
             String condicao = condicaotxt.getSelectedItem().toString();
 
             // 2 - Validar
@@ -200,7 +217,7 @@ public class CadastroProjetos extends javax.swing.JFrame {
 
             // 3 - Converter datas
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataInicio = LocalDate.parse(dataInicioStr, formato);
+            LocalDate inicio = LocalDate.parse(InicioStr, formato);
             LocalDate prazo = LocalDate.parse(prazoStr, formato);
 
             // 4 - Criar objeto Projeto
@@ -208,7 +225,7 @@ public class CadastroProjetos extends javax.swing.JFrame {
             projeto.setNome(nomeProjeto);
             projeto.setFk_empresa(Integer.parseInt(empresa));   // Ajuste se necessário
             projeto.setFk_supervisor(Integer.parseInt(supervisor)); // Ajuste se necessário
-            projeto.setInicio(dataInicio);
+            projeto.setInicio(inicio);
             projeto.setPrazo(prazo);
             projeto.setDescricao(descricao);
             projeto.setCondicao(condicao);
@@ -219,13 +236,12 @@ public class CadastroProjetos extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(this, "Projeto cadastrado com sucesso!");
 
-            if (telaProjetos != null) {
-                telaProjetos.carregarTabela();
+            if (tela_projetos != null) {
+                tela_projetos.carregarTabela();
             }
             this.dispose(); // fecha a tela
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (HeadlessException | NumberFormatException | SQLException e) {
             JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
         }
     }//GEN-LAST:event_jLabel7MouseClicked
@@ -236,8 +252,6 @@ public class CadastroProjetos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> condicaotxt;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
-    private javax.swing.JFormattedTextField jFormattedTextField3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -251,10 +265,11 @@ public class CadastroProjetos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField txtDescricao;
+    private javax.swing.JTextField txtEmpresa;
+    private javax.swing.JFormattedTextField txtFinal;
+    private javax.swing.JFormattedTextField txtInicial;
+    private javax.swing.JTextField txtProjeto;
+    private javax.swing.JTextField txtSupervisor;
     // End of variables declaration//GEN-END:variables
 }

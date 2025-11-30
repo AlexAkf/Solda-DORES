@@ -31,6 +31,43 @@ public class BarraPesquisar extends javax.swing.JFrame {
         setLocation(100, 14);
         setBackground(new java.awt.Color(0, 0, 0, 0));
 
+        // Criando Placeholder:
+        String placeholder = "Buscar por informações...";
+
+        campo.setForeground(new java.awt.Color(150, 150, 150));
+        campo.setText(placeholder);
+        campo.setCaretPosition(0);  // cursor no início
+
+        campo.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                if (campo.getText().equals(placeholder)) {
+                    campo.setCaretPosition(0);  // impede o cursor ir para o fim
+                }
+            }
+        });
+
+        campo.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (campo.getText().equals(placeholder)) {
+                    campo.setText("");
+                    campo.setForeground(new java.awt.Color(0, 0, 0));
+                }
+            }
+        });
+
+        campo.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (campo.getText().trim().isEmpty()) {
+                    campo.setText(placeholder);
+                    campo.setForeground(new java.awt.Color(150, 150, 150));
+                    campo.setCaretPosition(0); // mantém o cursor no início
+                }
+            }
+        });
+
         // Aplica a pesquisa das tabelas.
         campo.addKeyListener(new KeyAdapter() {
             @Override
@@ -115,7 +152,7 @@ public class BarraPesquisar extends javax.swing.JFrame {
                 if (tela6 != null) {
                     tela6.filtrar("");
                 }
-                
+
                 // Fecha barra
                 dispose();
             }
@@ -131,6 +168,7 @@ public class BarraPesquisar extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Solda-DORES");
         setMinimumSize(new java.awt.Dimension(600, 65));
         setUndecorated(true);
         setResizable(false);
