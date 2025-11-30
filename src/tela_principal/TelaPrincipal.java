@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.UIManager;
 import tela_conta.TelaConta;
 import tela_informacoes.TelaInformacoes;
+import tela_juntas.TelaJuntas;
 import util.Fonte;
 
 /**
@@ -36,6 +37,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         painelRecebedor.add(new TelaRelatorios(), "Relatórios");
         painelRecebedor.add(new TelaConta(), "Conta");
         painelRecebedor.add(new TelaInformacoes(), "Informações");
+        painelRecebedor.add(new TelaJuntas(), "Juntas");
 
         UIManager.put("ToolTip.foreground", Color.black);
         UIManager.put("ToolTip.background", Color.white);
@@ -52,10 +54,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         logo = new javax.swing.JLabel();
         botaoDashboard = new javax.swing.JLabel();
         botaoFuncionarios = new javax.swing.JLabel();
-        botaoEquipamentos = new javax.swing.JLabel();
+        botaoJuntas = new javax.swing.JLabel();
         botaoEmpresas = new javax.swing.JLabel();
         botaoProjetos = new javax.swing.JLabel();
         botaoRelatorios = new javax.swing.JLabel();
+        botaoEquipamentos = new javax.swing.JLabel();
         selecionado = new javax.swing.JLabel();
         botaoSair = new javax.swing.JLabel();
         painelRecebedor = new javax.swing.JPanel();
@@ -146,17 +149,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel2.add(botaoFuncionarios);
         botaoFuncionarios.setBounds(0, 249, 100, 54);
 
-        botaoEquipamentos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        botaoEquipamentos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_equipamentos.png"))); // NOI18N
-        botaoEquipamentos.setToolTipText("Equipamentos");
-        botaoEquipamentos.setPreferredSize(new java.awt.Dimension(54, 54));
-        botaoEquipamentos.addMouseListener(new java.awt.event.MouseAdapter() {
+        botaoJuntas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoJuntas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_juntas.png"))); // NOI18N
+        botaoJuntas.setToolTipText("Juntas");
+        botaoJuntas.setMaximumSize(new java.awt.Dimension(54, 54));
+        botaoJuntas.setMinimumSize(new java.awt.Dimension(54, 54));
+        botaoJuntas.setPreferredSize(new java.awt.Dimension(54, 54));
+        botaoJuntas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botaoEquipamentosMouseClicked(evt);
+                botaoJuntasMouseClicked(evt);
             }
         });
-        jPanel2.add(botaoEquipamentos);
-        botaoEquipamentos.setBounds(0, 338, 100, 54);
+        jPanel2.add(botaoJuntas);
+        botaoJuntas.setBounds(0, 427, 100, 54);
 
         botaoEmpresas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoEmpresas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_empresas.png"))); // NOI18N
@@ -170,7 +175,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jPanel2.add(botaoEmpresas);
-        botaoEmpresas.setBounds(0, 427, 100, 54);
+        botaoEmpresas.setBounds(0, 516, 100, 54);
 
         botaoProjetos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoProjetos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_projetos.png"))); // NOI18N
@@ -184,7 +189,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jPanel2.add(botaoProjetos);
-        botaoProjetos.setBounds(0, 516, 100, 54);
+        botaoProjetos.setBounds(0, 605, 100, 54);
 
         botaoRelatorios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         botaoRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_relatorios.png"))); // NOI18N
@@ -198,7 +203,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jPanel2.add(botaoRelatorios);
-        botaoRelatorios.setBounds(0, 605, 100, 54);
+        botaoRelatorios.setBounds(0, 698, 100, 54);
+
+        botaoEquipamentos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoEquipamentos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/botao_equipamentos.png"))); // NOI18N
+        botaoEquipamentos.setToolTipText("Equipamentos");
+        botaoEquipamentos.setMaximumSize(new java.awt.Dimension(54, 54));
+        botaoEquipamentos.setMinimumSize(new java.awt.Dimension(54, 54));
+        botaoEquipamentos.setPreferredSize(new java.awt.Dimension(54, 54));
+        botaoEquipamentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoEquipamentosMouseClicked(evt);
+            }
+        });
+        jPanel2.add(botaoEquipamentos);
+        botaoEquipamentos.setBounds(0, 338, 100, 54);
 
         selecionado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         selecionado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/selecionado.png"))); // NOI18N
@@ -283,6 +302,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         titulo.setText("INFORMAÇÕES");
     }//GEN-LAST:event_logoMouseClicked
 
+    private void botaoEquipamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoEquipamentosMouseClicked
+        CardLayout cl = (CardLayout) painelRecebedor.getLayout();
+        selecionado.setLocation(0, 328);
+        titulo.setText("EQUIPAMENTOS");
+        cl.show(painelRecebedor, "Equipamentos");
+    }//GEN-LAST:event_botaoEquipamentosMouseClicked
+
     private void botaoSairMouseClicked(java.awt.event.MouseEvent evt) {
         System.exit(0);
     }
@@ -301,30 +327,30 @@ public class TelaPrincipal extends javax.swing.JFrame {
         titulo.setText("FUNCIONÁRIOS");
     }
 
-    private void botaoEquipamentosMouseClicked(java.awt.event.MouseEvent evt) {
+    private void botaoJuntasMouseClicked(java.awt.event.MouseEvent evt) {
         CardLayout cl = (CardLayout) painelRecebedor.getLayout();
-        selecionado.setLocation(0, 328);
-        titulo.setText("EQUIPAMENTOS");
-        cl.show(painelRecebedor, "Equipamentos");
+        selecionado.setLocation(0, 417);
+        titulo.setText("JUNTAS");
+        cl.show(painelRecebedor, "Juntas");
     }
 
     private void botaoEmpresasMouseClicked(java.awt.event.MouseEvent evt) {
         CardLayout cl = (CardLayout) painelRecebedor.getLayout();
-        selecionado.setLocation(0, 417);
+        selecionado.setLocation(0, 506);
         titulo.setText("EMPRESAS");
         cl.show(painelRecebedor, "Empresas");
     }
 
     private void botaoProjetosMouseClicked(java.awt.event.MouseEvent evt) {
         CardLayout cl = (CardLayout) painelRecebedor.getLayout();
-        selecionado.setLocation(0, 506);
+        selecionado.setLocation(0, 595);
         titulo.setText("PROJETOS");
         cl.show(painelRecebedor, "Projetos");
     }
 
     private void botaoRelatoriosMouseClicked(java.awt.event.MouseEvent evt) {
         CardLayout cl = (CardLayout) painelRecebedor.getLayout();
-        selecionado.setLocation(0, 595);
+        selecionado.setLocation(0, 684);
         titulo.setText("RELATÓRIOS");
         cl.show(painelRecebedor, "Relatórios");
     }
@@ -361,6 +387,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel botaoEmpresas;
     private javax.swing.JLabel botaoEquipamentos;
     private javax.swing.JLabel botaoFuncionarios;
+    private javax.swing.JLabel botaoJuntas;
     private javax.swing.JLabel botaoPesquisar;
     private javax.swing.JLabel botaoProjetos;
     private javax.swing.JLabel botaoRelatorios;

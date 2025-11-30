@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import tela_empresas.TelaEmpresas;
 import tela_equipamentos.TelaEquipamentos;
 import tela_funcionarios.TelaFuncionarios;
+import tela_juntas.TelaJuntas;
 import tela_projetos.TelaProjetos;
 import tela_relatorios.TelaRelatorios;
 
@@ -53,6 +54,8 @@ public class BarraPesquisar extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     Logger.getLogger(BarraPesquisar.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
+                TelaJuntas.getInstancia().filtrar(texto);
             }
         });
 
@@ -108,6 +111,11 @@ public class BarraPesquisar extends javax.swing.JFrame {
                     Logger.getLogger(BarraPesquisar.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+                TelaJuntas tela6 = TelaJuntas.getInstancia();
+                if (tela6 != null) {
+                    tela6.filtrar("");
+                }
+                
                 // Fecha barra
                 dispose();
             }

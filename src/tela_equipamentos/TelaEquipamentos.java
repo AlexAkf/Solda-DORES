@@ -44,7 +44,6 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         // Altura, largura e cor:
         tabela.setBackground(Color.WHITE);
         tabela.setRowHeight(60);
-        tabela.getColumnModel().getColumn(0).setMaxWidth(50);
 
         renderizar();   // Recarrega os botões
     }
