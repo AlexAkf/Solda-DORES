@@ -1,36 +1,35 @@
 package dao;
 
 import controllers.Conexao;
-import java.sql.*; // JDBC
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import models.Relatorios;
 
 /**
  *
- * @author Rafael Moreira
+ * @author Rafael
  */
 
 public class RelatoriosDAO {
 
     private final Connection conn;
 
-    /**
-     * INSERIR NOVO RELATÓRIO
-     */
-
     public RelatoriosDAO() {
         this.conn = Conexao.getConexao();
     }
 
+    /**
+     * INSERIR NOVO RELATÓRIO
+     */
     public boolean inserirRelatorio(Relatorios relatorio) {
         String sql = """
-                    INSERT INTO relatorios (fk_gestor, nome, descricao, caminho, condicao)
-                    VALUES (?, ?, ?, ?, ?)
+                INSERT INTO relatorios (fk_gestor, nome, descricao, caminho, condicao)
+                VALUES (?, ?, ?, ?, ?)
                 """;
 
         try (Connection conn = Conexao.getConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, relatorio.getFkGestor());
             stmt.setString(2, relatorio.getNome());
@@ -48,28 +47,28 @@ public class RelatoriosDAO {
     }
 
     /**
-     * LISTAR TODOS OS RELATÓRIOS
-     * 
-     * @return
+     * LISTAR RELATÓRIOS PARA TABELA (TelaRelatorios)
+     * Apenas as colunas que serão exibidas
      */
-    public List<Relatorios> listarRelatorios() {
+    public List<Relatorios> listarRelatoriosParaTela() {
         List<Relatorios> lista = new ArrayList<>();
-        String sql = "SELECT * FROM relatorios ORDER BY criado_em DESC";
+        String sql = """
+                SELECT nome, descricao, caminho, condicao, criado_em
+                FROM relatorios
+                ORDER BY criado_em DESC
+                """;
 
         try (Connection conn = Conexao.getConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Relatorios rel = new Relatorios();
-                rel.setId(rs.getInt("id"));
-                rel.setFkGestor(rs.getInt("fk_gestor"));
                 rel.setNome(rs.getString("nome"));
                 rel.setDescricao(rs.getString("descricao"));
                 rel.setCaminho(rs.getString("caminho"));
                 rel.setCondicao(rs.getBoolean("condicao"));
                 rel.setCriadoEm(rs.getTimestamp("criado_em"));
-                rel.setAtualizadoEm(rs.getTimestamp("atualizado_em"));
                 lista.add(rel);
             }
 
@@ -81,17 +80,14 @@ public class RelatoriosDAO {
     }
 
     /**
-     * BUSCAR RELATÓRIO POR ID
-     * 
-     * @param id
-     * @return
+     * BUSCAR POR ID
      */
     public Relatorios buscarPorId(int id) {
         String sql = "SELECT * FROM relatorios WHERE id = ?";
         Relatorios rel = null;
 
         try (Connection conn = Conexao.getConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -117,19 +113,16 @@ public class RelatoriosDAO {
 
     /**
      * ATUALIZAR RELATÓRIO
-     * 
-     * @param relatorio
-     * @return
      */
     public boolean atualizarRelatorio(Relatorios relatorio) {
         String sql = """
-                    UPDATE relatorios
-                    SET nome = ?, descricao = ?, caminho = ?, condicao = ?, atualizado_em = CURRENT_TIMESTAMP
-                    WHERE id = ?
+                UPDATE relatorios
+                SET nome = ?, descricao = ?, caminho = ?, condicao = ?, atualizado_em = CURRENT_TIMESTAMP
+                WHERE id = ?
                 """;
 
         try (Connection conn = Conexao.getConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, relatorio.getNome());
             stmt.setString(2, relatorio.getDescricao());
@@ -147,16 +140,13 @@ public class RelatoriosDAO {
     }
 
     /**
-     * DELETAR RELATÓRIO
-     * 
-     * @param id
-     * @return
+     * DELETAR POR ID
      */
     public boolean deletarRelatorio(int id) {
         String sql = "DELETE FROM relatorios WHERE id = ?";
 
         try (Connection conn = Conexao.getConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();

@@ -84,11 +84,10 @@ public class ProjetosDAO {
             } else {
                 stmt.setNull(5, java.sql.Types.DATE);
             }
-            stmt.executeUpdate();
 
             stmt.setString(6, projetos.getdescricao());
             stmt.setString(7, projetos.getcondicao());
-
+            stmt.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao inserir o projeto.\nErro: "
                     + ex.getMessage());

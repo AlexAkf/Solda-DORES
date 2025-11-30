@@ -1,58 +1,18 @@
 package models;
 
 /**
- * Classe temporária para representar uma empresa.
- * Por enquanto, serve apenas para permitir o uso no DAO de Usuario.
- * Depois você pode expandir com mais atributos e métodos conforme precisar.
  * 
  * @author Rafhael Muzzi
-
-public class Empresas {
-    private Integer id;
-    private String nome;
-
-    // Construtor vazio (necessário para criação simples)
-    public Empresa() {}
-
-    // Construtor opcional para criar empresa direto com ID
-    public Empresa(Integer id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
-
-    // Getter e Setter do ID
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    // Getter e Setter do nome
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    // Representação textual (opcional, útil em comboboxes e logs)
-    @Override
-    public String toString() {
-        return nome != null ? nome : "Empresa sem nome";
-    }
-}
  */
-/** */
+
 public class Empresas {
 
+    // Campos gerais da empresa
     private int id;
     private String nome;
     private String cnpj;
     private String email;
-    private boolean condicao;
+    private boolean condicao = true;// Para identificar se está ativa ou não
     private String telefone;
 
     public Empresas() {
@@ -77,6 +37,8 @@ public class Empresas {
         this.id = id;
     }
 
+    //#####################################
+    
     public String getNome() {
         return nome;
     }
@@ -85,6 +47,8 @@ public class Empresas {
         this.nome = nome;
     }
 
+    //#####################################
+    
     public String getCnpj() {
         return cnpj;
     }
@@ -93,6 +57,8 @@ public class Empresas {
         this.cnpj = cnpj;
     }
 
+    //#####################################
+    
     public String getEmail() {
         return email;
     }
@@ -100,6 +66,8 @@ public class Empresas {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    //#####################################
 
     public boolean isCondicao() {
         return condicao;
@@ -109,6 +77,8 @@ public class Empresas {
         this.condicao = condicao;
     }
 
+    //#####################################
+    
     public String getTelefone() {
         return telefone;
     }

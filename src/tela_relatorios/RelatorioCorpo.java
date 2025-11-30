@@ -208,7 +208,7 @@ public class RelatorioCorpo extends JFrame {
                 tabelaEq.addCell(eq.getCodigo() != null ? eq.getCodigo() : "-");
                 tabelaEq.addCell(eq.getModelo() != null ? eq.getModelo() : "-");
                 tabelaEq.addCell(eq.getMarca() != null ? eq.getMarca() : "-");
-                tabelaEq.addCell(eq.getStatus() != null ? eq.getStatus() : "-");
+                tabelaEq.addCell(eq.getCondicao() != null ? eq.getCondicao() : "-");
                 tabelaEq.addCell(eq.getSoldador() != null ? eq.getSoldador() : "—");
             }
 

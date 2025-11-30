@@ -11,12 +11,13 @@ import util.Fonte;
  * @author hugos
  */
 public class CadastroRelatorio extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form CadastroRelatorio
      */
     public CadastroRelatorio() {
         initComponents();
+
     }
 
     /**
@@ -28,59 +29,45 @@ public class CadastroRelatorio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jTextField5 = new javax.swing.JTextField();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(770, 570));
-        setMinimumSize(new java.awt.Dimension(770, 570));
-        setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(770, 570));
+        setMaximumSize(new java.awt.Dimension(500, 570));
+        setMinimumSize(new java.awt.Dimension(500, 570));
+        setPreferredSize(new java.awt.Dimension(500, 570));
         setResizable(false);
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(30, 58, 138), 2, true));
-        jPanel1.setMaximumSize(new java.awt.Dimension(770, 570));
-        jPanel1.setMinimumSize(new java.awt.Dimension(770, 570));
-        jPanel1.setPreferredSize(new java.awt.Dimension(770, 570));
+        jPanel1.setMaximumSize(new java.awt.Dimension(500, 570));
+        jPanel1.setMinimumSize(new java.awt.Dimension(5000, 570));
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 570));
         jPanel1.setLayout(null);
 
         jLabel1.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 40f));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("GERAR RELATÓRIO");
+        jLabel1.setText("Ficha De Relatorio");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 20, 770, 50);
-
-        jLabel13.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("CANCELAR");
-        jLabel13.setToolTipText("");
-        jLabel13.setMaximumSize(new java.awt.Dimension(260, 83));
-        jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
-        jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
-        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel13MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel13);
-        jLabel13.setBounds(40, 460, 260, 83);
+        jLabel1.setBounds(0, 10, 500, 50);
 
         jLabel7.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -95,140 +82,179 @@ public class CadastroRelatorio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(470, 460, 260, 83);
+        jLabel7.setBounds(120, 420, 260, 83);
 
         jLabel2.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(470, 460, 260, 83);
-
-        jLabel3.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(40, 460, 260, 83);
+        jLabel2.setBounds(120, 420, 260, 83);
 
         jLabel6.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel6.setText("Cliente");
+        jLabel6.setText("Nomeclatura");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 100, 90, 30);
+        jLabel6.setBounds(110, 70, 160, 30);
 
         jTextField4.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jTextField4.setBorder(javax.swing.BorderFactory.createLineBorder(null));
         jPanel1.add(jTextField4);
-        jTextField4.setBounds(300, 100, 450, 30);
+        jTextField4.setBounds(110, 100, 290, 30);
 
-        jLabel8.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel8.setText("Serviços");
-        jPanel1.add(jLabel8);
-        jLabel8.setBounds(20, 320, 80, 30);
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
-
-        jPanel1.add(jScrollPane2);
-        jScrollPane2.setBounds(300, 200, 450, 90);
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Projeto", "Estoque", "Funcionário", "Empresa" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jComboBox1);
+        jComboBox1.setBounds(310, 190, 90, 30);
 
         jTextField5.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jTextField5.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jTextField5);
-        jTextField5.setBounds(300, 150, 450, 30);
-
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane3.setViewportView(jTextArea2);
-
-        jPanel1.add(jScrollPane3);
-        jScrollPane3.setBounds(300, 320, 450, 90);
+        jTextField5.setBounds(110, 190, 290, 30);
 
         jLabel9.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel9.setText("Empresa");
+        jLabel9.setText("Tipo");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(20, 150, 90, 30);
+        jLabel9.setBounds(110, 160, 90, 30);
 
         jLabel10.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel10.setText("Equipamento Inspecionado");
+        jLabel10.setText("Descrição");
         jPanel1.add(jLabel10);
-        jLabel10.setBounds(20, 200, 190, 30);
+        jLabel10.setBounds(110, 260, 190, 30);
+
+        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jTextField1);
+        jTextField1.setBounds(110, 290, 290, 40);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 770, 570);
+        jPanel1.setBounds(0, 0, 500, 570);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
-        this.dispose();
-    }//GEN-LAST:event_jLabel13MouseClicked
-
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         // TODO add your handling code here:
         try {
 
-        // 1. PEGAR DADOS DA TELA
-        String cliente = jTextField4.getText().trim();
-        String empresa = jTextField5.getText().trim();
-        String equipamento = jTextArea1.getText().trim();
-        String servicos = jTextArea2.getText().trim();
+    //  PEGAR DADOS DA TELA
+    String nomeclatura = jTextField4.getText().trim();
+    String tipo = (String) jComboBox1.getSelectedItem();
 
-        // 2. VALIDAÇÃO SIMPLES
-        if (cliente.isEmpty() || empresa.isEmpty() || equipamento.isEmpty() || servicos.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+    String empresa = jTextField5.getText().trim();              // usado quando tipo = Empresa
+    String projetoOuFuncionario = jTextField1.getText().trim(); // usado quando tipo = Projeto ou Funcionário
 
-        // 3. ESCOLHER LOCAL PARA SALVAR PDF
-        JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle("Salvar Relatório PDF");
-        fc.setSelectedFile(new java.io.File("relatorio.pdf"));
-
-        int opc = fc.showSaveDialog(this);
-        if (opc != JFileChooser.APPROVE_OPTION) {
-            return; // cancelado
-        }
-
-        String caminhoSalvar = fc.getSelectedFile().getAbsolutePath();
-
-        // 4. GERAR PDF COM iTEXT
-        com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
-        com.itextpdf.text.pdf.PdfWriter.getInstance(doc, new java.io.FileOutputStream(caminhoSalvar));
-        doc.open();
-
-        doc.add(new com.itextpdf.text.Paragraph("RELATÓRIO"));
-        doc.add(new com.itextpdf.text.Paragraph("---------------------------"));
-        doc.add(new com.itextpdf.text.Paragraph("Cliente: " + cliente));
-        doc.add(new com.itextpdf.text.Paragraph("Empresa: " + empresa));
-        doc.add(new com.itextpdf.text.Paragraph("Equipamento: " + equipamento));
-        doc.add(new com.itextpdf.text.Paragraph("Serviços: " + servicos));
-
-        doc.close();
-
-        // 5. SALVAR NO BANCO
-        Relatorios rel = new Relatorios();
-        rel.setFkGestor(1); // <-- coloque o ID do gestor logado
-        rel.setNome("Relatório - " + cliente);
-        rel.setDescricao("Relatório gerado para o cliente " + cliente);
-        rel.setCaminho(caminhoSalvar);
-        rel.setCondicao(true);
-
-        RelatoriosDAO dao = new RelatoriosDAO();
-        dao.inserirRelatorio(rel);
-
-        JOptionPane.showMessageDialog(this, "Relatório gerado com sucesso!");
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao gerar relatório: " + e.getMessage());
-        e.printStackTrace();
+    // 2. VALIDAÇÃO
+    if (nomeclatura.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Digite a nomeclatura!", "Aviso", JOptionPane.WARNING_MESSAGE);
+        return;
     }
+
+    switch(tipo) {
+
+        case "Projeto" -> {
+            if (projetoOuFuncionario.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Digite o nome do projeto!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }   }
+
+        case "Empresa" -> {
+            if (empresa.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Digite o nome da empresa!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }   }
+
+        case "Funcionário" -> {
+            if (projetoOuFuncionario.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Digite o nome do funcionário!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }   }
+    }
+
+    //  ESCOLHER LOCAL PARA SALVAR PDF
+    JFileChooser fc = new JFileChooser();
+    fc.setDialogTitle("Salvar Relatório PDF");
+    fc.setSelectedFile(new java.io.File("relatorio.pdf"));
+
+    int opc = fc.showSaveDialog(this);
+    if (opc != JFileChooser.APPROVE_OPTION) {
+        return; // cancelado
+    }
+
+    String caminhoSalvar = fc.getSelectedFile().getAbsolutePath();
+
+    // GERA PDF COM iTEXT
+    com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
+    com.itextpdf.text.pdf.PdfWriter.getInstance(doc, new java.io.FileOutputStream(caminhoSalvar));
+    doc.open();
+
+    doc.add(new com.itextpdf.text.Paragraph("RELATÓRIO"));
+    doc.add(new com.itextpdf.text.Paragraph("---------------------------"));
+    doc.add(new com.itextpdf.text.Paragraph("Nomeclatura: " + nomeclatura));
+    doc.add(new com.itextpdf.text.Paragraph("Tipo: " + tipo));
+
+    switch(tipo) {
+        case "Projeto":
+            doc.add(new com.itextpdf.text.Paragraph("Projeto: " + projetoOuFuncionario));
+            break;
+
+        case "Empresa":
+            doc.add(new com.itextpdf.text.Paragraph("Empresa: " + empresa));
+            break;
+
+        case "Funcionário":
+            doc.add(new com.itextpdf.text.Paragraph("Funcionário: " + projetoOuFuncionario));
+            break;
+    }
+
+             doc.close();
+
+            // SALVAR NO BANCO
+             Relatorios rel = new Relatorios();
+             rel.setFkGestor(1); // ID do gestor logado
+             rel.setNome("Relatório - " + nomeclatura);
+             rel.setDescricao("Relatório do tipo " + tipo);
+             rel.setCaminho(caminhoSalvar);
+             rel.setCondicao(true);
+
+            RelatoriosDAO dao = new RelatoriosDAO();
+            dao.inserirRelatorio(rel);
+
+            JOptionPane.showMessageDialog(this, "Relatório gerado com sucesso!");
+            TelaRelatorios.getInstancia().carregarTabela();
+            dispose();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao gerar relatório: " + e.getMessage());
+            e.printStackTrace();
+       
+       }
+
     }//GEN-LAST:event_jLabel7MouseClicked
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel3MouseClicked
+   
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -266,20 +292,17 @@ public class CadastroRelatorio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables

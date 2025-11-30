@@ -26,6 +26,9 @@ public class TelaRelatorios extends javax.swing.JPanel {
         initComponents();
         instancia = this;
         
+        // 🔹 Iniciar backup automático ao abrir esta tela
+        util.BackupAutomatico.iniciarBackupAutomatico();
+        
         // ============= PERSONALIZAÇÃO =============
         // Centraliza os dados
         DefaultTableCellRenderer centralizar = new DefaultTableCellRenderer();
@@ -43,12 +46,10 @@ public class TelaRelatorios extends javax.swing.JPanel {
 
         // Altura, largura e cor das tabelas -> GERAL
         tabela.setBackground(Color.WHITE);
-        tabela.setRowHeight(60);
+        tabela.setRowHeight(60);      
         
-        carregarTabela();
-        
-    }
-
+    } 
+    
     // Método para utilizar a instância da tela na barra de pesquisa.
     public static TelaRelatorios getInstancia() {
         if (instancia == null) {
@@ -68,31 +69,28 @@ public class TelaRelatorios extends javax.swing.JPanel {
             sorter.setRowFilter(null);
         } else {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto)); // Busca em todas as colunas
-        }
-        
-        
+        }   
     }
-
     public void carregarTabela() {
     RelatoriosDAO dao = new RelatoriosDAO();
-    List<Relatorios> lista = dao.listarRelatorios();
-
+    List<Relatorios> lista = dao.listarRelatoriosParaTela();
     DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
-    modelo.setRowCount(0); // limpar
+
+    // Limpa a tabela antes de preencher novamente
+    modelo.setRowCount(0);
 
     for (Relatorios r : lista) {
         modelo.addRow(new Object[]{
-            r.getId(),
             r.getNome(),
-            r.isCondicao() ? "Automático" : "Manual",
             r.getDescricao(),
             r.getCaminho(),
-            r.getCriadoEm() != null 
-                ? new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(r.getCriadoEm())
-                : ""
+            r.isCondicao() ? "Automático" : "Manual",
+            r.getCriadoEm() != null ? new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm")
+                    .format(r.getCriadoEm()) : ""
         });
     }
 }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
@@ -120,28 +118,21 @@ public class TelaRelatorios extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Nome", "Tipo De Backup", "Descrição", "Caminho", "Hora"
+                "Nome", "Descrição", "Caminho", "Backup", "Hora"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, true, false, false, false
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
         });
         jScrollPane1.setViewportView(tabela);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(20, 130, 1770, 870);
+        jScrollPane1.setBounds(40, 130, 1770, 870);
 
         novoRelatorio.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
         novoRelatorio.setForeground(new java.awt.Color(255, 255, 255));
@@ -184,6 +175,7 @@ public class TelaRelatorios extends javax.swing.JPanel {
 
     private void botaoBackupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoBackupMouseClicked
         // TODO add your handling code here:
+        util.BackupUtil.gerarBackup();
     }//GEN-LAST:event_botaoBackupMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

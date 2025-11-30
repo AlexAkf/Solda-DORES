@@ -1,5 +1,8 @@
 package tela_empresas;
 
+import dao.EmpresasDAO;
+import javax.swing.JOptionPane;
+import models.Empresas;
 import util.Fonte;
 
 /**
@@ -8,33 +11,54 @@ import util.Fonte;
  */
 
 public class AtualizarEmpresas extends javax.swing.JFrame {
+
+    
     public AtualizarEmpresas() {
         initComponents();
+        formatarCNPJ();
+        formatarTelefone();
     }
 
+    
+    // Preenche os campos da tela com os dados do usuário
+    public void preencherCampos(Empresas empresa) {
+        this.idEmpresaselecionada = empresa.getId();
+
+        txtempresa.setText(empresa.getNome());
+        txtcnpj.setText(empresa.getCnpj());
+        txtemail.setText(empresa.getEmail());
+        txttelefone.setText(empresa.getTelefone());
+    }
+    
+    
+    
+    private int idEmpresaselecionada;
+
+    public void setIdEquipamentoSelecionado(int id) {
+        this.idEmpresaselecionada = id;
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        botaocancelar = new javax.swing.JLabel();
+        botaoatualizar = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtempresa = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
-        jFormattedTextField3 = new javax.swing.JFormattedTextField();
+        txtemail = new javax.swing.JTextField();
+        txtcnpj = new javax.swing.JFormattedTextField();
+        txttelefone = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(770, 430));
         setMinimumSize(new java.awt.Dimension(770, 430));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(770, 430));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -48,26 +72,35 @@ public class AtualizarEmpresas extends javax.swing.JFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 20, 770, 40);
 
-        jLabel13.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("CANCELAR");
-        jLabel13.setToolTipText("");
-        jLabel13.setMaximumSize(new java.awt.Dimension(260, 83));
-        jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
-        jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
-        jPanel1.add(jLabel13);
-        jLabel13.setBounds(40, 320, 260, 83);
+        botaocancelar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
+        botaocancelar.setForeground(new java.awt.Color(255, 255, 255));
+        botaocancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaocancelar.setText("CANCELAR");
+        botaocancelar.setMaximumSize(new java.awt.Dimension(260, 83));
+        botaocancelar.setMinimumSize(new java.awt.Dimension(260, 83));
+        botaocancelar.setPreferredSize(new java.awt.Dimension(260, 83));
+        botaocancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaocancelarMouseClicked(evt);
+            }
+        });
+        jPanel1.add(botaocancelar);
+        botaocancelar.setBounds(40, 320, 260, 83);
 
-        jLabel7.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("CADASTRAR");
-        jLabel7.setMaximumSize(new java.awt.Dimension(260, 83));
-        jLabel7.setMinimumSize(new java.awt.Dimension(260, 83));
-        jLabel7.setPreferredSize(new java.awt.Dimension(260, 83));
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(470, 320, 260, 83);
+        botaoatualizar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
+        botaoatualizar.setForeground(new java.awt.Color(255, 255, 255));
+        botaoatualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoatualizar.setText("ATUALIZAR");
+        botaoatualizar.setMaximumSize(new java.awt.Dimension(260, 83));
+        botaoatualizar.setMinimumSize(new java.awt.Dimension(260, 83));
+        botaoatualizar.setPreferredSize(new java.awt.Dimension(260, 83));
+        botaoatualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoatualizarMouseClicked(evt);
+            }
+        });
+        jPanel1.add(botaoatualizar);
+        botaoatualizar.setBounds(470, 320, 260, 83);
 
         jLabel2.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
@@ -89,12 +122,12 @@ public class AtualizarEmpresas extends javax.swing.JFrame {
         jPanel1.add(jLabel6);
         jLabel6.setBounds(20, 150, 90, 30);
 
-        jTextField4.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jTextField4);
-        jTextField4.setBounds(300, 100, 450, 30);
+        txtempresa.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtempresa);
+        txtempresa.setBounds(300, 100, 450, 30);
 
         jLabel8.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel8.setText("Telefone");
+        jLabel8.setText("Celular");
         jPanel1.add(jLabel8);
         jLabel8.setBounds(20, 200, 100, 30);
 
@@ -103,64 +136,160 @@ public class AtualizarEmpresas extends javax.swing.JFrame {
         jPanel1.add(jLabel9);
         jLabel9.setBounds(20, 250, 100, 30);
 
-        jTextField7.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jTextField7);
-        jTextField7.setBounds(300, 250, 450, 30);
+        txtemail.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtemail);
+        txtemail.setBounds(300, 250, 450, 30);
 
-        jFormattedTextField2.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jFormattedTextField2);
-        jFormattedTextField2.setBounds(300, 150, 450, 30);
+        txtcnpj.setEditable(false);
+        txtcnpj.setEnabled(false);
+        txtcnpj.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txtcnpj);
+        txtcnpj.setBounds(300, 150, 450, 30);
 
-        jFormattedTextField3.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jFormattedTextField3);
-        jFormattedTextField3.setBounds(300, 200, 450, 30);
+        txttelefone.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        jPanel1.add(txttelefone);
+        txttelefone.setBounds(300, 200, 450, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 770, 430);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AtualizarEmpresas.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AtualizarEmpresas.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AtualizarEmpresas.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AtualizarEmpresas.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
+    private void botaoatualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoatualizarMouseClicked
+        // Recebendo os valores cadastrados.
+        String empresa = txtempresa.getText();
+        String cnpj = txtcnpj.getText();
+        if (!validarCNPJ(cnpj)){
+            JOptionPane.showMessageDialog(this, "CNPJ inválido! Verifique e tente novamente.");
+            return;
         }
-        java.awt.EventQueue.invokeLater(() -> {
-            new AtualizarEmpresas().setVisible(true);
-        });
+        String telefone = txttelefone.getText();
+        if (!validarTelefone(telefone)){
+            JOptionPane.showMessageDialog(this, "Telefone inválido! Verifique e tente novamente.");
+            return;
+        }
+        String email = txtemail.getText();
+        if (!validaEmail(email)) {
+            JOptionPane.showMessageDialog(this, "E-mail inválido! Verifique o endereço e tente novamente.");
+            return;
+        }
+        
+
+        // Enviando o cadastro.
+        Empresas emp = new Empresas();
+        emp.setId(idEmpresaselecionada);
+        emp.setNome(empresa);
+        emp.setCnpj(cnpj);
+        emp.setTelefone(telefone);
+        emp.setEmail(email);
+        
+
+        // Atualiza no banco
+        EmpresasDAO dao = new EmpresasDAO();
+        dao.atualizarempresa(emp);
+
+
+        this.dispose(); // fecha a tela
+    }//GEN-LAST:event_botaoatualizarMouseClicked
+
+    private void botaocancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaocancelarMouseClicked
+        this.dispose(); // fecha a tela
+    }//GEN-LAST:event_botaocancelarMouseClicked
+
+    private boolean validaEmail(String email) {
+        /* Aqui tem uma expressão regular para validar email, eu não entendi muito bem como funciona.
+           Mas ela vai conferir caracteres, permitir ponto, traço, obriga a ter arroba e o domínio */
+        String formato = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
+        return email.matches(formato);
+    }
+    
+    private void formatarCNPJ() {
+            try {
+                javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("##.###.###/####-##");
+                mf.setPlaceholderCharacter('_');
+                txtcnpj.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
+            } catch (java.text.ParseException ex) {
+        }
     }
 
+    public static boolean validarCNPJ(String cnpj) {
+        if (cnpj == null) return false;
+
+        // Remove caracteres não numéricos
+        cnpj = cnpj.replaceAll("\\D", "");
+
+        // Verifica se tem 14 dígitos
+        if (cnpj.length() != 14) return false;
+
+        // Verifica se não é uma sequência de dígitos repetidos
+        if (cnpj.matches("(\\d)\\1{13}")) return false;
+
+        try {
+            int[] pesos1 = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+            int[] pesos2 = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+
+            // Calcula primeiro dígito verificador
+            int soma = 0;
+            for (int i = 0; i < 12; i++) {
+                soma += Character.getNumericValue(cnpj.charAt(i)) * pesos1[i];
+            }
+
+            int digito1 = soma % 11;
+            digito1 = (digito1 < 2) ? 0 : 11 - digito1;
+
+            // Calcula segundo dígito verificador
+            soma = 0;
+            for (int i = 0; i < 13; i++) {
+                soma += Character.getNumericValue(cnpj.charAt(i)) * pesos2[i];
+            }
+
+            int digito2 = soma % 11;
+            digito2 = (digito2 < 2) ? 0 : 11 - digito2;
+
+            // Verifica se os dígitos calculados são iguais aos informados
+            return digito1 == Character.getNumericValue(cnpj.charAt(12)) &&
+                   digito2 == Character.getNumericValue(cnpj.charAt(13));
+
+        } 
+        catch (Exception e) {
+            return false;
+        }
+    }
+    
+    
+    private void formatarTelefone() {
+            try {
+                javax.swing.text.MaskFormatter mf = new javax.swing.text.MaskFormatter("(##) #####-####"); // Formatação feita para telefone celular
+                mf.setPlaceholderCharacter('_');
+                txttelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mf));
+            } catch (java.text.ParseException ex) {
+        }
+    }
+    
+    
+    public static boolean validarTelefone(String telefone) {
+        String regex = "^\\(\\d{2}\\)\\s?(9?\\d{4})-\\d{4}$";
+        return telefone != null && telefone.matches(regex);
+    }
+    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFormattedTextField jFormattedTextField2;
-    private javax.swing.JFormattedTextField jFormattedTextField3;
+    private javax.swing.JLabel botaoatualizar;
+    private javax.swing.JLabel botaocancelar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JFormattedTextField txtcnpj;
+    private javax.swing.JTextField txtemail;
+    private javax.swing.JTextField txtempresa;
+    private javax.swing.JFormattedTextField txttelefone;
     // End of variables declaration//GEN-END:variables
 }

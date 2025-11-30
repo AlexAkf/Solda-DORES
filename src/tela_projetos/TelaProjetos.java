@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -32,7 +33,7 @@ public class TelaProjetos extends javax.swing.JPanel {
         iniciarEvento();    // Cria o evento apenas uma vez
         instancia = this;
         carregarTabela();
-        
+
         // ============= PERSONALIZAÇÃO =============
         // Centraliza os dados
         DefaultTableCellRenderer centralizar = new DefaultTableCellRenderer();
@@ -58,18 +59,20 @@ public class TelaProjetos extends javax.swing.JPanel {
     // ========== BOTÕES DE AÇÃO DA TABELA ==========
     // Cria o evento de ação dos botões apenas uma vez para evitar o bug */
     private void iniciarEvento() {
-        TabelaAcaoEvento evento;
         evento = new TabelaAcaoEvento() {
             @Override
             public void editando(int linha) {
-                int id = (int) tabela.getValueAt(linha, 0);
-                String nome = (String) tabela.getValueAt(linha, 1);
-                int fk_empresa = (int) tabela.getValueAt(linha, 2);
-                int fk_supervisor = (int) tabela.getValueAt(linha, 3);
-                LocalDate inicio = (LocalDate) tabela.getValueAt(linha, 4);
-                LocalDate prazo = (LocalDate) tabela.getValueAt(linha, 5);
-                String descricao = (String) tabela.getValueAt(linha, 6);
-                String condicao = (String) tabela.getValueAt(linha, 7);
+                // Converte o índice da view para model
+                int model = tabela.convertRowIndexToModel(linha);
+
+                int id = (int) tabela.getModel().getValueAt(model, 0);
+                String nome = (String) tabela.getModel().getValueAt(model, 1);
+                int fk_empresa = (int) tabela.getModel().getValueAt(model, 2);
+                int fk_supervisor = (int) tabela.getModel().getValueAt(model, 3);
+                LocalDate inicio = (LocalDate) tabela.getModel().getValueAt(model, 4);
+                LocalDate prazo = (LocalDate) tabela.getModel().getValueAt(model, 5);
+                String descricao = (String) tabela.getModel().getValueAt(model, 6);
+                String condicao = (String) tabela.getModel().getValueAt(model, 7);
 
                 Projetos projeto = new Projetos();
                 projeto.setId(id);
@@ -81,11 +84,23 @@ public class TelaProjetos extends javax.swing.JPanel {
                 projeto.setDescricao(descricao);
                 projeto.setCondicao(condicao);
 
+                var atualizar = new AtualizarProjetos(TelaProjetos.this);
+                atualizar.preencherCampos(projeto);
+                atualizar.setVisible(true);
             }
 
             @Override
             public void excluindo(int linha) {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                try {
+                    ProjetosDAO dao = new ProjetosDAO();
+
+                    int id = (int) tabela.getValueAt(linha, 0);
+                    dao.deletar(id);
+                    carregarTabela();
+                    JOptionPane.showMessageDialog(null, "Projeto deletado com sucesso!");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao deletar: " + ex.getMessage());
+                }
             }
         };
     }
@@ -212,7 +227,7 @@ public class TelaProjetos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        CadastroProjetos cadastro = new CadastroProjetos();
+        CadastroProjetos cadastro = new CadastroProjetos(this);
         cadastro.setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 

@@ -1,18 +1,41 @@
 package tela_projetos;
 
+import dao.ProjetosDAO;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
+import models.Projetos;
 import util.Fonte;
 
 /**
  *
  * @author Rafael Silva
  */
-
 public class AtualizarProjetos extends javax.swing.JFrame {
 
-    public AtualizarProjetos() {
+    private final TelaProjetos telaProjetos;
+
+    public AtualizarProjetos(TelaProjetos telaProjetos) {
         initComponents();
+        this.telaProjetos = telaProjetos;
     }
-    
+
+    public void preencherCampos(Projetos projetos) {
+        txtProjeto.setText(projetos.getnome());
+        txtEmpresa.setText(String.valueOf(projetos.getfk_empresa()));
+        txtSupervisor.setText(String.valueOf(projetos.getfk_supervisor()));
+        
+        txtInicial.setText(
+                projetos.getinicio() != null ? projetos.getinicio().toString() : ""
+        );
+
+        txtPrazo.setText(
+                projetos.getprazo() != null ? projetos.getprazo().toString() : ""
+        );
+        txtDescricao.setText(String.valueOf(projetos.getdescricao()));
+        combo.setSelectedItem(projetos.getcondicao());
+   
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -24,17 +47,19 @@ public class AtualizarProjetos extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtSupervisor = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        txtProjeto = new javax.swing.JTextField();
+        txtInicial = new javax.swing.JFormattedTextField();
         jLabel12 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtEmpresa = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDescricao = new javax.swing.JTextArea();
+        txtPrazo = new javax.swing.JFormattedTextField();
+        jLabel14 = new javax.swing.JLabel();
+        combo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(770, 590));
@@ -50,7 +75,7 @@ public class AtualizarProjetos extends javax.swing.JFrame {
 
         jLabel1.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 40f));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("ATUALIZAR PROJETOS");
+        jLabel1.setText("CADASTRAR PROJETOS");
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 20, 770, 50);
 
@@ -61,6 +86,11 @@ public class AtualizarProjetos extends javax.swing.JFrame {
         jLabel13.setMaximumSize(new java.awt.Dimension(260, 83));
         jLabel13.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel13.setPreferredSize(new java.awt.Dimension(260, 83));
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel13);
         jLabel13.setBounds(40, 480, 260, 83);
 
@@ -71,6 +101,11 @@ public class AtualizarProjetos extends javax.swing.JFrame {
         jLabel7.setMaximumSize(new java.awt.Dimension(260, 83));
         jLabel7.setMinimumSize(new java.awt.Dimension(260, 83));
         jLabel7.setPreferredSize(new java.awt.Dimension(260, 83));
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel7);
         jLabel7.setBounds(470, 480, 260, 83);
 
@@ -87,16 +122,16 @@ public class AtualizarProjetos extends javax.swing.JFrame {
         jLabel5.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel5.setText("Empresa");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(20, 150, 110, 30);
+        jLabel5.setBounds(20, 150, 140, 30);
 
         jLabel6.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel6.setText("Projeto");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(20, 100, 90, 30);
 
-        jTextField4.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jTextField4);
-        jTextField4.setBounds(300, 200, 450, 30);
+        txtSupervisor.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jPanel1.add(txtSupervisor);
+        txtSupervisor.setBounds(300, 200, 450, 30);
 
         jLabel8.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel8.setText("Supervisor");
@@ -109,37 +144,47 @@ public class AtualizarProjetos extends javax.swing.JFrame {
         jLabel9.setBounds(20, 250, 120, 30);
 
         jLabel11.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel11.setText("Descrição");
+        jLabel11.setText("Condição");
         jPanel1.add(jLabel11);
-        jLabel11.setBounds(20, 350, 120, 30);
+        jLabel11.setBounds(20, 420, 120, 30);
 
-        jTextField5.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jTextField5);
-        jTextField5.setBounds(300, 100, 450, 30);
-
-        jFormattedTextField1.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jFormattedTextField1);
-        jFormattedTextField1.setBounds(300, 300, 450, 30);
-
-        jFormattedTextField2.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jFormattedTextField2);
-        jFormattedTextField2.setBounds(300, 250, 450, 30);
+        txtProjeto.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jPanel1.add(txtProjeto);
+        txtProjeto.setBounds(300, 100, 450, 30);
+        jPanel1.add(txtInicial);
+        txtInicial.setBounds(300, 250, 450, 30);
 
         jLabel12.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel12.setText("Prazo Final");
         jPanel1.add(jLabel12);
         jLabel12.setBounds(20, 300, 250, 30);
 
-        jTextField6.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(jTextField6);
-        jTextField6.setBounds(300, 150, 450, 30);
+        txtEmpresa.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jPanel1.add(txtEmpresa);
+        txtEmpresa.setBounds(300, 150, 450, 30);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        txtDescricao.setColumns(20);
+        txtDescricao.setRows(5);
+        jScrollPane2.setViewportView(txtDescricao);
 
         jPanel1.add(jScrollPane2);
-        jScrollPane2.setBounds(300, 350, 450, 90);
+        jScrollPane2.setBounds(300, 340, 450, 70);
+        jPanel1.add(txtPrazo);
+        txtPrazo.setBounds(300, 300, 450, 30);
+
+        jLabel14.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
+        jLabel14.setText("Descrição");
+        jPanel1.add(jLabel14);
+        jLabel14.setBounds(20, 350, 120, 30);
+
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ativo", "avaliacao", "finalizado", "cancelado" }));
+        combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboActionPerformed(evt);
+            }
+        });
+        jPanel1.add(combo);
+        combo.setBounds(300, 420, 450, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 770, 590);
@@ -148,39 +193,70 @@ public class AtualizarProjetos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jLabel13MouseClicked
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+            // 1 - Pegar valores
+            String nomeProjeto = txtProjeto.getText();
+            String empresa = txtEmpresa.getText();
+            String supervisor = txtSupervisor.getText();
+            String dataInicioStr = txtInicial.getText();
+            String prazoStr = txtPrazo.getText();
+            String descricao = txtDescricao.getText();
+            String condicao = combo.getSelectedItem().toString();
+
+            // 2 - Validar
+            if (nomeProjeto.isBlank() || empresa.isBlank() || supervisor.isBlank()) {
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios!");
+                return;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AtualizarProjetos.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AtualizarProjetos.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AtualizarProjetos.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AtualizarProjetos.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
+
+            // 3 - Converter datas
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataInicio = LocalDate.parse(dataInicioStr, formato);
+            LocalDate prazo = LocalDate.parse(prazoStr, formato);
+
+            // 4 - Criar objeto Projeto
+            Projetos projeto = new Projetos();
+            projeto.setNome(nomeProjeto);
+            projeto.setFk_empresa(Integer.parseInt(empresa));   // Ajuste se necessário
+            projeto.setFk_supervisor(Integer.parseInt(supervisor)); // Ajuste se necessário
+            projeto.setInicio(dataInicio);
+            projeto.setPrazo(prazo);
+            projeto.setDescricao(descricao);
+            projeto.setCondicao(condicao);
+
+            // 5 - Salvar no banco
+            ProjetosDAO dao = new ProjetosDAO();
+            dao.inserir(projeto);
+
+            JOptionPane.showMessageDialog(this, "Projeto cadastrado com sucesso!");
+
+            if (telaProjetos != null) {
+                telaProjetos.carregarTabela();
+            }
+            this.dispose(); // fecha a tela
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
         }
-        java.awt.EventQueue.invokeLater(() -> {
-            new AtualizarProjetos().setVisible(true);
-        });
-    }
+    }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
+
+    }//GEN-LAST:event_comboActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
+    private javax.swing.JComboBox<String> combo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
@@ -190,9 +266,12 @@ public class AtualizarProjetos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextArea txtDescricao;
+    private javax.swing.JTextField txtEmpresa;
+    private javax.swing.JFormattedTextField txtInicial;
+    private javax.swing.JFormattedTextField txtPrazo;
+    private javax.swing.JTextField txtProjeto;
+    private javax.swing.JTextField txtSupervisor;
     // End of variables declaration//GEN-END:variables
+
 }

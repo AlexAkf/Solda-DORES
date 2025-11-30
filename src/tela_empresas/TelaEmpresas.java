@@ -1,12 +1,19 @@
 package tela_empresas;
 
+import dao.EmpresasDAO;
 import java.awt.Color;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import models.Empresas;
 import util.Fonte;
+import util.TabelaAcaoEditor;
+import util.TabelaAcaoEvento;
+import util.TabelaAcaoRender;
         
 /**
  *
@@ -16,29 +23,103 @@ import util.Fonte;
 public class TelaEmpresas extends javax.swing.JPanel {
 
     private static TelaEmpresas instancia;
+    
     // Criando uma instância dessa tela para poder utilizar a barra de pesquisa.
     public TelaEmpresas() {
         initComponents();
+        carregarTabela();
+
         instancia = this;
-        
+
         // ============= PERSONALIZAÇÃO =============
-        // Centraliza os dados
+        //Ocultando a coluna de ID
+        tabela.getColumnModel().getColumn(0).setMinWidth(0);
+        tabela.getColumnModel().getColumn(0).setMaxWidth(0);
+        tabela.getColumnModel().getColumn(0).setWidth(0);
+        tabela.getColumnModel().getColumn(0).setPreferredWidth(0);
+        
+        // Centralizar dados:
         DefaultTableCellRenderer centralizar = new DefaultTableCellRenderer();
         centralizar.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < tabela.getColumnCount(); i++) {
             tabela.getColumnModel().getColumn(i).setCellRenderer(centralizar);
         }
 
-        // Cabeçalho
+        // Cabeçalho:
         tabela.getTableHeader().setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         tabela.getTableHeader().setBackground(new Color(30, 58, 138));
         tabela.getTableHeader().setForeground(Color.WHITE);
         tabela.getTableHeader().setReorderingAllowed(false);
         tabela.getTableHeader().setResizingAllowed(false);
 
-        // Altura, largura e cor das tabelas -> GERAL
+        // Altura, largura e cor:
         tabela.setBackground(Color.WHITE);
         tabela.setRowHeight(60);
+        tabela.getColumnModel().getColumn(0).setMaxWidth(50);
+
+        // ========== BOTÕES DE AÇÃO DA TABELA ==========
+        TabelaAcaoEvento evento = new TabelaAcaoEvento() {
+            @Override
+            public void editando(int linha) {
+                // Pega os dados da linha selecionada
+                int id = (int) tabela.getValueAt(linha, 0);
+                String empresa = (String) tabela.getValueAt(linha, 1);
+                String cnpj = (String) tabela.getValueAt(linha, 2);
+                String telefone = (String) tabela.getValueAt(linha, 3);
+                String email = (String) tabela.getValueAt(linha, 4);
+                
+
+                Empresas emp = new Empresas();
+                emp.setId(id);
+                emp.setNome(empresa);
+                emp.setCnpj(cnpj);
+                emp.setTelefone(telefone);
+                emp.setEmail(email);
+                
+
+                AtualizarEmpresas atualizar = new AtualizarEmpresas();
+                atualizar.setIdEquipamentoSelecionado(id);
+                atualizar.preencherCampos(emp);
+                atualizar.setVisible(true);
+                carregarTabela();
+            }
+
+            @Override
+            public void excluindo(int linha) {
+                int idEmpresa = (int) tabela.getValueAt(linha, 0);
+
+                int opcao = JOptionPane.showConfirmDialog(null,
+                        "Deseja realmente excluir a empresa ID " + idEmpresa + "?",
+                        "Confirmação", JOptionPane.YES_NO_OPTION);
+
+                if (opcao == JOptionPane.YES_OPTION) {
+                    EmpresasDAO dao = new EmpresasDAO();
+                    dao.deletarempresa(idEmpresa);
+                    carregarTabela(); // atualiza a tabela após exclusão
+                }
+            }
+        };
+        tabela.getColumnModel().getColumn(5).setCellRenderer(new TabelaAcaoRender());
+        tabela.getColumnModel().getColumn(5).setCellEditor(new TabelaAcaoEditor(evento));
+    }
+    
+    public void carregarTabela() {
+        EmpresasDAO dao = new EmpresasDAO();
+        List<Empresas> lista = dao.listarTodasempresas();
+
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+        modelo.setRowCount(0); // limpa a tabela
+
+        for (Empresas emp : lista) {
+            modelo.addRow(new Object[]{
+                emp.getId(),
+                emp.getNome(),
+                emp.getCnpj(),
+                emp.getTelefone(),
+                emp.getEmail(),
+                null
+            });
+        }
     }
 
     // Método para utilizar a instância da tela na barra de pesquisa.
@@ -101,14 +182,14 @@ public class TelaEmpresas extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Empresa", "CNPJ", "Telefone", "E-mail"
+                "ID", "Empresa", "CNPJ", "Celular", "E-mail", "Ações"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -126,7 +207,7 @@ public class TelaEmpresas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        CadastroEmpresas cadastro = new CadastroEmpresas();
+        CadastroEmpresas cadastro = new CadastroEmpresas(this);
         cadastro.setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 
