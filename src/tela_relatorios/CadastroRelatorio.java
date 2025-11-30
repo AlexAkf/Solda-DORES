@@ -1,6 +1,7 @@
 package tela_relatorios;
 
 import dao.RelatoriosDAO;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import models.Relatorios;
@@ -17,7 +18,8 @@ public class CadastroRelatorio extends javax.swing.JFrame {
      */
     public CadastroRelatorio() {
         initComponents();
-
+        jComboBox1.setLightWeightPopupEnabled(false);
+        
     }
 
     /**
@@ -42,6 +44,7 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -51,26 +54,25 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jList1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Solda-DORES");
         setMaximumSize(new java.awt.Dimension(500, 570));
         setMinimumSize(new java.awt.Dimension(500, 570));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(500, 570));
+        setPreferredSize(new java.awt.Dimension(500, 600));
         setResizable(false);
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(30, 58, 138), 2, true));
-        jPanel1.setMaximumSize(new java.awt.Dimension(500, 570));
-        jPanel1.setMinimumSize(new java.awt.Dimension(500, 570));
-        jPanel1.setPreferredSize(new java.awt.Dimension(500, 570));
+        jPanel1.setMaximumSize(new java.awt.Dimension(500, 600));
+        jPanel1.setMinimumSize(new java.awt.Dimension(500, 600));
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 600));
         jPanel1.setLayout(null);
 
         jLabel1.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 40f));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Ficha De Relatorio");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 10, 500, 50);
+        jLabel1.setBounds(0, 40, 500, 50);
 
         jLabel7.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -85,23 +87,24 @@ public class CadastroRelatorio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(120, 420, 260, 83);
+        jLabel7.setBounds(120, 470, 260, 83);
 
         jLabel2.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(120, 420, 260, 83);
+        jLabel2.setBounds(120, 470, 260, 83);
 
         jLabel6.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel6.setText("Nomeclatura");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(110, 70, 160, 30);
+        jLabel6.setBounds(110, 120, 160, 30);
 
         jTextField4.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jTextField4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.add(jTextField4);
-        jTextField4.setBounds(110, 100, 290, 30);
+        jTextField4.setBounds(110, 150, 290, 30);
 
+        jComboBox1.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 12f));
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Projeto", "Estoque", "Funcionário", "Empresa" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,7 +112,7 @@ public class CadastroRelatorio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jComboBox1);
-        jComboBox1.setBounds(310, 190, 90, 30);
+        jComboBox1.setBounds(310, 240, 90, 30);
 
         jTextField5.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jTextField5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -119,18 +122,19 @@ public class CadastroRelatorio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jTextField5);
-        jTextField5.setBounds(110, 190, 290, 30);
+        jTextField5.setBounds(110, 240, 290, 30);
 
         jLabel9.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel9.setText("Tipo");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(110, 160, 90, 30);
+        jLabel9.setBounds(110, 210, 90, 30);
 
         jLabel10.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
         jLabel10.setText("Descrição");
         jPanel1.add(jLabel10);
-        jLabel10.setBounds(110, 260, 190, 30);
+        jLabel10.setBounds(110, 310, 190, 30);
 
+        jTextField1.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,10 +142,20 @@ public class CadastroRelatorio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jTextField1);
-        jTextField1.setBounds(110, 290, 290, 40);
+        jTextField1.setBounds(110, 340, 290, 40);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar_pesquisar.png"))); // NOI18N
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(457, 10, 30, 30);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 500, 570);
+        jPanel1.setBounds(0, 0, 500, 600);
 
         pack();
         setLocationRelativeTo(null);
@@ -151,113 +165,141 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
 
-    //  PEGAR DADOS DA TELA
+    // ------------- PEGAR DADOS DA TELA -------------
     String nomeclatura = jTextField4.getText().trim();
     String tipo = (String) jComboBox1.getSelectedItem();
 
-    String empresa = jTextField5.getText().trim();              // usado quando tipo = Empresa
-    String projetoOuFuncionario = jTextField1.getText().trim(); // usado quando tipo = Projeto ou Funcionário
-
-    // 2. VALIDAÇÃO
     if (nomeclatura.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Digite a nomeclatura!", "Aviso", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Digite a nomeclatura!");
         return;
     }
 
-    switch(tipo) {
-
-        case "Projeto" -> {
-            if (projetoOuFuncionario.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Digite o nome do projeto!", "Aviso", JOptionPane.WARNING_MESSAGE);
-                return;
-            }   }
-
-        case "Empresa" -> {
-            if (empresa.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Digite o nome da empresa!", "Aviso", JOptionPane.WARNING_MESSAGE);
-                return;
-            }   }
-
-        case "Funcionário" -> {
-            if (projetoOuFuncionario.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Digite o nome do funcionário!", "Aviso", JOptionPane.WARNING_MESSAGE);
-                return;
-            }   }
-    }
-
-    //  ESCOLHER LOCAL PARA SALVAR PDF
+    // ------------- ESCOLHER ONDE SALVAR PDF -------------
     JFileChooser fc = new JFileChooser();
     fc.setDialogTitle("Salvar Relatório PDF");
     fc.setSelectedFile(new java.io.File("relatorio.pdf"));
 
-    int opc = fc.showSaveDialog(this);
-    if (opc != JFileChooser.APPROVE_OPTION) {
-        return; // cancelado
+    if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+        return;
     }
 
-    String caminhoSalvar = fc.getSelectedFile().getAbsolutePath();
+    String caminho = fc.getSelectedFile().getAbsolutePath();
 
-    // GERA PDF COM iTEXT
+    // ------------- CRIAR PDF COM iTEXT -------------
     com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
-    com.itextpdf.text.pdf.PdfWriter.getInstance(doc, new java.io.FileOutputStream(caminhoSalvar));
+    com.itextpdf.text.pdf.PdfWriter.getInstance(doc, new java.io.FileOutputStream(caminho));
+
     doc.open();
-
-    doc.add(new com.itextpdf.text.Paragraph("RELATÓRIO"));
-    doc.add(new com.itextpdf.text.Paragraph("---------------------------"));
+    doc.add(new com.itextpdf.text.Paragraph("RELATÓRIO - " + tipo));
     doc.add(new com.itextpdf.text.Paragraph("Nomeclatura: " + nomeclatura));
-    doc.add(new com.itextpdf.text.Paragraph("Tipo: " + tipo));
+    doc.add(new com.itextpdf.text.Paragraph(" ")); // espaçamento
 
-    switch(tipo) {
+    // ------------- PEGAR DADOS DO BANCO POR TIPO -------------
+    switch (tipo) {
+
+        case "Estoque":
+
+            dao.EquipamentosDAO eqDao = new dao.EquipamentosDAO();
+            List<models.Equipamentos> listaEq = eqDao.listarEquipamentos(); // CORRETO
+
+            doc.add(new com.itextpdf.text.Paragraph("LISTA DE EQUIPAMENTOS:"));
+            doc.add(new com.itextpdf.text.Paragraph("-------------------------------------------"));
+
+            for (models.Equipamentos e : listaEq) {
+                doc.add(new com.itextpdf.text.Paragraph(
+                    " | Código: " + e.getCodigo() +
+                    " | Modelo: " + e.getModelo() +
+                    " | Marca: " + e.getMarca() +
+                    " | Soldador: " + e.getSoldador() +
+                    " | Condição: " + e.getCondicao() +
+                    " | Situacao: " + e.getStatus()        
+                ));
+            }
+            break;
+            
+            
         case "Projeto":
-            doc.add(new com.itextpdf.text.Paragraph("Projeto: " + projetoOuFuncionario));
+
+            dao.ProjetosDAO pDao = new dao.ProjetosDAO();
+            List<models.Projetos> listaP = pDao.listarTodos(); // CORRETO
+
+            doc.add(new com.itextpdf.text.Paragraph("LISTA DE PROJETOS:"));
+            doc.add(new com.itextpdf.text.Paragraph("-------------------------------------------"));
+
+            for (models.Projetos p : listaP) {
+                doc.add(new com.itextpdf.text.Paragraph(
+                    "Projeto: " + p.getnome() +
+                    " | nome: " + p.getnome() +
+                    " | fk_empresa: " + p.getfk_empresa() +
+                    " | inicio: " + p.getcondicao() +
+                    " | prazo: " + p.getprazo()
+                ));
+            }
             break;
 
-        case "Empresa":
-            doc.add(new com.itextpdf.text.Paragraph("Empresa: " + empresa));
-            break;
+            
+            
+            
+       case "Empresa":
 
-        case "Funcionário":
-            doc.add(new com.itextpdf.text.Paragraph("Funcionário: " + projetoOuFuncionario));
-            break;
+        dao.EmpresasDAO emDao = new dao.EmpresasDAO();
+        List<models.Empresas> listaE = emDao.listarTodasempresas();
+
+        doc.add(new com.itextpdf.text.Paragraph("LISTA DE EMPRESAS:"));
+        doc.add(new com.itextpdf.text.Paragraph("-------------------------------------------"));
+
+    for (models.Empresas em : listaE) {
+        doc.add(new com.itextpdf.text.Paragraph(
+            "Empresa: " + em.getNome() +
+            " | CNPJ: " + em.getCnpj()
+        ));
+    }
+    break;
+
     }
 
-             doc.close();
+    doc.close();
 
-            // SALVAR NO BANCO
-             Relatorios rel = new Relatorios();
-             rel.setFkGestor(1); // ID do gestor logado
-             rel.setNome("Relatório - " + nomeclatura);
-             rel.setDescricao("Relatório do tipo " + tipo);
-             rel.setCaminho(caminhoSalvar);
-             rel.setCondicao(true);
+    // SALVAR NO BANCO
+    Relatorios rel = new Relatorios();
+    rel.setFkGestor(1);
+    rel.setNome("Relatório - " + nomeclatura);
+    rel.setDescricao("Relatório automático: " + tipo);
+    rel.setCaminho(caminho);
+    rel.setCondicao(true);
 
-            RelatoriosDAO dao = new RelatoriosDAO();
-            dao.inserirRelatorio(rel);
+    RelatoriosDAO rdao = new RelatoriosDAO();
+    rdao.inserirRelatorio(rel);
 
-            JOptionPane.showMessageDialog(this, "Relatório gerado com sucesso!");
-            TelaRelatorios.getInstancia().carregarTabela();
-            dispose();
+    JOptionPane.showMessageDialog(this, "PDF gerado com sucesso!");
+    TelaRelatorios.getInstancia().carregarTabela();
+    dispose();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao gerar relatório: " + e.getMessage());
-            e.printStackTrace();
-       
-       }
+        JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+    e.printStackTrace();
+    }
 
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
+        String selecionado = (String) jComboBox1.getSelectedItem();
+        jTextField5.setText(selecionado);
    
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -299,6 +341,7 @@ public class CadastroRelatorio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;

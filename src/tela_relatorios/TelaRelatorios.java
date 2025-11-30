@@ -24,6 +24,7 @@ public class TelaRelatorios extends javax.swing.JPanel {
     // Criando uma instância dessa tela para poder utilizar a barra de pesquisa.
     public TelaRelatorios() {
         initComponents();
+        carregarTabela();
         instancia = this;
         
         // 🔹 Iniciar backup automático ao abrir esta tela
@@ -89,9 +90,7 @@ public class TelaRelatorios extends javax.swing.JPanel {
                     .format(r.getCriadoEm()) : ""
         });
     }
-}
-    
-    
+} 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
