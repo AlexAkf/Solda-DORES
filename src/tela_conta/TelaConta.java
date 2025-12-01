@@ -13,17 +13,17 @@ import util.Hash;
 /**
  * Classe que cuida da conta do usuário, aqui ele consegue fazer a leitura do
  * manual de uso do sistema e a troca da senha dele
- * 
+ *
  * @author Alex
  */
-
 public class TelaConta extends javax.swing.JPanel {
+
     public TelaConta() {
         initComponents();
         String nome = Sessao.usuarioLogado.getNome();
         nomeUser.setText(nome);
     }
-   
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -31,7 +31,7 @@ public class TelaConta extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         manualUsuario = new javax.swing.JLabel();
         trocarSenha = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        btnDocumentacao = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
@@ -67,20 +67,25 @@ public class TelaConta extends javax.swing.JPanel {
         add(trocarSenha);
         trocarSenha.setBounds(110, 180, 950, 160);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tema.png"))); // NOI18N
-        add(jLabel7);
-        jLabel7.setBounds(110, 390, 950, 160);
+        btnDocumentacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/documentacao.png"))); // NOI18N
+        btnDocumentacao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDocumentacaoMouseClicked(evt);
+            }
+        });
+        add(btnDocumentacao);
+        btnDocumentacao.setBounds(110, 390, 950, 160);
     }// </editor-fold>//GEN-END:initComponents
 
     private void manualUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manualUsuarioMouseClicked
-          try {
-            var pdf = new File("docs/teste.pdf");  // caminho do pdf fora do projeto (src)
+        try {
+            var pdf = new File("docs/Manual.pdf");  // caminho do pdf fora do projeto (src)
 
             if (!pdf.exists()) {
                 JOptionPane.showMessageDialog(this, "Não foi possível encontrar o manual.\nErro: " + pdf.getAbsolutePath());
                 return;
             }
-            
+
             Desktop.getDesktop().open(pdf);
         } catch (IOException erro) {
             JOptionPane.showMessageDialog(this, "Erro ao abrir arquivo: " + erro.getMessage());
@@ -91,11 +96,13 @@ public class TelaConta extends javax.swing.JPanel {
         var usuario = Sessao.usuarioLogado; // Pega o usuário logado
         String novaSenha = JOptionPane.showInputDialog(this, "Digite a nova senha:");   // Solicita nova senha
 
-        if (novaSenha == null) return; // Usuário desistiu
-
+        if (novaSenha == null) {
+            return; // Usuário desistiu
+        }
         String confirmarSenha = JOptionPane.showInputDialog(this, "Confirme a nova senha:");
-        if (confirmarSenha == null) return; // Usuário desistiu
-
+        if (confirmarSenha == null) {
+            return; // Usuário desistiu
+        }
         if (!novaSenha.equals(confirmarSenha)) {
             JOptionPane.showMessageDialog(this, "As senhas não coincidem!");
             return;
@@ -112,9 +119,24 @@ public class TelaConta extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_trocarSenhaMouseClicked
 
+    private void btnDocumentacaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDocumentacaoMouseClicked
+        try {
+            var pdf = new File("docs/Documentação.pdf");  // caminho do pdf fora do projeto (src)
+
+            if (!pdf.exists()) {
+                JOptionPane.showMessageDialog(this, "Não foi possível encontrar o manual.\nErro: " + pdf.getAbsolutePath());
+                return;
+            }
+
+            Desktop.getDesktop().open(pdf);
+        } catch (IOException erro) {
+            JOptionPane.showMessageDialog(this, "Erro ao abrir arquivo: " + erro.getMessage());
+        }
+    }//GEN-LAST:event_btnDocumentacaoMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel btnDocumentacao;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel manualUsuario;
     private javax.swing.JLabel nomeUser;
     private javax.swing.JLabel trocarSenha;

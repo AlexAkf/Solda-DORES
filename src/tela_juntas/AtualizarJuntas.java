@@ -20,6 +20,7 @@ import util.Fonte;
 public class AtualizarJuntas extends javax.swing.JFrame {
 
     private TelaJuntas telaJuntas;
+    private Juntas juntaOriginal;
 
     public AtualizarJuntas(TelaJuntas telaJuntas) {
         initComponents();
@@ -172,17 +173,24 @@ public class AtualizarJuntas extends javax.swing.JFrame {
 
     // Puxa os dados atuais e preenche os campos.
     public void preencherCampos(Juntas j) {
+        this.juntaOriginal = j; // <-- AQUI ESTÁ FALTANDO!
+
         txtProjeto.setText(j.getProjeto());
         txtCodigo.setText(j.getCodigo());
         txtComprimento.setText(String.valueOf(j.getComprimento()));
 
         String status = j.getStatus();
         String exibicao = switch (status.toLowerCase()) {
-            case "nao_realizado" -> "Não realizado";
-            case "em_andamento" -> "Em andamento";
-            case "concluido" -> "Concluído";
-            case "refazer" -> "A refazer";
-            default -> status;
+            case "nao_realizado" ->
+                "Não realizado";
+            case "em_andamento" ->
+                "Em andamento";
+            case "concluido" ->
+                "Concluído";
+            case "refazer" ->
+                "A refazer";
+            default ->
+                status;
         };
 
         comboStatus.setSelectedItem(exibicao);
@@ -369,7 +377,8 @@ public class AtualizarJuntas extends javax.swing.JFrame {
         j.setCodigo(codigo);
         j.setComprimento(comprimento);
         j.setStatus(status);
-
+        j.setId(juntaOriginal.getId());
+        
         // Utilizando o método 'inserirJunta' da classe DAO.
         JuntasDAO dao = new JuntasDAO();
 
