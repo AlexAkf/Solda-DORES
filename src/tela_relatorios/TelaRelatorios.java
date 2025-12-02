@@ -4,6 +4,7 @@ import dao.RelatoriosDAO;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -56,7 +57,8 @@ public class TelaRelatorios extends javax.swing.JPanel {
         tabela.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 1, true));
         tabela.getTableHeader().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(30, 58, 138)));
         
-    } 
+    }
+    
     
     // Método para utilizar a instância da tela na barra de pesquisa.
     public static TelaRelatorios getInstancia() {
@@ -107,8 +109,10 @@ public class TelaRelatorios extends javax.swing.JPanel {
         tabela = new javax.swing.JTable();
         novoRelatorio = new javax.swing.JLabel();
         botaoBackup = new javax.swing.JLabel();
+        botaoRestaurar = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
@@ -165,6 +169,18 @@ public class TelaRelatorios extends javax.swing.JPanel {
         botaoBackup.setBounds(1240, 20, 260, 90);
         botaoBackup.getAccessibleContext().setAccessibleName("");
 
+        botaoRestaurar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
+        botaoRestaurar.setForeground(new java.awt.Color(255, 255, 255));
+        botaoRestaurar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoRestaurar.setText("RESTAURAR");
+        botaoRestaurar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoRestaurarMouseClicked(evt);
+            }
+        });
+        add(botaoRestaurar);
+        botaoRestaurar.setBounds(50, 20, 260, 90);
+
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         add(jLabel2);
         jLabel2.setBounds(1240, 20, 260, 90);
@@ -172,6 +188,10 @@ public class TelaRelatorios extends javax.swing.JPanel {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         add(jLabel3);
         jLabel3.setBounds(1530, 20, 260, 90);
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
+        add(jLabel4);
+        jLabel4.setBounds(50, 20, 260, 90);
     }// </editor-fold>//GEN-END:initComponents
 
     private void novoRelatorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_novoRelatorioMouseClicked
@@ -184,10 +204,26 @@ public class TelaRelatorios extends javax.swing.JPanel {
         util.BackupUtil.gerarBackup();
     }//GEN-LAST:event_botaoBackupMouseClicked
 
+    private void botaoRestaurarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoRestaurarMouseClicked
+        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(
+            null,
+            "Tem certeza que deseja restaurar o sistema?\nIsso substitui TODOS os dados atuais!",
+            "Confirmar restauração",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            util.RestaurarBackup.restaurar();
+        }
+    }//GEN-LAST:event_botaoRestaurarMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoBackup;
+    private javax.swing.JLabel botaoRestaurar;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel novoRelatorio;
     private javax.swing.JTable tabela;

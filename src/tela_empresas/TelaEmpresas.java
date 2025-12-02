@@ -84,7 +84,7 @@ public class TelaEmpresas extends javax.swing.JPanel {
                 emp.setEmail(email);
                 
 
-                AtualizarEmpresas atualizar = new AtualizarEmpresas();
+                FichaEdicao atualizar = new FichaEdicao();
                 atualizar.setIdEquipamentoSelecionado(id);
                 atualizar.preencherCampos(emp);
                 atualizar.setVisible(true);
@@ -214,7 +214,7 @@ public class TelaEmpresas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        CadastroEmpresas cadastro = new CadastroEmpresas(this);
+        FichaCadastro cadastro = new FichaCadastro(this);
         cadastro.setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 
