@@ -87,7 +87,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                 equipamento.setMarca(marca);
                 equipamento.setStatus(condicao);
 
-                var atualizar = new AtualizarEquipamentos(TelaEquipamentos.this);
+                var atualizar = new FichaEdicao(TelaEquipamentos.this);
                 atualizar.preencherCampos(equipamento);
                 atualizar.setIdEquipamentoSelecionado(id);
                 atualizar.setVisible(true);
@@ -268,7 +268,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void botaoCadastroMouseClicked(java.awt.event.MouseEvent evt) {
-        CadastroEquipamentos cadastro = new CadastroEquipamentos(this);
+        FichaCadastro cadastro = new FichaCadastro(this);
         cadastro.setVisible(true);
     }
 

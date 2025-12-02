@@ -67,7 +67,7 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
                 }
 
                 // Abre a tela de atualização
-                var atualizar = new AtualizarFuncionarios(TelaFuncionarios.this);
+                var atualizar = new FichaEdicao(TelaFuncionarios.this);
                 atualizar.usuarioSelecionado(usuario);
                 atualizar.preencherCampos(usuario);
                 atualizar.setVisible(true);

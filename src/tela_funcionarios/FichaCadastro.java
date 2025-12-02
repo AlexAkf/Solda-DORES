@@ -231,7 +231,7 @@ public class FichaCadastro extends javax.swing.JFrame {
         txtSinete = new javax.swing.JTextField();
         txtValidade = new javax.swing.JFormattedTextField();
         txtSupervisor = new javax.swing.JTextField();
-        txtSinete1 = new javax.swing.JTextField();
+        txtStatus = new javax.swing.JTextField();
         botaoCancelar = new javax.swing.JLabel();
         botaoCadastrar = new javax.swing.JLabel();
         ficha = new javax.swing.JLabel();
@@ -293,11 +293,11 @@ public class FichaCadastro extends javax.swing.JFrame {
         getContentPane().add(txtSupervisor);
         txtSupervisor.setBounds(765, 516, 450, 50);
 
-        txtSinete1.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        txtSinete1.setText("COD");
-        txtSinete1.setEnabled(false);
-        getContentPane().add(txtSinete1);
-        txtSinete1.setBounds(765, 782, 450, 50);
+        txtStatus.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        txtStatus.setText("COD");
+        txtStatus.setEnabled(false);
+        getContentPane().add(txtStatus);
+        txtStatus.setBounds(765, 782, 450, 50);
 
         botaoCancelar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
@@ -629,7 +629,7 @@ public class FichaCadastro extends javax.swing.JFrame {
     private javax.swing.JTextField txtLogin;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtSinete;
-    private javax.swing.JTextField txtSinete1;
+    private javax.swing.JTextField txtStatus;
     private javax.swing.JTextField txtSupervisor;
     private javax.swing.JFormattedTextField txtValidade;
     // End of variables declaration//GEN-END:variables
