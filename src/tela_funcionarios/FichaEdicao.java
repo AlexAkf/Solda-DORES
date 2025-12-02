@@ -33,6 +33,7 @@ public class FichaEdicao extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(1920, 1080));
         setMinimumSize(new java.awt.Dimension(1920, 1080));
         setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(1920, 1080));
         setResizable(false);
         getContentPane().setLayout(null);
 
