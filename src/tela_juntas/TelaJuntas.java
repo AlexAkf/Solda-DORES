@@ -3,6 +3,7 @@ package tela_juntas;
 import dao.JuntasDAO;
 import java.awt.Color;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
@@ -52,6 +53,12 @@ public class TelaJuntas extends javax.swing.JPanel {
         // Altura, largura e cor:
         tabela.setBackground(Color.WHITE);
         tabela.setRowHeight(60);
+        jScrollPane1.setBorder(BorderFactory.createEmptyBorder());
+        jScrollPane1.setOpaque(true);
+        jScrollPane1.getViewport().setBackground(new Color(228, 228, 228));
+        tabela.setGridColor(new Color(30, 58, 138)); 
+        tabela.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 1, true));
+        tabela.getTableHeader().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(30, 58, 138)));
 
         // Deixar dados de status visualmente agradável.
         tabela.getColumnModel().getColumn(4).setCellRenderer(new StatusRenderer());

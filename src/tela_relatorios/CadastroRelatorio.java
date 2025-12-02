@@ -1,9 +1,13 @@
 package tela_relatorios;
 
+import com.itextpdf.text.Paragraph;
+import dao.EquipamentosDAO;
+import java.sql.SQLException;
 import dao.RelatoriosDAO;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import models.Equipamentos;
 import models.Relatorios;
 import util.Fonte;
 
@@ -43,8 +47,9 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        descricao = new javax.swing.JTextArea();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -134,16 +139,6 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         jPanel1.add(jLabel10);
         jLabel10.setBounds(110, 310, 190, 30);
 
-        jTextField1.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jTextField1);
-        jTextField1.setBounds(110, 340, 290, 40);
-
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar_pesquisar.png"))); // NOI18N
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -153,6 +148,14 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         });
         jPanel1.add(jLabel3);
         jLabel3.setBounds(457, 10, 30, 30);
+
+        descricao.setColumns(20);
+        descricao.setLineWrap(true);
+        descricao.setRows(5);
+        jScrollPane2.setViewportView(descricao);
+
+        jPanel1.add(jScrollPane2);
+        jScrollPane2.setBounds(110, 340, 300, 86);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 500, 600);
@@ -166,79 +169,159 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         try {
 
     // ------------- PEGAR DADOS DA TELA -------------
-    String nomeclatura = jTextField4.getText().trim();
-    String tipo = (String) jComboBox1.getSelectedItem();
-
+        String nomeclatura = jTextField4.getText().trim();
+        String tipo = (String) jComboBox1.getSelectedItem();
+        String descricaoTexto = descricao.getText().trim();
+    
     if (nomeclatura.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Digite a nomeclatura!");
         return;
     }
 
     // ------------- ESCOLHER ONDE SALVAR PDF -------------
-    JFileChooser fc = new JFileChooser();
-    fc.setDialogTitle("Salvar Relatório PDF");
-    fc.setSelectedFile(new java.io.File("relatorio.pdf"));
+JFileChooser fc = new JFileChooser();
 
-    if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
-        return;
-    }
+// Abre na Área de Trabalho
+fc.setCurrentDirectory(new java.io.File(System.getProperty("user.home") + "/Desktop"));
 
-    String caminho = fc.getSelectedFile().getAbsolutePath();
+fc.setDialogTitle("Salvar Relatório PDF");
+fc.setSelectedFile(new java.io.File("relatorio.pdf"));
+
+if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+    return;
+}
+
+String caminho = fc.getSelectedFile().getAbsolutePath();
+
+// FORÇAR EXTENSÃO .pdf
+if (!caminho.toLowerCase().endsWith(".pdf")) {
+    caminho += ".pdf";
+}
 
     // ------------- CRIAR PDF COM iTEXT -------------
     com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
     com.itextpdf.text.pdf.PdfWriter.getInstance(doc, new java.io.FileOutputStream(caminho));
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    String dataHoraAtual = sdf.format(new java.util.Date());
 
-    doc.open();
+    doc.open(); // ABRIR O DOCUMENTO
+
+// Elementos do Cabeçalho
     doc.add(new com.itextpdf.text.Paragraph("RELATÓRIO - " + tipo));
     doc.add(new com.itextpdf.text.Paragraph("Nomeclatura: " + nomeclatura));
-    doc.add(new com.itextpdf.text.Paragraph(" ")); // espaçamento
+    doc.add(new com.itextpdf.text.Paragraph("Gerado em: " + dataHoraAtual));
+
+// ADICIONA A DESCRIÇÃO IMEDIATAMENTE APÓS O CABEÇALHO, SEM ESPAÇO ANTES
+    if (!descricaoTexto.isEmpty()) { 
+        doc.add(new com.itextpdf.text.Paragraph("Descrição: " + descricaoTexto));
+    }
+
+    // O ESPAÇAMENTO DEVE VIR APENAS NO FINAL DO CABEÇALHO
+    doc.add(new com.itextpdf.text.Paragraph(" "));
+    
+    
 
     // ------------- PEGAR DADOS DO BANCO POR TIPO -------------
     switch (tipo) {
 
         case "Estoque":
+    try {
+        EquipamentosDAO eqDao = new EquipamentosDAO();
+        List<Equipamentos> listaEq = eqDao.listarEquipamentos();
 
-            dao.EquipamentosDAO eqDao = new dao.EquipamentosDAO();
-            List<models.Equipamentos> listaEq = eqDao.listarEquipamentos(); // CORRETO
-
-            doc.add(new com.itextpdf.text.Paragraph("LISTA DE EQUIPAMENTOS:"));
-            doc.add(new com.itextpdf.text.Paragraph("-------------------------------------------"));
-
-            for (models.Equipamentos e : listaEq) {
-                doc.add(new com.itextpdf.text.Paragraph(
-                    " | Código: " + e.getCodigo() +
-                    " | Modelo: " + e.getModelo() +
-                    " | Marca: " + e.getMarca() +
-                    " | Soldador: " + e.getSoldador() +
-                    " | Condição: " + e.getCondicao() +
-                    " | Situacao: " + e.getStatus()        
-                ));
-            }
+        if (listaEq == null || listaEq.isEmpty()) {
+            doc.add(new Paragraph("NENHUM EQUIPAMENTO ENCONTRADO NO ESTOQUE."));
             break;
+        }
+
+        doc.add(new Paragraph("LISTA DE EQUIPAMENTOS:"));
+        doc.add(new Paragraph("-------------------------------------------"));
+
+        for (Equipamentos e : listaEq) {
+
+            String linha = 
+                " | Código: " + safe(e.getCodigo()) +
+                " | Modelo: " + safe(e.getModelo()) +
+                " | Marca: " + safe(e.getMarca()) +
+                " | Condição (Local/Uso): " + safe(e.getCondicao()) +
+                " | Situação (Adm): " + safe(e.getStatus()) +
+                " | Soldador: " + safe(e.getSoldador());
+
+            doc.add(new Paragraph(linha));
+            doc.add(new Paragraph("-"));
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null,
+            "Erro ao gerar PDF:\n" + e.getMessage(),
+            "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+break;
             
             
         case "Projeto":
+    try {
+        dao.ProjetosDAO pDao = new dao.ProjetosDAO();
+        List<models.Projetos> listaP = pDao.listarTodos();
 
-            dao.ProjetosDAO pDao = new dao.ProjetosDAO();
-            List<models.Projetos> listaP = pDao.listarTodos(); // CORRETO
+        doc.add(new com.itextpdf.text.Paragraph("LISTA DE PROJETOS:"));
+        doc.add(new com.itextpdf.text.Paragraph("-------------------------------------------"));
 
-            doc.add(new com.itextpdf.text.Paragraph("LISTA DE PROJETOS:"));
+        // Itera sobre a lista de projetos e adiciona cada um como um Parágrafo
+        for (models.Projetos p : listaP) {
+            
+            // Concatenação de todos os campos em uma única string
+            String linhaProjeto = 
+                "Projeto: " + p.getnome() +
+                " | Empresa ID: " + p.getfk_empresa() +
+                " | Condição: " + p.getcondicao() +
+                " | Início: " + p.getinicio() + 
+                " | Prazo: " + p.getprazo();
+            
+            doc.add(new com.itextpdf.text.Paragraph(linhaProjeto));
+            
+            // Adiciona um separador simples ou um espaço para melhor leitura
+            doc.add(new com.itextpdf.text.Paragraph("-------------------------------------------"));
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao buscar Projetos no banco de dados.\nErro: " + e.getMessage());
+        throw e; // Lança a exceção para ser capturada pelo bloco catch principal
+    }
+    break;
+
+            case "Funcionário": 
+        try {
+            //  Instanciar a DAO de Usuários/Funcionários
+            dao.UsuariosDAO uDao = new dao.UsuariosDAO();
+            //  Chamar o método listar() que retorna todos os usuários ativos
+            List<models.Usuarios> listaF = uDao.listar();
+
+            doc.add(new com.itextpdf.text.Paragraph("LISTA DE FUNCIONÁRIOS:"));
             doc.add(new com.itextpdf.text.Paragraph("-------------------------------------------"));
 
-            for (models.Projetos p : listaP) {
+            //  Iterar sobre a lista e adicionar cada funcionário ao PDF
+            for (models.Usuarios f : listaF) {
+                
+                // Formata a informação do supervisor, se existir
+                String supervisorInfo = (f.getSupervisor() != null && f.getSupervisor().getNome() != null) 
+                                        ? " | Supervisor: " + f.getSupervisor().getNome()
+                                        : "";
+
                 doc.add(new com.itextpdf.text.Paragraph(
-                    "Projeto: " + p.getnome() +
-                    " | nome: " + p.getnome() +
-                    " | fk_empresa: " + p.getfk_empresa() +
-                    " | inicio: " + p.getcondicao() +
-                    " | prazo: " + p.getprazo()
+                    "Funcionário: " + f.getNome() +
+                    " | CPF: " + f.getCpf() +
+                    " | Cargo: " + f.getCargo() +
+                    " | Perfil: " + f.getPerfil() +
+                    supervisorInfo
+                    // Você pode adicionar mais campos aqui (Sinete, Validade, etc.)
                 ));
             }
-            break;
-
-            
-            
+        } catch (SQLException e) {
+            // Em caso de erro na conexão ou consulta
+            JOptionPane.showMessageDialog(null, "Erro ao buscar funcionários.\nErro: " + e.getMessage());
+        }
+        break;         
             
        case "Empresa":
 
@@ -289,10 +372,6 @@ public class CadastroRelatorio extends javax.swing.JFrame {
    
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
@@ -301,6 +380,10 @@ public class CadastroRelatorio extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel3MouseClicked
 
+    private String safe(String s) {
+        return (s == null || s.isBlank()) ? "—" : s;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -337,6 +420,7 @@ public class CadastroRelatorio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea descricao;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -348,7 +432,7 @@ public class CadastroRelatorio extends javax.swing.JFrame {
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables

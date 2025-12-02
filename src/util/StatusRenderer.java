@@ -4,15 +4,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
-import java.awt.RenderingHints;
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 /**
@@ -22,16 +18,16 @@ import javax.swing.table.TableCellRenderer;
 public class StatusRenderer extends JPanel implements TableCellRenderer {
 
     private final JLabel label;
+    private Color bgColor = Color.GRAY;
 
     public StatusRenderer() {
-        setOpaque(false); // O painel não pinta fundo automaticamente
-        setLayout(new GridBagLayout()); // Garante centralização real
+        setOpaque(true); 
+        setLayout(new GridBagLayout());
 
         label = new JLabel();
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setFont(new Font("Poppins", Font.BOLD, 14));
         label.setForeground(Color.WHITE);
-        label.setOpaque(true); // Permite cor de fundo
 
         add(label);
     }
@@ -43,27 +39,25 @@ public class StatusRenderer extends JPanel implements TableCellRenderer {
 
         String status = value != null ? value.toString() : "";
 
-        // ======= CORES =======
+        // Escolhe a cor de fundo
         switch (status.toLowerCase()) {
-            case "nao_realizado" ->
-                label.setBackground(new Color(220, 53, 69));     // Vermelho
-            case "em_andamento" ->
-                label.setBackground(new Color(255, 193, 7));     // Amarelo
-            case "concluido" ->
-                label.setBackground(new Color(40, 167, 69));     // Verde
-            case "refazer" ->
-                label.setBackground(new Color(0, 123, 255));     // Azul
-            default ->
-                label.setBackground(new Color(108, 117, 125));   // Cinza
+            case "nao_realizado" -> bgColor = new Color(220, 53, 69);
+            case "em_andamento" -> bgColor = new Color(255, 193, 7);
+            case "concluido" -> bgColor = new Color(40, 167, 69);
+            case "refazer" -> bgColor = new Color(0, 123, 255);
+            default -> bgColor = new Color(108, 117, 125);
         }
 
-        // Texto amigável
         label.setText(formatarTexto(status));
 
-        // ======= ARREDONDAMENTO =======
-        label.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-
         return this;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(bgColor);
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
 
     private String formatarTexto(String s) {
@@ -74,18 +68,5 @@ public class StatusRenderer extends JPanel implements TableCellRenderer {
             case "refazer" -> "A refazer";
             default -> s;
         };
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        int arc = 30;
-        g2.setColor(Color.WHITE);
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
-
-        g2.dispose();
-        super.paintComponent(g);
     }
 }

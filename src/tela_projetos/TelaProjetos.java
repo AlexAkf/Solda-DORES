@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
@@ -58,6 +59,12 @@ public final class TelaProjetos extends javax.swing.JPanel {
         // Altura, largura e cor das tabelas -> GERAL
         tabela.setBackground(Color.WHITE);
         tabela.setRowHeight(60);
+        jScrollPane1.setBorder(BorderFactory.createEmptyBorder());
+        jScrollPane1.setOpaque(true);
+        jScrollPane1.getViewport().setBackground(new Color(228, 228, 228));
+        tabela.setGridColor(new Color(30, 58, 138)); 
+        tabela.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 1, true));
+        tabela.getTableHeader().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(30, 58, 138)));
 
         renderizar();
     }

@@ -67,7 +67,7 @@
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+          <Color blue="e4" green="e4" red="e4" type="rgb"/>
         </Property>
       </Properties>
       <Constraints>

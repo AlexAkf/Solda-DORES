@@ -13,7 +13,6 @@ import util.*;
  *
  * @author Hugo
  */
-
 public final class TelaEquipamentos extends javax.swing.JPanel {
 
     private static TelaEquipamentos instancia;
@@ -44,7 +43,13 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         // Altura, largura e cor:
         tabela.setBackground(Color.WHITE);
         tabela.setRowHeight(60);
-
+        jScrollPane1.setBorder(BorderFactory.createEmptyBorder());
+        jScrollPane1.setOpaque(true);
+        jScrollPane1.getViewport().setBackground(new Color(228, 228, 228));
+        tabela.setGridColor(new Color(30, 58, 138));
+        tabela.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 1, true));
+        tabela.getTableHeader().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(30, 58, 138)));
+        
         renderizar();   // Recarrega os botões
     }
 
@@ -59,15 +64,15 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
                 // Pega a Condição (Ativo/Inativo) - Coluna 6
                 String status = (String) tabela.getModel().getValueAt(model, 6);
-                
+
                 // BLOQUEIO: Não pode editar se estiver Inativo
                 if ("Inativo".equalsIgnoreCase(status)) {
-                    JOptionPane.showMessageDialog(null, 
-                            "Não é possível editar equipamentos inativos.", 
+                    JOptionPane.showMessageDialog(null,
+                            "Não é possível editar equipamentos inativos.",
                             "Bloqueio", JOptionPane.WARNING_MESSAGE);
                     return; // Sai do método
                 }
-                
+
                 // Pega os dados da linha selecionada
                 int id = (int) tabela.getModel().getValueAt(model, 0);
                 String codigo = (String) tabela.getModel().getValueAt(model, 1);
@@ -92,14 +97,14 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
             public void excluindo(int linha) {
                 int model = tabela.convertRowIndexToModel(linha);
                 int idEquipamento = (int) tabela.getModel().getValueAt(model, 0);
-                
+
                 // Pega a Condição (Ativo/Inativo) - Coluna 6
                 String condicao = (String) tabela.getModel().getValueAt(model, 6);
 
                 // BLOQUEIO: Não pode excluir/inativar se já estiver Inativo
                 if ("Inativo".equalsIgnoreCase(condicao)) {
-                    JOptionPane.showMessageDialog(null, 
-                            "O equipamento já está inativo.", 
+                    JOptionPane.showMessageDialog(null,
+                            "O equipamento já está inativo.",
                             "Bloqueio", JOptionPane.WARNING_MESSAGE);
                     return; // Sai do método
                 }
@@ -208,7 +213,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         add(jLabel2);
         jLabel2.setBounds(1530, 20, 260, 90);
 
-        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setBackground(new java.awt.Color(228, 228, 228));
 
         tabela.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 15f));
         tabela.setModel(new javax.swing.table.DefaultTableModel(

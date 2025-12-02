@@ -3,6 +3,7 @@ package tela_empresas;
 import dao.EmpresasDAO;
 import java.awt.Color;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
@@ -56,6 +57,12 @@ public class TelaEmpresas extends javax.swing.JPanel {
         tabela.setBackground(Color.WHITE);
         tabela.setRowHeight(60);
         tabela.getColumnModel().getColumn(0).setMaxWidth(50);
+        jScrollPane1.setBorder(BorderFactory.createEmptyBorder());
+        jScrollPane1.setOpaque(true);
+        jScrollPane1.getViewport().setBackground(new Color(228, 228, 228));
+        tabela.setGridColor(new Color(30, 58, 138));
+        tabela.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 1, true));
+        tabela.getTableHeader().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(30, 58, 138)));
 
         // ========== BOTÕES DE AÇÃO DA TABELA ==========
         TabelaAcaoEvento evento = new TabelaAcaoEvento() {
