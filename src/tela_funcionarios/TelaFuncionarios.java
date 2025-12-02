@@ -288,7 +288,7 @@ public final class TelaFuncionarios extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        var cadastro = new CadastroFuncionarios(this);
+        var cadastro = new FichaCadastro(this);
         cadastro.setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 
