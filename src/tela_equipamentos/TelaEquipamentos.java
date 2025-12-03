@@ -263,7 +263,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        TelaEmprestimos emprestimo = new TelaEmprestimos(this);
+        FichaEmprestimos emprestimo = new FichaEmprestimos(this);
         emprestimo.setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 

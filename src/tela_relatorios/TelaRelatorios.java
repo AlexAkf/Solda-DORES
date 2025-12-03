@@ -158,7 +158,7 @@ public class TelaRelatorios extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void novoRelatorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_novoRelatorioMouseClicked
-        CadastroRelatorio cadastro = new CadastroRelatorio();
+        FichaRelatorio cadastro = new FichaRelatorio();
         cadastro.setVisible(true);
     }//GEN-LAST:event_novoRelatorioMouseClicked
 

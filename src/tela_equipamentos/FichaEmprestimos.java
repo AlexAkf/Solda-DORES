@@ -18,15 +18,15 @@ import util.Fonte;
  *
  * @author hugos
  */
-
-public final class TelaEmprestimos extends javax.swing.JFrame {
+public class FichaEmprestimos extends javax.swing.JFrame {
 
     private final TelaEquipamentos telaEquipamentos;
-    // Passando a referência da tela.
-    public TelaEmprestimos(TelaEquipamentos telaEquipamentos) {
+    
+    public FichaEmprestimos(TelaEquipamentos telaEquipamentos) {
         initComponents();
+        setBackground(new java.awt.Color(0, 0, 0, 0));
         this.telaEquipamentos = telaEquipamentos;
-        aplicarAutoComplete(txtSoldador, termo -> new EquipamentosDAO().buscarSoldadoresPorNome(termo));
+    aplicarAutoComplete(txtSoldador, termo -> new EquipamentosDAO().buscarSoldadoresPorNome(termo));
         aplicarAutoComplete(txtEquipamento, termo -> new EquipamentosDAO().buscarEquipamentosPorNome(termo));
         
         // ENTER realiza a transação de empresitmo
@@ -190,58 +190,29 @@ public final class TelaEmprestimos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        txtEquipamento = new javax.swing.JTextField();
         txtSoldador = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        txtEquipamento = new javax.swing.JTextField();
         botaoCancelar = new javax.swing.JLabel();
         botaoCadastrar = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        ficha = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Solda-DORES");
-        setMinimumSize(new java.awt.Dimension(770, 330));
+        setMinimumSize(new java.awt.Dimension(1920, 1080));
         setUndecorated(true);
         setResizable(false);
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(30, 58, 138), 2, true));
-        jPanel1.setMaximumSize(new java.awt.Dimension(770, 330));
-        jPanel1.setMinimumSize(new java.awt.Dimension(770, 330));
-        jPanel1.setPreferredSize(new java.awt.Dimension(770, 330));
-        jPanel1.setLayout(null);
-
-        jLabel1.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 40f));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("REALIZAR EMPRÉSTIMO");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 20, 770, 50);
-
-        txtEquipamento.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(txtEquipamento);
-        txtEquipamento.setBounds(300, 150, 450, 30);
+        getContentPane().setLayout(null);
 
         txtSoldador.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        jPanel1.add(txtSoldador);
-        txtSoldador.setBounds(300, 100, 450, 30);
+        getContentPane().add(txtSoldador);
+        txtSoldador.setBounds(730, 450, 450, 50);
 
-        jLabel6.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel6.setText("Equipamento");
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 150, 130, 30);
-
-        jLabel4.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 20f));
-        jLabel4.setText("Soldador");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(20, 100, 150, 30);
+        txtEquipamento.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
+        getContentPane().add(txtEquipamento);
+        txtEquipamento.setBounds(730, 580, 450, 50);
 
         botaoCancelar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
         botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        botaoCancelar.setText("CANCELAR");
         botaoCancelar.setMaximumSize(new java.awt.Dimension(260, 83));
         botaoCancelar.setMinimumSize(new java.awt.Dimension(260, 83));
         botaoCancelar.setPreferredSize(new java.awt.Dimension(260, 83));
@@ -250,13 +221,12 @@ public final class TelaEmprestimos extends javax.swing.JFrame {
                 botaoCancelarMouseClicked(evt);
             }
         });
-        jPanel1.add(botaoCancelar);
-        botaoCancelar.setBounds(40, 220, 260, 83);
+        getContentPane().add(botaoCancelar);
+        botaoCancelar.setBounds(1214, 305, 50, 50);
 
         botaoCadastrar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoCadastrar.setForeground(new java.awt.Color(255, 255, 255));
         botaoCadastrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        botaoCadastrar.setText("CADASTRAR");
         botaoCadastrar.setMaximumSize(new java.awt.Dimension(260, 83));
         botaoCadastrar.setMinimumSize(new java.awt.Dimension(260, 83));
         botaoCadastrar.setPreferredSize(new java.awt.Dimension(260, 83));
@@ -265,29 +235,12 @@ public final class TelaEmprestimos extends javax.swing.JFrame {
                 botaoCadastrarMouseClicked(evt);
             }
         });
-        jPanel1.add(botaoCadastrar);
-        botaoCadastrar.setBounds(470, 220, 260, 83);
+        getContentPane().add(botaoCadastrar);
+        botaoCadastrar.setBounds(773, 681, 390, 70);
 
-        jLabel3.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(40, 220, 260, 83);
-
-        jLabel2.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(470, 220, 260, 83);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        ficha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fichaEmprestimo.png"))); // NOI18N
+        getContentPane().add(ficha);
+        ficha.setBounds(0, 0, 1920, 1080);
 
         pack();
         setLocationRelativeTo(null);
@@ -307,7 +260,7 @@ public final class TelaEmprestimos extends javax.swing.JFrame {
         Integer idSoldador = dao.buscarSoldadorPorNomeExato(nomeSoldador);
         if (idSoldador == null) {
             JOptionPane.showMessageDialog(this,
-                    "Soldador não encontrado ou inativo!");
+                "Soldador não encontrado ou inativo!");
             return;
         }
 
@@ -315,26 +268,26 @@ public final class TelaEmprestimos extends javax.swing.JFrame {
         EmprestimosDAO.EquipamentoBusca eq = dao.buscarEquipamentoPorNomeExato(nomeEquip);
         if (eq == null) {
             JOptionPane.showMessageDialog(this,
-                    "Equipamento não encontrado!");
+                "Equipamento não encontrado!");
             return;
         }
 
         // BLOQUEIOS
         if (eq.situacao == false) {
             JOptionPane.showMessageDialog(this,
-                    "Equipamento inativo. Não é possível emprestar.");
+                "Equipamento inativo. Não é possível emprestar.");
             return;
         }
 
         if (eq.condicao.equalsIgnoreCase("estragado")) {
             JOptionPane.showMessageDialog(this,
-                    "Equipamento estragado. Não é possível emprestar.");
+                "Equipamento estragado. Não é possível emprestar.");
             return;
         }
 
         if (eq.condicao.equalsIgnoreCase("emprestado")) {
             JOptionPane.showMessageDialog(this,
-                    "O equipamento já está emprestado!");
+                "O equipamento já está emprestado!");
             return;
         }
 
@@ -351,12 +304,7 @@ public final class TelaEmprestimos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoCadastrar;
     private javax.swing.JLabel botaoCancelar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel ficha;
     private javax.swing.JTextField txtEquipamento;
     private javax.swing.JTextField txtSoldador;
     // End of variables declaration//GEN-END:variables

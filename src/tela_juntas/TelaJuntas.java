@@ -91,7 +91,7 @@ public class TelaJuntas extends javax.swing.JPanel {
                 j.setStatus(status);
 
                 // Abre a tela Atualizar
-                var atualizar = new AtualizarJuntas(TelaJuntas.this);
+                var atualizar = new FichaEdicao(TelaJuntas.this);
                 atualizar.preencherCampos(j);
                 atualizar.setVisible(true);
             }
@@ -246,7 +246,7 @@ public class TelaJuntas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCadastroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCadastroMouseClicked
-        CadastroJuntas cadastro = new CadastroJuntas(this);
+        FichaCadastro cadastro = new FichaCadastro(this);
         cadastro.setVisible(true);
     }//GEN-LAST:event_botaoCadastroMouseClicked
 
