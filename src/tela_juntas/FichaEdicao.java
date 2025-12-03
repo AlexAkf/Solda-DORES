@@ -262,9 +262,6 @@ public class FichaEdicao extends javax.swing.JFrame {
         botaoCadastrar.setBounds(765, 824, 390, 70);
 
         ficha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fichaJuntas.png"))); // NOI18N
-        ficha.setMaximumSize(new java.awt.Dimension(1920, 1080));
-        ficha.setMinimumSize(new java.awt.Dimension(1920, 1080));
-        ficha.setPreferredSize(new java.awt.Dimension(1920, 1080));
         getContentPane().add(ficha);
         ficha.setBounds(0, 0, 1920, 1080);
 

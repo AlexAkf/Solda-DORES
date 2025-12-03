@@ -21,21 +21,21 @@ import util.Fonte;
 public class FichaEmprestimos extends javax.swing.JFrame {
 
     private final TelaEquipamentos telaEquipamentos;
-    
+
     public FichaEmprestimos(TelaEquipamentos telaEquipamentos) {
         initComponents();
         setBackground(new java.awt.Color(0, 0, 0, 0));
         this.telaEquipamentos = telaEquipamentos;
-    aplicarAutoComplete(txtSoldador, termo -> new EquipamentosDAO().buscarSoldadoresPorNome(termo));
+        aplicarAutoComplete(txtSoldador, termo -> new EquipamentosDAO().buscarSoldadoresPorNome(termo));
         aplicarAutoComplete(txtEquipamento, termo -> new EquipamentosDAO().buscarEquipamentosPorNome(termo));
-        
+
         // ENTER realiza a transação de empresitmo
-        txtEquipamento.addActionListener(e ->  botaoCadastrarMouseClicked(null));
-        txtSoldador.addActionListener(e ->  botaoCadastrarMouseClicked(null));
-        
+        txtEquipamento.addActionListener(e -> botaoCadastrarMouseClicked(null));
+        txtSoldador.addActionListener(e -> botaoCadastrarMouseClicked(null));
+
         // Mapeia a tecla esc para fechar a janela
         getRootPane().getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
-            .put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), "fechar");
+                .put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), "fechar");
 
         getRootPane().getActionMap().put("fechar", new javax.swing.AbstractAction() {
             @Override
@@ -78,7 +78,7 @@ public class FichaEmprestimos extends javax.swing.JFrame {
                 if (!campo.isShowing()) {
                     return; // evita crash
                 }
-                
+
                 String texto = campo.getText().trim();
 
                 popup.setVisible(false);
@@ -91,7 +91,7 @@ public class FichaEmprestimos extends javax.swing.JFrame {
 
                 // Executa busca no DAO.
                 List<String> resultados = busca.apply(texto);
-                
+
                 if (resultados.isEmpty()) {
                     return;
                 }
@@ -111,7 +111,6 @@ public class FichaEmprestimos extends javax.swing.JFrame {
                         javax.swing.SwingUtilities.invokeLater(() -> popup.setVisible(false));
                     });
 
-
                     popup.add(option);
                 }
 
@@ -124,15 +123,15 @@ public class FichaEmprestimos extends javax.swing.JFrame {
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e) { 
-                mostrarSugestoes(); 
+            public void insertUpdate(DocumentEvent e) {
+                mostrarSugestoes();
             }
-            
+
             @Override
             public void removeUpdate(DocumentEvent e) {
-                mostrarSugestoes(); 
+                mostrarSugestoes();
             }
-            
+
             @Override
             public void changedUpdate(DocumentEvent e) {
                 mostrarSugestoes();
@@ -143,19 +142,21 @@ public class FichaEmprestimos extends javax.swing.JFrame {
             @Override
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 int count = popup.getComponentCount();
-                if (count == 0) return;
+                if (count == 0) {
+                    return;
+                }
 
                 switch (evt.getKeyCode()) {
                     case java.awt.event.KeyEvent.VK_DOWN -> {
                         selecionado[0] = Math.min(selecionado[0] + 1, count - 1);
                         atualizarSelecao(popup, selecionado[0]);
                     }
-                    
+
                     case java.awt.event.KeyEvent.VK_UP -> {
                         selecionado[0] = Math.max(selecionado[0] - 1, 0);
                         atualizarSelecao(popup, selecionado[0]);
                     }
-                    
+
                     case java.awt.event.KeyEvent.VK_ENTER -> {
                         if (popup.isVisible() && selecionado[0] >= 0 && selecionado[0] < count) {
                             // Só seleciona o item do popup
@@ -260,7 +261,7 @@ public class FichaEmprestimos extends javax.swing.JFrame {
         Integer idSoldador = dao.buscarSoldadorPorNomeExato(nomeSoldador);
         if (idSoldador == null) {
             JOptionPane.showMessageDialog(this,
-                "Soldador não encontrado ou inativo!");
+                    "Soldador não encontrado ou inativo!");
             return;
         }
 
@@ -268,26 +269,26 @@ public class FichaEmprestimos extends javax.swing.JFrame {
         EmprestimosDAO.EquipamentoBusca eq = dao.buscarEquipamentoPorNomeExato(nomeEquip);
         if (eq == null) {
             JOptionPane.showMessageDialog(this,
-                "Equipamento não encontrado!");
+                    "Equipamento não encontrado!");
             return;
         }
 
         // BLOQUEIOS
         if (eq.situacao == false) {
             JOptionPane.showMessageDialog(this,
-                "Equipamento inativo. Não é possível emprestar.");
+                    "Equipamento inativo. Não é possível emprestar.");
             return;
         }
 
         if (eq.condicao.equalsIgnoreCase("estragado")) {
             JOptionPane.showMessageDialog(this,
-                "Equipamento estragado. Não é possível emprestar.");
+                    "Equipamento estragado. Não é possível emprestar.");
             return;
         }
 
         if (eq.condicao.equalsIgnoreCase("emprestado")) {
             JOptionPane.showMessageDialog(this,
-                "O equipamento já está emprestado!");
+                    "O equipamento já está emprestado!");
             return;
         }
 

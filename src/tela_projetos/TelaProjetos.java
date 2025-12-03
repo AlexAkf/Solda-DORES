@@ -49,7 +49,7 @@ public final class TelaProjetos extends javax.swing.JPanel {
         tabela.getTableHeader().setForeground(Color.WHITE);
         tabela.getTableHeader().setReorderingAllowed(false);
         tabela.getTableHeader().setResizingAllowed(false);
-        
+
         // Ocultando a coluna de ID 
         tabela.getColumnModel().getColumn(0).setMinWidth(0);
         tabela.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -62,10 +62,10 @@ public final class TelaProjetos extends javax.swing.JPanel {
         jScrollPane1.setBorder(BorderFactory.createEmptyBorder());
         jScrollPane1.setOpaque(true);
         jScrollPane1.getViewport().setBackground(new Color(228, 228, 228));
-        tabela.setGridColor(new Color(30, 58, 138)); 
+        tabela.setGridColor(new Color(30, 58, 138));
         tabela.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 1, true));
         tabela.getTableHeader().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(30, 58, 138)));
-
+        
         renderizar();
     }
 
@@ -75,51 +75,116 @@ public final class TelaProjetos extends javax.swing.JPanel {
         evento = new TabelaAcaoEvento() {
             @Override
             public void editando(int linha) {
-                // Converte o índice da view para model
+                // Converte para índice do modelo
                 int model = tabela.convertRowIndexToModel(linha);
 
-                int id = (int) tabela.getModel().getValueAt(model, 0);
-                String nome = (String) tabela.getModel().getValueAt(model, 1);
-                int fk_empresa = (int) tabela.getModel().getValueAt(model, 2);
-                int fk_supervisor = (int) tabela.getModel().getValueAt(model, 3);
-                
-                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                
-                String inicioStr = tabela.getModel().getValueAt(model, 4).toString();
-                String prazoStr = tabela.getModel().getValueAt(model, 5).toString();
-                
-                LocalDate inicio = LocalDate.parse(inicioStr, formato);
-                LocalDate prazo = LocalDate.parse(prazoStr, formato);
-                
-                String descricao = (String) tabela.getModel().getValueAt(model, 6);
-                String condicao = (String) tabela.getModel().getValueAt(model, 7);
+                // Lê a condição
+                String condicao = String.valueOf(tabela.getModel().getValueAt(model, 7));
 
-                Projetos projeto = new Projetos();
-                projeto.setId(id);
-                projeto.setNome(nome);
-                projeto.setFk_empresa(fk_empresa);
-                projeto.setFk_supervisor(fk_supervisor);
-                projeto.setInicio(inicio);
-                projeto.setPrazo(prazo);
-                projeto.setDescricao(descricao);
-                projeto.setCondicao(condicao);
+                // Bloqueio de edição
+                if (condicao.equalsIgnoreCase("Finalizado")
+                        || condicao.equalsIgnoreCase("Cancelado")) {
 
-                var atualizar = new FichaEdicao(TelaProjetos.this);
-                atualizar.preencherCampos(projeto);
-                atualizar.setVisible(true);
+                    JOptionPane.showMessageDialog(null,
+                            "Projetos FINALIZADOS ou CANCELADOS não podem ser editados.",
+                            "Edição Bloqueada",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                try {
+                    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                    // --- Leitura dos campos da tabela ---
+                    int id = (int) tabela.getModel().getValueAt(model, 0);
+                    String nome = String.valueOf(tabela.getModel().getValueAt(model, 1));
+                    String empresa = String.valueOf(tabela.getModel().getValueAt(model, 2));
+                    String supervisor = String.valueOf(tabela.getModel().getValueAt(model, 3));
+                    String inicioStr = String.valueOf(tabela.getModel().getValueAt(model, 4));
+                    String prazoStr = String.valueOf(tabela.getModel().getValueAt(model, 5));
+                    String descricao = String.valueOf(tabela.getModel().getValueAt(model, 6));
+
+                    // --- Conversão de datas ---
+                    LocalDate inicio = null;
+                    LocalDate prazo = null;
+
+                    if (inicioStr != null && !inicioStr.isBlank()) {
+                        inicio = LocalDate.parse(inicioStr, formato);
+                    }
+
+                    if (prazoStr != null && !prazoStr.isBlank()) {
+                        prazo = LocalDate.parse(prazoStr, formato);
+                    }
+
+                    // --- Monta o objeto Projeto ---
+                    Projetos projeto = new Projetos();
+                    projeto.setId(id);
+                    projeto.setNome(nome);
+                    projeto.setEmpresa(empresa);
+                    projeto.setSupervisor(supervisor);
+                    projeto.setInicio(inicio);
+                    projeto.setPrazo(prazo);
+                    projeto.setDescricao(descricao);
+                    projeto.setCondicao(condicao);
+
+                    // --- Abre tela de edição ---
+                    FichaEdicao editar = new FichaEdicao(TelaProjetos.this);
+                    editar.preencherCampos(projeto);
+                    editar.setVisible(true);
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,
+                            "Erro ao carregar dados do projeto para edição:\n" + e.getMessage(),
+                            "Erro", JOptionPane.ERROR_MESSAGE);
+                }
             }
 
             @Override
             public void excluindo(int linha) {
-                try {
-                    ProjetosDAO dao = new ProjetosDAO();
+                // Nenhuma linha selecionada
+                if (linha < 0) {
+                    JOptionPane.showMessageDialog(null,
+                            "Selecione um projeto para deletar.",
+                            "Aviso",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
 
-                    int id = (int) tabela.getValueAt(linha, 0);
-                    dao.deletar(id);
-                    carregarTabela();
-                    JOptionPane.showMessageDialog(null, "Projeto deletado com sucesso!");
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro ao deletar: " + ex.getMessage());
+                try {
+                    // Converte linha exibida para linha do modelo (importante com filtros)
+                    int model = tabela.convertRowIndexToModel(linha);
+
+                    // Lê ID do projeto
+                    int id = (int) tabela.getModel().getValueAt(model, 0);
+                    String nome = String.valueOf(tabela.getModel().getValueAt(model, 1));
+
+                    // Confirmação antes de excluir
+                    int opc = JOptionPane.showConfirmDialog(null,
+                            "Tem certeza que deseja deletar o projeto:\n\"" + nome + "\"?",
+                            "Confirmar exclusão",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+
+                    if (opc != JOptionPane.YES_OPTION) {
+                        return; // Usuário cancelou
+                    }
+
+                    // Executa remoção
+                    ProjetosDAO dao = new ProjetosDAO();
+                    boolean ok = dao.deletar(id);
+
+                    if (ok) {
+                        carregarTabela();
+                        JOptionPane.showMessageDialog(null,
+                                "Projeto deletado com sucesso!",
+                                "Sucesso",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,
+                            "Erro inesperado:\n" + e.getMessage(),
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
@@ -157,36 +222,37 @@ public final class TelaProjetos extends javax.swing.JPanel {
         }
     }
 
-    public void carregarTabela() throws SQLException {
-
+    public void carregarTabela() {
         ProjetosDAO dao = new ProjetosDAO();
-        List<Projetos> lista = dao.listarTodos();
+        List<Projetos> lista = dao.listar();
 
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
         modelo.setRowCount(0);
-        
+
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        for (Projetos projeto : lista) {
-            String dataInicio = projeto.getinicio() != null
-                    ? projeto.getinicio().format(formato)
+        for (Projetos p : lista) {
+            String dataInicio = (p.getInicio() != null)
+                    ? p.getInicio().format(formato)
                     : "";
-            String dataPrazo = projeto.getprazo() != null
-                    ? projeto.getprazo().format(formato)
+
+            String dataPrazo = (p.getPrazo() != null)
+                    ? p.getPrazo().format(formato)
                     : "";
 
             modelo.addRow(new Object[]{
-                projeto.getid(),
-                projeto.getnome(),
-                projeto.getfk_empresa(),
-                projeto.getfk_supervisor(),
+                p.getId(),
+                p.getNome(),
+                p.getEmpresa(),
+                p.getSupervisor(),
                 dataInicio,
                 dataPrazo,
-                projeto.getdescricao(),
-                projeto.getcondicao(),
+                p.getDescricao(),
+                p.getCondicao(),
                 null
             });
         }
+        tabela.clearSelection();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

@@ -148,7 +148,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="70" green="70" red="70" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="v2.0                                                                   @copyright 2025"/>
+        <Property name="text" type="java.lang.String" value="v3.0                                                                   @copyright 2025"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

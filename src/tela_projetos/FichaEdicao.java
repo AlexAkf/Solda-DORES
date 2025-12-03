@@ -1,10 +1,20 @@
 package tela_projetos;
 
 import dao.ProjetosDAO;
+import java.awt.Color;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.function.Function;
+import javax.swing.BorderFactory;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 import models.Projetos;
 import util.Fonte;
@@ -15,45 +25,182 @@ import util.Fonte;
  */
 public class FichaEdicao extends javax.swing.JFrame {
 
-    private final TelaProjetos tela_projetos;
-    private static final DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final TelaProjetos telaProjetos;
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private int idSelecionado = -1;
 
-    public FichaEdicao(TelaProjetos tela_projetos) {
+    public FichaEdicao(TelaProjetos telaProjetos) {
         initComponents();
+        this.telaProjetos = telaProjetos;
         setBackground(new java.awt.Color(0, 0, 0, 0));
-        this.tela_projetos = tela_projetos;
 
+        configurarMascaras();
+        configurarDescricao();
+
+        ProjetosDAO dao = new ProjetosDAO();
+        aplicarAutoComplete(txtEmpresa, termo -> dao.buscarEmpresas(termo));
+        aplicarAutoComplete(txtSupervisor, termo -> dao.buscarSupervisores(termo));
+    }
+
+    private void configurarMascaras() {
         try {
             MaskFormatter dataMask = new MaskFormatter("##/##/####");
             dataMask.setPlaceholderCharacter('_');
 
-            txtInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(dataMask));
-            txtPrazo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(dataMask));
+            txtInicial.setFormatterFactory(
+                    new javax.swing.text.DefaultFormatterFactory(dataMask));
+            txtPrazo.setFormatterFactory(
+                    new javax.swing.text.DefaultFormatterFactory(dataMask));
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        
-        txtDescricao.setLineWrap(true);          // Quebra de linha automática
-        txtDescricao.setWrapStyleWord(true);     // Quebra apenas entre palavras
-        txtDescricao.setRows(5);                 // Altura inicial (em linhas)
     }
 
-    public void preencherCampos(Projetos projetos) {
-        idSelecionado = projetos.getid();
-        txtProjeto.setText(projetos.getnome());
-        txtEmpresa.setText(String.valueOf(projetos.getfk_empresa()));
-        txtSupervisor.setText(String.valueOf(projetos.getfk_supervisor()));
+    private void configurarDescricao() {
+        txtDescricao.setLineWrap(true);
+        txtDescricao.setWrapStyleWord(true);
+        txtDescricao.setRows(5);
+    }
 
-        txtInicial.setText(
-                projetos.getinicio() != null ? projetos.getinicio().format(formato) : ""
-        );
+    // ==============================
+    //   FUNÇÃO QUE PREENCHE CAMPOS
+    // ==============================
+    public void preencherCampos(Projetos p) {
 
-        txtPrazo.setText(
-                projetos.getprazo() != null ? projetos.getprazo().format(formato) : ""
-        );
-        txtDescricao.setText(String.valueOf(projetos.getdescricao()));
-        comboStatus.setSelectedItem(projetos.getcondicao());
+        idSelecionado = p.getId();
+
+        txtProjeto.setText(p.getNome());
+        txtEmpresa.setText(p.getEmpresa());
+        txtSupervisor.setText(p.getSupervisor());
+
+        txtInicial.setText(p.getInicio() != null ? p.getInicio().format(FORMATO_DATA) : "");
+        txtPrazo.setText(p.getPrazo() != null ? p.getPrazo().format(FORMATO_DATA) : "");
+
+        txtDescricao.setText(p.getDescricao());
+        comboStatus.setSelectedItem(p.getCondicao());
+    }
+
+    // Autocomplete
+    public void aplicarAutoComplete(JTextField campo, Function<String, List<String>> busca) {
+
+        JPopupMenu popup = new JPopupMenu();
+        popup.setFocusable(false);
+        popup.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 2));
+        popup.setBackground(Color.WHITE);
+
+        final int[] selecionado = {-1};
+
+        campo.putClientProperty("popup", popup);
+
+        campo.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void mostrarSugestoes() {
+                if (!campo.isShowing()) {
+                    return;
+                }
+
+                String texto = campo.getText().trim();
+
+                popup.setVisible(false);
+                popup.removeAll();
+                selecionado[0] = -1;
+
+                if (texto.length() < 1) {
+                    return;
+                }
+
+                // Busca no DAO
+                List<String> resultados = busca.apply(texto);
+                if (resultados.isEmpty()) {
+                    return;
+                }
+
+                for (String item : resultados) {
+
+                    JMenuItem option = new JMenuItem(item);
+                    option.setFocusable(false);
+                    option.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 20f));
+                    option.setForeground(Color.WHITE);
+                    option.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                    option.setBackground(new Color(30, 58, 138));
+
+                    option.addActionListener(ev -> {
+                        campo.setText(item);
+                        javax.swing.SwingUtilities.invokeLater(() -> popup.setVisible(false));
+                    });
+
+                    popup.add(option);
+                }
+
+                SwingUtilities.invokeLater(() -> {
+                    if (campo.isShowing()) {
+                        popup.show(campo, 0, campo.getHeight());
+                    }
+                });
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                mostrarSugestoes();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                mostrarSugestoes();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                mostrarSugestoes();
+            }
+        });
+
+        campo.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                int count = popup.getComponentCount();
+                if (count == 0) {
+                    return;
+                }
+
+                switch (evt.getKeyCode()) {
+
+                    case java.awt.event.KeyEvent.VK_DOWN -> {
+                        selecionado[0] = Math.min(selecionado[0] + 1, count - 1);
+                        atualizarSelecao(popup, selecionado[0]);
+                    }
+
+                    case java.awt.event.KeyEvent.VK_UP -> {
+                        selecionado[0] = Math.max(selecionado[0] - 1, 0);
+                        atualizarSelecao(popup, selecionado[0]);
+                    }
+
+                    case java.awt.event.KeyEvent.VK_ENTER -> {
+                        if (popup.isVisible()
+                                && selecionado[0] >= 0 && selecionado[0] < count) {
+
+                            JMenuItem item = (JMenuItem) popup.getComponent(selecionado[0]);
+                            campo.setText(item.getText());
+                            popup.setVisible(false);
+
+                            evt.consume();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void atualizarSelecao(JPopupMenu popup, int index) {
+        for (int i = 0; i < popup.getComponentCount(); i++) {
+            JMenuItem item = (JMenuItem) popup.getComponent(i);
+            if (i == index) {
+                item.setBackground(new Color(50, 100, 200));
+            } else {
+                item.setBackground(new Color(30, 58, 138));
+            }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -67,8 +214,8 @@ public class FichaEdicao extends javax.swing.JFrame {
         comboStatus = new javax.swing.JComboBox<>();
         descricao = new javax.swing.JScrollPane();
         txtDescricao = new javax.swing.JTextArea();
-        botaoCancelar = new javax.swing.JLabel();
         botaoCadastro = new javax.swing.JLabel();
+        botaoCancelar = new javax.swing.JLabel();
         ficha = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -111,20 +258,6 @@ public class FichaEdicao extends javax.swing.JFrame {
         getContentPane().add(descricao);
         descricao.setBounds(1000, 370, 450, 156);
 
-        botaoCancelar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
-        botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
-        botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        botaoCancelar.setMaximumSize(new java.awt.Dimension(260, 83));
-        botaoCancelar.setMinimumSize(new java.awt.Dimension(260, 83));
-        botaoCancelar.setPreferredSize(new java.awt.Dimension(260, 83));
-        botaoCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botaoCancelarMouseClicked(evt);
-            }
-        });
-        getContentPane().add(botaoCancelar);
-        botaoCancelar.setBounds(766, 773, 390, 70);
-
         botaoCadastro.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
         botaoCadastro.setForeground(new java.awt.Color(255, 255, 255));
         botaoCadastro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -137,7 +270,21 @@ public class FichaEdicao extends javax.swing.JFrame {
             }
         });
         getContentPane().add(botaoCadastro);
-        botaoCadastro.setBounds(1451, 228, 50, 50);
+        botaoCadastro.setBounds(766, 773, 390, 70);
+
+        botaoCancelar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 36f));
+        botaoCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        botaoCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botaoCancelar.setMaximumSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.setMinimumSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.setPreferredSize(new java.awt.Dimension(260, 83));
+        botaoCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoCancelarMouseClicked(evt);
+            }
+        });
+        getContentPane().add(botaoCancelar);
+        botaoCancelar.setBounds(1451, 228, 50, 50);
 
         ficha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fichaProjetos.png"))); // NOI18N
         getContentPane().add(ficha);
@@ -147,122 +294,52 @@ public class FichaEdicao extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCancelarMouseClicked
-        try {
-
-            if (idSelecionado == -1) {
-                JOptionPane.showMessageDialog(this,
-                        "Nenhum projeto carregado para atualizar!",
-                        "Erro",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // -----------------------------
-            // 1. CAPTURAR VALORES
-            // -----------------------------
-            String nomeProjeto = txtProjeto.getText().trim();
-            String empresaStr = txtEmpresa.getText().trim();
-            String supervisorStr = txtSupervisor.getText().trim();
-            String inicioStr = txtInicial.getText().trim();
-            String prazoStr = txtPrazo.getText().trim();
-            String descricao = txtDescricao.getText().trim();
-            String condicao = comboStatus.getSelectedItem().toString();
-
-            // -----------------------------
-            // 2. VALIDAR CAMPOS OBRIGATÓRIOS
-            // -----------------------------
-            if (nomeProjeto.isEmpty() || empresaStr.isEmpty() || supervisorStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this,
-                        "Preencha: Projeto, Empresa e Supervisor.",
-                        "Campos obrigatórios",
-                        JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Evita datas incompletas "_//_"
-            if (inicioStr.contains("") || prazoStr.contains("")) {
-                JOptionPane.showMessageDialog(this,
-                        "Preencha corretamente as datas (DD/MM/AAAA).",
-                        "Data inválida",
-                        JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // -----------------------------
-            // 3. CONVERTER CAMPOS NUMÉRICOS
-            // -----------------------------
-            int empresa, supervisor;
-
-            try {
-                empresa = Integer.parseInt(empresaStr);
-                supervisor = Integer.parseInt(supervisorStr);
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Empresa e Supervisor devem ser IDs válidos (números).",
-                        "Erro de Conversão",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // -----------------------------
-            // 4. CONVERTER DATAS
-            // -----------------------------
-            LocalDate inicio = null, prazo = null;
-
-            try {
-                inicio = LocalDate.parse(inicioStr, formato);
-                prazo = LocalDate.parse(prazoStr, formato);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this,
-                        "As datas devem estar no formato DD/MM/AAAA.",
-                        "Erro na Data",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // -----------------------------
-            // 5. CRIAR OBJETO PROJETO
-            // -----------------------------
-            Projetos projeto = new Projetos();
-            projeto.setId(idSelecionado);
-            projeto.setNome(nomeProjeto);
-            projeto.setFk_empresa(empresa);
-            projeto.setFk_supervisor(supervisor);
-            projeto.setInicio(inicio);
-            projeto.setPrazo(prazo);
-            projeto.setDescricao(descricao);
-            projeto.setCondicao(condicao);
-
-            // -----------------------------
-            // 6. ATUALIZAR NO BANCO
-            // -----------------------------
-            ProjetosDAO dao = new ProjetosDAO();
-            dao.atualizar(projeto); // DAO já deve usar o banco: USE soldadores;
-
+    private void botaoCadastroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCadastroMouseClicked
+        if (!botaoCadastro.isEnabled()) {
             JOptionPane.showMessageDialog(this,
-                    "Projeto atualizado com sucesso!",
-                    "Sucesso",
-                    JOptionPane.INFORMATION_MESSAGE);
+                    "Edição bloqueada. O projeto está finalizado ou cancelado.");
+            return;
+        }
 
-            if (tela_projetos != null) {
-                tela_projetos.carregarTabela();
+        try {
+            Projetos p = new Projetos();
+
+            p.setId(idSelecionado);
+            p.setNome(txtProjeto.getText());
+            p.setEmpresa(txtEmpresa.getText());
+            p.setSupervisor(txtSupervisor.getText());
+            p.setDescricao(txtDescricao.getText());
+            p.setCondicao(comboStatus.getSelectedItem().toString());
+
+            // Data início
+            if (!txtInicial.getText().trim().equals("__/__/____")) {
+                p.setInicio(LocalDate.parse(txtInicial.getText(), FORMATO_DATA));
             }
 
+            // Data prazo
+            if (!txtPrazo.getText().trim().equals("__/__/____")) {
+                p.setPrazo(LocalDate.parse(txtPrazo.getText(), FORMATO_DATA));
+            }
+
+            // Salvar no banco
+            ProjetosDAO dao = new ProjetosDAO();
+            dao.atualizar(p);
+
+            JOptionPane.showMessageDialog(this, "Projeto atualizado com sucesso!");
+            telaProjetos.carregarTabela();
             this.dispose();
 
-        } catch (Exception ex) {
-
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                    "Erro inesperado:\n" + ex.getMessage(),
+                    "Erro ao salvar:\n" + e.getMessage(),
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_botaoCancelarMouseClicked
-
-    private void botaoCadastroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCadastroMouseClicked
-        this.dispose();
     }//GEN-LAST:event_botaoCadastroMouseClicked
+
+    private void botaoCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCancelarMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_botaoCancelarMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel botaoCadastro;

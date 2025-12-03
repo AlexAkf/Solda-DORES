@@ -79,7 +79,7 @@ public class TelaInformacoes extends javax.swing.JPanel {
 
         jLabel9.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 30f));
         jLabel9.setForeground(new java.awt.Color(112, 112, 112));
-        jLabel9.setText("v2.0                                                                   @copyright 2025");
+        jLabel9.setText("v3.0                                                                   @copyright 2025");
         add(jLabel9);
         jLabel9.setBounds(70, 930, 710, 50);
 

@@ -199,7 +199,7 @@ public class FichaRelatorio extends javax.swing.JFrame {
                 case "Projeto":
                 try {
                     dao.ProjetosDAO pDao = new dao.ProjetosDAO();
-                    List<models.Projetos> listaP = pDao.listarTodos();
+                    List<models.Projetos> listaP = pDao.listar();
 
                     doc.add(new com.itextpdf.text.Paragraph("LISTA DE PROJETOS:"));
                     doc.add(new com.itextpdf.text.Paragraph("-------------------------------------------"));
@@ -209,11 +209,11 @@ public class FichaRelatorio extends javax.swing.JFrame {
 
                         // Concatenação de todos os campos em uma única string
                         String linhaProjeto =
-                        "Projeto: " + p.getnome() +
-                        " | Empresa ID: " + p.getfk_empresa() +
-                        " | Condição: " + p.getcondicao() +
-                        " | Início: " + p.getinicio() +
-                        " | Prazo: " + p.getprazo();
+                        "Projeto: " + p.getNome() +
+                        " | Empresa ID: " + p.getEmpresa() +
+                        " | Condição: " + p.getCondicao() +
+                        " | Início: " + p.getInicio() +
+                        " | Prazo: " + p.getPrazo();
 
                         doc.add(new com.itextpdf.text.Paragraph(linhaProjeto));
 
@@ -221,7 +221,7 @@ public class FichaRelatorio extends javax.swing.JFrame {
                         doc.add(new com.itextpdf.text.Paragraph("-------------------------------------------"));
                     }
 
-                } catch (SQLException e) {
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Erro ao buscar Projetos no banco de dados.\nErro: " + e.getMessage());
                     throw e; // Lança a exceção para ser capturada pelo bloco catch principal
                 }

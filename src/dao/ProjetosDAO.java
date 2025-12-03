@@ -7,204 +7,264 @@ import java.util.ArrayList;
 import models.Projetos;
 import javax.swing.JOptionPane;
 
-/*
+/**
+ * DAO responsável por realizar operações CRUD na tabela "projetos". Segue
+ * padrão baseado no EquipamentosDAO.
  *
- *@author Rafael Silva
+ * @author Rafael Silva
  */
 public class ProjetosDAO {
 
     private final Connection conn;
 
-    public ProjetosDAO() throws SQLException {
-        conn = Conexao.getConexao();
+    public ProjetosDAO() {
+        this.conn = Conexao.getConexao();
     }
 
-    public Projetos buscarProjeto(String nomeProjeto) throws SQLException {
-        String sql = "SELECT  FROM projetos WHERE nome=?";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nomeProjeto);
-            try (ResultSet rs = stmt.executeQuery()) {
+    // ==========================================================
+    //  BUSCA ID DA EMPRESA PELO NOME (autocomplete usa isto)
+    // ==========================================================
+    public int buscarIdSupervisorPorNome(String nome) {
+        String sql = "SELECT id FROM usuarios WHERE nome = ? AND cargo = 'supervisor' LIMIT 1";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nome);
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    Projetos projetos = new Projetos();
-                    projetos.setId(rs.getInt("id"));
-                    projetos.setNome(rs.getString("nome"));
-                    projetos.setFk_empresa(rs.getInt("fk_empresa"));
-                    projetos.setFk_supervisor(rs.getInt("fk_supervisor"));
-
-                    Date dInicio = rs.getDate("inicio");
-                    if (dInicio != null) {
-                        projetos.setInicio(dInicio.toLocalDate());
-                    } else {
-                        projetos.setInicio(null);
-                    }
-
-                    Date dPrazo = rs.getDate("prazo");
-                    if (dPrazo != null) {
-                        projetos.setPrazo(dPrazo.toLocalDate());
-                    } else {
-                        projetos.setInicio(null);
-                    }
-                    projetos.setDescricao(rs.getString("descricao"));
-                    projetos.setCondicao(rs.getString("condicao"));
-
-                    return projetos;
+                    return rs.getInt("id");
                 }
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao buscar projetos.\nErro:"
-                    + ex.getMessage());
-            throw ex;
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar ID do supervisor: " + e.getMessage());
         }
-        return null;
+        return -1;
     }
-    //=================================== CREATE ====================================
 
-    public void inserir(Projetos projetos) throws SQLException {
-
-        String sql = """
-  INSERT INTO projetos
-  (nome, fk_empresa, fk_supervisor, inicio, prazo, descricao, condicao)
-  VALUES(?, ?, ?, ?, ?, ?, ?)
-  """;
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, projetos.getnome());
-            stmt.setInt(2, projetos.getfk_empresa());
-            stmt.setInt(3, projetos.getfk_supervisor());
-
-            if (projetos.getinicio() != null) {
-                stmt.setDate(4, java.sql.Date.valueOf(projetos.getinicio()));
-            } else {
-                stmt.setNull(4, java.sql.Types.DATE);
-            }
-
-            if (projetos.getprazo() != null) {
-                stmt.setDate(5, java.sql.Date.valueOf(projetos.getprazo()));
-            } else {
-                stmt.setNull(5, java.sql.Types.DATE);
-            }
-
-            stmt.setString(6, projetos.getdescricao());
-            stmt.setString(7, projetos.getcondicao());
-            stmt.executeUpdate();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao inserir o projeto.\nErro: "
-                    + ex.getMessage());
-            throw ex;
-        }
-
-    }
-    // ==================================== READ ====================================
-
-    public List<Projetos> listarTodos() throws SQLException {
-        List<Projetos> lista = new ArrayList<>();
-
-        String sql = """
-  SELECT
-               u.id,
-               u.nome,
-               u.fk_empresa,
-               u.fk_supervisor,
-               u.descricao,
-               u.condicao,
-               u.inicio,
-               u.prazo,
-               
-               e.id AS empresa_id, 
-               e.nome AS empresa_nome,
-               
-               s.id AS supervisor_id, 
-               s.nome AS supervisor_nome
-               
-  FROM projetos u
-  LEFT JOIN empresas e ON u.fk_empresa = e.id
-  LEFT JOIN usuarios s ON u.fk_supervisor = s.id
-  """;
-
-        try (Statement st = conn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
-
-            while (rs.next()) {
-                Projetos u = new Projetos();
-
-                u.setId(rs.getInt("id"));
-                u.setNome(rs.getString("nome"));
-                u.setFk_empresa(rs.getInt("fk_empresa"));
-                u.setFk_supervisor(rs.getInt("fk_supervisor"));
-
-                java.sql.Date sqlInicio = rs.getDate("inicio");
-                if (sqlInicio != null) {
-                    u.setInicio(sqlInicio.toLocalDate());
-                } else {
-                    u.setInicio(null);
+    // ==========================================================
+    //  BUSCA ID DO SUPERVISOR PELO NOME
+    // ==========================================================
+    public int buscarIdEmpresaPorNome(String nome) {
+        String sql = "SELECT id FROM empresas WHERE nome = ? LIMIT 1";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nome);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
                 }
-
-                java.sql.Date sqlPrazo = rs.getDate("prazo");
-                if (sqlPrazo != null) {
-                    u.setPrazo(sqlPrazo.toLocalDate());
-                } else {
-                    u.setPrazo(null);
-                }
-                u.setDescricao(rs.getString("descricao"));
-                u.setCondicao(rs.getString("condicao"));
-
-                lista.add(u);
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao ler o projeto.\nErro: "
-                    + ex.getMessage());
-            throw ex;
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar ID da empresa: " + e.getMessage());
         }
-        return lista;
+        return -1;
     }
-    //=================================== ATUALIZAR ====================================
 
-    public void atualizar(Projetos projetos) throws SQLException {
+    // ==========================================================
+    //  CREATE — INSERIR PROJETO
+    // ==========================================================
+    public boolean inserir(Projetos p) {
+        if (p.getNome() == null || p.getNome().isBlank()
+                || p.getEmpresa() == null || p.getEmpresa().isBlank()
+                || p.getSupervisor() == null || p.getSupervisor().isBlank()) {
+
+            JOptionPane.showMessageDialog(null, "Preencha: Nome, Empresa e Supervisor.",
+                    "Atenção", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        int idEmpresa = buscarIdEmpresaPorNome(p.getEmpresa());
+        if (idEmpresa == -1) {
+            JOptionPane.showMessageDialog(null, "Empresa não encontrada!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        int idSupervisor = buscarIdSupervisorPorNome(p.getSupervisor());
+        if (idSupervisor == -1) {
+            JOptionPane.showMessageDialog(null, "Supervisor não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
         String sql = """
-  UPDATE projetos SET
-  nome=?, fk_empresa=?, fk_supervisor=?, inicio=?,
-  prazo=?, descricao=?, condicao=?
-  WHERE id = ?
-  """;
+            INSERT INTO projetos (nome, fk_empresa, fk_supervisor, inicio, prazo, descricao, condicao)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, projetos.getnome());
-            ps.setInt(2, projetos.getfk_empresa());
-            ps.setInt(3, projetos.getfk_supervisor());
+            ps.setString(1, p.getNome());
+            ps.setInt(2, idEmpresa);
 
-            if (projetos.getinicio() != null) {
-                ps.setDate(4, Date.valueOf(projetos.getinicio()));
+            // supervisor pode ser null em tabela, mas aqui assumimos que foi encontrado
+            ps.setInt(3, idSupervisor);
+
+            if (p.getInicio() != null) {
+                ps.setDate(4, Date.valueOf(p.getInicio()));
             } else {
                 ps.setNull(4, Types.DATE);
             }
 
-            if (projetos.getprazo() != null) {
-                ps.setDate(5, Date.valueOf(projetos.getprazo()));
+            if (p.getPrazo() != null) {
+                ps.setDate(5, Date.valueOf(p.getPrazo()));
             } else {
                 ps.setNull(5, Types.DATE);
             }
-            ps.setString(6, projetos.getdescricao());
-            ps.setString(7, projetos.getcondicao());
-            ps.setInt(8, projetos.getid());
 
-            ps.executeUpdate();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao atualizar projetos.\n"
-                    + ex.getMessage());
-            throw ex;
+            ps.setString(6, p.getDescricao());
+            ps.setString(7, p.getCondicao());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao inserir projeto:\n" + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
         }
+        return false;
     }
-    //=================================== DELETAR ====================================
 
-    public void deletar(int id) throws SQLException {
-        String sql = "DELETE FROM projetos WHERE id=?";
+    // ==========================================================
+    //  READ — LISTAR PROJETOS (JOIN para pegar nomes)
+    // ==========================================================
+    public List<Projetos> listar() {
+        List<Projetos> lista = new ArrayList<>();
+
+        String sql = """
+            SELECT
+                p.id,
+                p.nome,
+                e.nome AS empresa,
+                u.nome AS supervisor,
+                p.inicio,
+                p.prazo,
+                p.descricao,
+                p.condicao
+            FROM projetos p
+            LEFT JOIN empresas e ON p.fk_empresa = e.id
+            LEFT JOIN usuarios u ON p.fk_supervisor = u.id
+            ORDER BY p.id
+        """;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Projetos p = new Projetos();
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("nome"));
+                p.setEmpresa(rs.getString("empresa"));       // nome da empresa
+                p.setSupervisor(rs.getString("supervisor")); // nome do supervisor
+
+                Date dInicio = rs.getDate("inicio");
+                Date dPrazo = rs.getDate("prazo");
+                p.setInicio(dInicio != null ? dInicio.toLocalDate() : null);
+                p.setPrazo(dPrazo != null ? dPrazo.toLocalDate() : null);
+
+                p.setDescricao(rs.getString("descricao"));
+                p.setCondicao(rs.getString("condicao"));
+
+                lista.add(p);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar projetos: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+    // ==========================================================
+    //  UPDATE — ATUALIZAR PROJETO
+    // ==========================================================
+    public boolean atualizar(Projetos p) {
+        if (p.getNome() == null || p.getNome().isBlank()
+                || p.getEmpresa() == null || p.getEmpresa().isBlank()
+                || p.getSupervisor() == null || p.getSupervisor().isBlank()) {
+
+            JOptionPane.showMessageDialog(null, "Preencha: Nome, Empresa e Supervisor.",
+                    "Atenção", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        int idEmpresa = buscarIdEmpresaPorNome(p.getEmpresa());
+        int idSupervisor = buscarIdSupervisorPorNome(p.getSupervisor());
+
+        if (idEmpresa == -1 || idSupervisor == -1) {
+            JOptionPane.showMessageDialog(null, "Empresa ou supervisor inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        String sql = """
+            UPDATE projetos SET
+                nome = ?, fk_empresa = ?, fk_supervisor = ?, inicio = ?, prazo = ?, descricao = ?, condicao = ?
+            WHERE id = ?
+        """;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao deletar projetos.\n"
-                    + ex.getMessage());
+            ps.setString(1, p.getNome());
+            ps.setInt(2, idEmpresa);
+            ps.setInt(3, idSupervisor);
+
+            if (p.getInicio() != null) {
+                ps.setDate(4, Date.valueOf(p.getInicio()));
+            } else {
+                ps.setNull(4, Types.DATE);
+            }
+
+            if (p.getPrazo() != null) {
+                ps.setDate(5, Date.valueOf(p.getPrazo()));
+            } else {
+                ps.setNull(5, Types.DATE);
+            }
+
+            ps.setString(6, p.getDescricao());
+            ps.setString(7, p.getCondicao());
+            ps.setInt(8, p.getId());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar projeto:\n" + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
         }
+        return false;
+    }
+
+    // ==========================================================
+    //  DELETE
+    // ==========================================================
+    public boolean deletar(int idProjeto) {
+        String sql = "DELETE FROM projetos WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idProjeto);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao excluir projeto:\n" + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
+    // AUTOCOMPLETE: buscar empresas que comecem com termo
+    public List<String> buscarEmpresas(String termo) {
+        List<String> lista = new ArrayList<>();
+        String sql = "SELECT nome FROM empresas WHERE nome LIKE ? ORDER BY nome LIMIT 10";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, termo + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) lista.add(rs.getString("nome"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar empresas: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    // AUTOCOMPLETE: buscar supervisores (usuarios com cargo='supervisor')
+    public List<String> buscarSupervisores(String termo) {
+        List<String> lista = new ArrayList<>();
+        String sql = "SELECT nome FROM usuarios WHERE cargo = 'supervisor' AND nome LIKE ? ORDER BY nome LIMIT 10";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, termo + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) lista.add(rs.getString("nome"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar supervisores: " + e.getMessage());
+        }
+        return lista;
     }
 }
