@@ -142,7 +142,7 @@ public class TelaRelatorios extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tabela);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(40, 130, 1770, 870);
+        jScrollPane1.setBounds(20, 130, 1770, 870);
 
         novoRelatorio.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
         novoRelatorio.setForeground(new java.awt.Color(255, 255, 255));
