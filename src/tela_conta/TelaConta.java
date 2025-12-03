@@ -32,6 +32,8 @@ public class TelaConta extends javax.swing.JPanel {
         manualUsuario = new javax.swing.JLabel();
         trocarSenha = new javax.swing.JLabel();
         btnDocumentacao = new javax.swing.JLabel();
+        botaoBackup = new javax.swing.JLabel();
+        botaoRestaurar = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
@@ -56,7 +58,7 @@ public class TelaConta extends javax.swing.JPanel {
             }
         });
         add(manualUsuario);
-        manualUsuario.setBounds(110, 600, 950, 160);
+        manualUsuario.setBounds(110, 380, 950, 160);
 
         trocarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/senha.png"))); // NOI18N
         trocarSenha.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -65,7 +67,7 @@ public class TelaConta extends javax.swing.JPanel {
             }
         });
         add(trocarSenha);
-        trocarSenha.setBounds(110, 180, 950, 160);
+        trocarSenha.setBounds(110, 40, 950, 160);
 
         btnDocumentacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/documentacao.png"))); // NOI18N
         btnDocumentacao.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -74,7 +76,25 @@ public class TelaConta extends javax.swing.JPanel {
             }
         });
         add(btnDocumentacao);
-        btnDocumentacao.setBounds(110, 390, 950, 160);
+        btnDocumentacao.setBounds(110, 210, 950, 160);
+
+        botaoBackup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backup.png"))); // NOI18N
+        botaoBackup.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoBackupMouseClicked(evt);
+            }
+        });
+        add(botaoBackup);
+        botaoBackup.setBounds(110, 720, 950, 160);
+
+        botaoRestaurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/restaurar.png"))); // NOI18N
+        botaoRestaurar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoRestaurarMouseClicked(evt);
+            }
+        });
+        add(botaoRestaurar);
+        botaoRestaurar.setBounds(110, 550, 950, 160);
     }// </editor-fold>//GEN-END:initComponents
 
     private void manualUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manualUsuarioMouseClicked
@@ -134,7 +154,26 @@ public class TelaConta extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnDocumentacaoMouseClicked
 
+    private void botaoBackupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoBackupMouseClicked
+        util.BackupUtil.gerarBackup();
+    }//GEN-LAST:event_botaoBackupMouseClicked
+
+    private void botaoRestaurarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoRestaurarMouseClicked
+        int confirm = JOptionPane.showConfirmDialog(
+            null,
+            "Tem certeza que deseja restaurar o sistema?\nIsso substitui TODOS os dados atuais!",
+            "Confirmar restauração",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            util.RestaurarBackup.restaurar();
+        }
+    }//GEN-LAST:event_botaoRestaurarMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel botaoBackup;
+    private javax.swing.JLabel botaoRestaurar;
     private javax.swing.JLabel btnDocumentacao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel manualUsuario;

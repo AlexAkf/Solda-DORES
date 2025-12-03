@@ -104,7 +104,7 @@ public final class TelaProjetos extends javax.swing.JPanel {
                 projeto.setDescricao(descricao);
                 projeto.setCondicao(condicao);
 
-                var atualizar = new AtualizarProjetos(TelaProjetos.this);
+                var atualizar = new FichaEdicao(TelaProjetos.this);
                 atualizar.preencherCampos(projeto);
                 atualizar.setVisible(true);
             }
@@ -252,7 +252,7 @@ public final class TelaProjetos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        CadastroProjetos cadastro = new CadastroProjetos(this);
+        FichaCadastro cadastro = new FichaCadastro(this);
         cadastro.setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 

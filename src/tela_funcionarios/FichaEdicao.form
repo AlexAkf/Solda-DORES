@@ -159,7 +159,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="Fonte.inserirFonte(&quot;Poppins-Regular.ttf&quot;, 18f)" type="code"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="COD"/>
+        <Property name="text" type="java.lang.String" value="Ativo"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Constraints>

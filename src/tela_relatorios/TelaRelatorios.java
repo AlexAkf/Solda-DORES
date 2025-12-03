@@ -108,11 +108,7 @@ public class TelaRelatorios extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
         novoRelatorio = new javax.swing.JLabel();
-        botaoBackup = new javax.swing.JLabel();
-        botaoRestaurar = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(228, 228, 228));
         setMaximumSize(new java.awt.Dimension(1810, 1014));
@@ -156,42 +152,9 @@ public class TelaRelatorios extends javax.swing.JPanel {
         add(novoRelatorio);
         novoRelatorio.setBounds(1530, 20, 260, 90);
 
-        botaoBackup.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
-        botaoBackup.setForeground(new java.awt.Color(255, 255, 255));
-        botaoBackup.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        botaoBackup.setText("BACKUP");
-        botaoBackup.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botaoBackupMouseClicked(evt);
-            }
-        });
-        add(botaoBackup);
-        botaoBackup.setBounds(1240, 20, 260, 90);
-        botaoBackup.getAccessibleContext().setAccessibleName("");
-
-        botaoRestaurar.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
-        botaoRestaurar.setForeground(new java.awt.Color(255, 255, 255));
-        botaoRestaurar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        botaoRestaurar.setText("RESTAURAR");
-        botaoRestaurar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botaoRestaurarMouseClicked(evt);
-            }
-        });
-        add(botaoRestaurar);
-        botaoRestaurar.setBounds(50, 20, 260, 90);
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
-        add(jLabel2);
-        jLabel2.setBounds(1240, 20, 260, 90);
-
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
         add(jLabel3);
         jLabel3.setBounds(1530, 20, 260, 90);
-
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastro_botao.png"))); // NOI18N
-        add(jLabel4);
-        jLabel4.setBounds(50, 20, 260, 90);
     }// </editor-fold>//GEN-END:initComponents
 
     private void novoRelatorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_novoRelatorioMouseClicked
@@ -199,31 +162,8 @@ public class TelaRelatorios extends javax.swing.JPanel {
         cadastro.setVisible(true);
     }//GEN-LAST:event_novoRelatorioMouseClicked
 
-    private void botaoBackupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoBackupMouseClicked
-        // TODO add your handling code here:
-        util.BackupUtil.gerarBackup();
-    }//GEN-LAST:event_botaoBackupMouseClicked
-
-    private void botaoRestaurarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoRestaurarMouseClicked
-        // TODO add your handling code here:
-        int confirm = JOptionPane.showConfirmDialog(
-            null,
-            "Tem certeza que deseja restaurar o sistema?\nIsso substitui TODOS os dados atuais!",
-            "Confirmar restauração",
-            JOptionPane.YES_NO_OPTION
-        );
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            util.RestaurarBackup.restaurar();
-        }
-    }//GEN-LAST:event_botaoRestaurarMouseClicked
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel botaoBackup;
-    private javax.swing.JLabel botaoRestaurar;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel novoRelatorio;
     private javax.swing.JTable tabela;

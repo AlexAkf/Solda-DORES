@@ -220,7 +220,7 @@ public class FichaEdicao extends javax.swing.JFrame {
         txtSupervisor.setBounds(765, 383, 450, 50);
 
         txtStatus.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
-        txtStatus.setText("COD");
+        txtStatus.setText("Ativo");
         txtStatus.setEnabled(false);
         getContentPane().add(txtStatus);
         txtStatus.setBounds(765, 782, 450, 50);
