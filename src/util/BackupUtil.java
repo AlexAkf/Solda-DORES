@@ -21,7 +21,7 @@ public class BackupUtil {
 
         // Usuário e senha
         String usuario = "root";
-        String senha = "root";
+        String senha = "";
 
         // Gera a data e hora para o nome do arquivo
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss", new Locale("pt", "BR"));

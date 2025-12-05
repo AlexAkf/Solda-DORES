@@ -38,7 +38,7 @@ public class BackupAutomatico {
     // ✨ Backup automático
     private static void gerarBackupAutomatico() {
         try {
-            String pasta = "C:\\Users\\timid\\Documents\\Backup\\";
+            String pasta = "C:\\Users\\ALUNO\\Documents\\Backup\\";
             new File(pasta).mkdirs(); // cria se não existir
 
             String dataHora = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
@@ -48,7 +48,7 @@ public class BackupAutomatico {
             ProcessBuilder pb = new ProcessBuilder(
                     "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe",
                     "-u", "root",
-                    "-p" + "root",
+                    "-p" + "",
                     "soldadores"
             );
 

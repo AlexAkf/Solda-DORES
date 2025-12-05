@@ -16,7 +16,7 @@ public class RestaurarBackup {
 
         String banco = "soldadores";
         String usuario = "root";
-        String senha   = "root";
+        String senha   = "";
 
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Selecione o arquivo .SQL para restaurar");

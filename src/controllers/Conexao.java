@@ -17,9 +17,9 @@ public class Conexao {
        final = uma constante = valor não alterável
        Mantenham as constantes em CAPSLOCK para padronizar */
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/soldadores";
+    private static final String URL = "jdbc:mysql://localhost:3307/soldadores";
     private static final String USUARIO = "root";
-    private static final String SENHA = "root"; // No mundo real, a senha e o usuário não ficariam expostos nas linhas de código
+    private static final String SENHA = ""; // No mundo real, a senha e o usuário não ficariam expostos nas linhas de código
 
     /**
      * Cria e retorna uma conexão com o DB
