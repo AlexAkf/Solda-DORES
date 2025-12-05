@@ -336,7 +336,7 @@ INSERT INTO usuarios (nome, cpf, email, login, senha, senha_padrao, cargo, perfi
 ('Marcelo Rocha', '908.787.820-60', 'marcelo.rocha@navalsolucoes.com.br', 'marcelo.rocha@com', 'inicial', TRUE, 'soldador', 'comum', 12, 'MRL', '2025-12-01', '2024-09-29'),
 ('Natália Santos', '004.851.070-07', 'natalia.santos@engenhariatotal.com.br', 'natalia.santos@adm', 'inicial', TRUE, 'gestor', 'adm', NULL, NULL, NULL, NULL),
 ('Otávio Barros', '965.005.630-00', 'otavio.barros@engenhariatotal.com.br', 'otavio.barros@com', 'inicial', TRUE, 'soldador', 'comum', NULL, 'OBS', '2026-04-10', '2024-08-01'),
-('Administrador', 'Não informado', 'Não informado', '1', '1', FALSE, 'gestor', 'adm', NULL, NULL, NULL, NULL);
+('Administrador', 'Não informado', 'Não informado', 'admin', 'inicial', TRUE, 'gestor', 'adm', NULL, NULL, NULL, NULL);
 
 
 -- DADOS DE PROJETOS
