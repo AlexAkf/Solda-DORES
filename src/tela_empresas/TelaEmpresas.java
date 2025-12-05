@@ -83,8 +83,7 @@ public class TelaEmpresas extends javax.swing.JPanel {
                 emp.setTelefone(telefone);
                 emp.setEmail(email);
                 
-
-                FichaEdicao atualizar = new FichaEdicao();
+                FichaEdicao atualizar = new FichaEdicao(TelaEmpresas.this);
                 atualizar.setIdEquipamentoSelecionado(id);
                 atualizar.preencherCampos(emp);
                 atualizar.setVisible(true);

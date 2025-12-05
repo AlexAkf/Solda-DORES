@@ -50,6 +50,7 @@ public class UsuariosDAO {
                     usuario.setSenha(rs.getString("senha"));
                     usuario.setPerfil(rs.getString("perfil"));
                     usuario.setAtivo(rs.getBoolean("condicao"));
+                    usuario.setCargo(rs.getString("cargo"));
                     return usuario;
                 }
             }

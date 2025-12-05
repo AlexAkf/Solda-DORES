@@ -1,6 +1,7 @@
 package tela_empresas;
 
 import dao.EmpresasDAO;
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import models.Empresas;
 import util.Fonte;
@@ -9,12 +10,14 @@ import util.Fonte;
  *
  * @author Rafhael Muzzi
  */
-
 public class FichaEdicao extends javax.swing.JFrame {
 
-    public FichaEdicao() {
+    private final TelaEmpresas TELA;
+
+    public FichaEdicao(TelaEmpresas tela) {
         initComponents();
         setBackground(new java.awt.Color(0, 0, 0, 0));
+        this.TELA = tela;
         formatarCNPJ();
         formatarTelefone();
     }
@@ -109,6 +112,10 @@ public class FichaEdicao extends javax.swing.JFrame {
     private void botaoatualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoatualizarMouseClicked
         // Recebendo os valores cadastrados.
         String empresa = txtempresa.getText();
+        if (empresa.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor digite o nome da empresa.");
+            return;
+        }
         String cnpj = txtcnpj.getText();
         if (!validarCNPJ(cnpj)) {
             JOptionPane.showMessageDialog(this, "CNPJ inválido! Verifique e tente novamente.");
@@ -133,11 +140,22 @@ public class FichaEdicao extends javax.swing.JFrame {
         emp.setTelefone(telefone);
         emp.setEmail(email);
 
-        // Atualiza no banco
-        EmpresasDAO dao = new EmpresasDAO();
-        dao.atualizarempresa(emp);
+        try {
+            // Atualiza no banco
+            EmpresasDAO dao = new EmpresasDAO();
+            dao.atualizarempresa(emp);
 
-        this.dispose(); // fecha a tela
+            JOptionPane.showMessageDialog(this, "Empresa atualizada com sucesso!");
+
+            if (TELA != null) {
+                TELA.carregarTabela();
+            }
+
+            this.dispose(); // Fecha a tela
+
+        } catch (HeadlessException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar empresa: " + e.getMessage());
+        }
     }//GEN-LAST:event_botaoatualizarMouseClicked
 
     private void botaocancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaocancelarMouseClicked

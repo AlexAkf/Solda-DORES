@@ -13,7 +13,6 @@ import util.Hash;
  * @author Hugo
  * @author Alex
  */
-
 public class TelaLogin extends javax.swing.JFrame {
 
     public TelaLogin() {
@@ -201,6 +200,12 @@ public class TelaLogin extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Usuário inativo. Entre em contato com o administrador");
                 return;
             }
+
+            if (usuario.getCargo() != null && usuario.getCargo().equalsIgnoreCase("soldador")) {
+                JOptionPane.showMessageDialog(this,
+                        "Usuários do cargo Soldador não têm permissão para acessar o sistema.");
+                return;
+            }
             
             String senhaDigitadaHash = Hash.gerarHash(senha);
             // Aceita senha se for igual ao hash OU igual ao texto cru (para as contas já registradas no DB)
@@ -211,7 +216,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
             // Guarda o usuário logado.
             tela_conta.Sessao.usuarioLogado = usuario;
-            
+
             // Passou por todos os ifs, então temos senha correta, usuário ativo e correto. O sistema entra e fecha a telinha de login
             new TelaPrincipal().setVisible(true);
             dispose(); // esse cara aqui que faz fechar
@@ -219,6 +224,7 @@ public class TelaLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados:\n " + ex.getMessage());
         }
     }
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

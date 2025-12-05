@@ -1,6 +1,7 @@
 package tela_empresas;
 
 import dao.EmpresasDAO;
+import java.awt.HeadlessException;
 import util.Fonte;
 import javax.swing.JOptionPane;
 import models.Empresas;
@@ -9,7 +10,6 @@ import models.Empresas;
  *
  * @author Rafhael Muzzi
  */
-
 public class FichaCadastro extends javax.swing.JFrame {
 
     private final TelaEmpresas TELA;
@@ -99,6 +99,10 @@ public class FichaCadastro extends javax.swing.JFrame {
     private void botaocadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaocadastrarMouseClicked
         // Recebendo os valores cadastrados.
         String empresa = txtempresa.getText();
+        if (empresa.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor digite o nome da empresa.");
+            return;
+        }
         String cnpj = txtcnpj.getText();
         if (!validarCNPJ(cnpj)) {
             JOptionPane.showMessageDialog(this, "CNPJ inválido! Verifique e tente novamente.");
@@ -122,15 +126,22 @@ public class FichaCadastro extends javax.swing.JFrame {
         emp.setTelefone(telefone);
         emp.setEmail(email);
 
-        // Atualiza no banco
-        EmpresasDAO dao = new EmpresasDAO();
-        dao.inserirempresa(emp);
+        try {
+            // Atualiza no banco
+            EmpresasDAO dao = new EmpresasDAO();
+            dao.inserirempresa(emp);
 
-        if (TELA != null) {
-            TELA.carregarTabela();
+            JOptionPane.showMessageDialog(this, "Empresa cadastrada com sucesso!");
+
+            if (TELA != null) {
+                TELA.carregarTabela();
+            }
+
+            this.dispose(); // Fecha a tela
+
+        } catch (HeadlessException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar empresa: " + e.getMessage());
         }
-
-        this.dispose(); // fecha a tela
     }//GEN-LAST:event_botaocadastrarMouseClicked
 
     private boolean validaEmail(String email) {
