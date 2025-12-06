@@ -85,7 +85,7 @@ public class FichaRelatorio extends javax.swing.JFrame {
 
         jTextField4.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         getContentPane().add(jTextField4);
-        jTextField4.setBounds(730, 370, 450, 50);
+        jTextField4.setBounds(730, 380, 450, 50);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {

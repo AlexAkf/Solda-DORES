@@ -248,7 +248,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         jLabel4.setFont(Fonte.inserirFonte("Baloo2-Bold.ttf", 25f));
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("+ NOVO EMPRESTIMO");
+        jLabel4.setText("+ NOVO EMPRÉSTIMO");
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel4MouseClicked(evt);
