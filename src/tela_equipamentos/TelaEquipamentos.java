@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 import models.Equipamentos;
+import tela_conta.Sessao;
 import util.*;
 
 /**
@@ -49,7 +50,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         tabela.setGridColor(new Color(30, 58, 138));
         tabela.setBorder(BorderFactory.createLineBorder(new Color(30, 58, 138), 1, true));
         tabela.getTableHeader().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(30, 58, 138)));
-        
+
         renderizar();   // Recarrega os botões
     }
 
@@ -98,27 +99,40 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                 int model = tabela.convertRowIndexToModel(linha);
                 int idEquipamento = (int) tabela.getModel().getValueAt(model, 0);
 
-                // Pega a Condição (Ativo/Inativo) - Coluna 6
+                // Coluna 6 = Condição (Ativo / Inativo)
                 String condicao = (String) tabela.getModel().getValueAt(model, 6);
 
-                // BLOQUEIO: Não pode excluir/inativar se já estiver Inativo
-                if ("Inativo".equalsIgnoreCase(condicao)) {
-                    JOptionPane.showMessageDialog(null,
-                            "O equipamento já está inativo.",
-                            "Bloqueio", JOptionPane.WARNING_MESSAGE);
-                    return; // Sai do método
+                // Obtém o cargo do usuário logado
+                String cargo = Sessao.usuarioLogado.getCargo();
+
+                // ==================== SE FOR GESTOR → PODE EXCLUIR DIRETO ====================
+                if (cargo.equalsIgnoreCase("Gestor")) {
+
+                    int opcao = JOptionPane.showConfirmDialog(
+                            null,
+                            "Deseja EXCLUIR DEFINITIVAMENTE o equipamento ID " + idEquipamento + "?\n"
+                            + "(Essa ação não pode ser desfeita!)",
+                            "Exclusão DEFINITIVA",
+                            JOptionPane.YES_NO_OPTION
+                    );
+
+                    if (opcao == JOptionPane.YES_OPTION) {
+                        EquipamentosDAO dao = new EquipamentosDAO();
+                        dao.inativarEquipamento(idEquipamento);  // aplica regra de negócio
+                        carregarTabela();
+                        renderizar();
+                    }
+
+                    return;
                 }
 
-                int opcao = JOptionPane.showConfirmDialog(null,
-                        "Deseja realmente inativar o equipamento ID " + idEquipamento + "?",
-                        "Confirmação", JOptionPane.YES_NO_OPTION);
-
-                if (opcao == JOptionPane.YES_OPTION) {
+                // ==================== USUÁRIO COMUM (NÃO GESTOR) ====================
+                
                     EquipamentosDAO dao = new EquipamentosDAO();
-                    dao.inativarEquipamento(idEquipamento);
-                    carregarTabela();   // Atualiza a tabela após exclusão
-                    renderizar();   // Reaplica os botões de ação
-                }
+                    dao.inativarEquipamento(idEquipamento); // DAO já trata regra
+                    carregarTabela();
+                    renderizar();
+                
             }
         };
     }

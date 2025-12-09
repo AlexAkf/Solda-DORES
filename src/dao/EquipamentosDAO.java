@@ -180,9 +180,92 @@ public class EquipamentosDAO {
         }
     }
 
-    // ========= DELETE, INATIVAR EQUIPAMENTO =========
+    // ========= DELETE, INATIVAR EQUIPAMENTO E DELETAR (Apenas Gestor) =========
     public void inativarEquipamento(int idEquipamento) {
-        String sql = "UPDATE equipamentos SET situacao = false WHERE id = ?";
+        try {
+            // 1. Verifica se existe movimentação (somente empréstimos agora)
+            String sqlMov
+                    = "SELECT COUNT(*) AS total_mov "
+                    + "FROM emprestimos WHERE fk_equipamento = ?";
+
+            PreparedStatement stmtMov = conn.prepareStatement(sqlMov);
+            stmtMov.setInt(1, idEquipamento);
+            ResultSet rs = stmtMov.executeQuery();
+
+            int totalMov = 0;
+            if (rs.next()) {
+                totalMov = rs.getInt("total_mov");
+            }
+
+            rs.close();
+            stmtMov.close();
+
+            // 2. Se NÃO existe movimentação → DELETAR
+            if (totalMov == 0) {
+
+                int opcao = JOptionPane.showConfirmDialog(
+                        null,
+                        "O equipamento nunca foi emprestado.\nDeseja EXCLUIR PERMANENTEMENTE do banco?",
+                        "Excluir DEFINITIVO",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (opcao == JOptionPane.YES_OPTION) {
+
+                    String sqlDelete = "DELETE FROM equipamentos WHERE id = ?";
+                    PreparedStatement stmtDel = conn.prepareStatement(sqlDelete);
+                    stmtDel.setInt(1, idEquipamento);
+                    int linhas = stmtDel.executeUpdate();
+                    stmtDel.close();
+
+                    if (linhas > 0) {
+                        JOptionPane.showMessageDialog(null,
+                                "Equipamento deletado com sucesso (sem movimentações).");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Equipamento não encontrado.",
+                                "Aviso", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+
+                return;
+            }
+
+            // 3. Caso tenha movimentações → INATIVAR
+            int opcao = JOptionPane.showConfirmDialog(
+                    null,
+                    "O equipamento já possui movimentações.\nDeseja marcar como INATIVO?",
+                    "Inativar Equipamento",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (opcao == JOptionPane.YES_OPTION) {
+
+                String sqlInat = "UPDATE equipamentos SET situacao = false WHERE id = ?";
+                PreparedStatement stmtInat = conn.prepareStatement(sqlInat);
+                stmtInat.setInt(1, idEquipamento);
+                int linhas = stmtInat.executeUpdate();
+                stmtInat.close();
+
+                if (linhas > 0) {
+                    JOptionPane.showMessageDialog(null,
+                            "Equipamento INATIVADO (já possui movimentações).");
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Equipamento não encontrado.",
+                            "Aviso", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Erro ao processar operação:\n" + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void deletarEquipamento(int idEquipamento) {
+        String sql = "DELETE FROM equipamentos WHERE id = ?";
 
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -192,7 +275,7 @@ public class EquipamentosDAO {
 
             if (linhas > 0) {
                 JOptionPane.showMessageDialog(null,
-                        "Equipamento marcado como INATIVO.");
+                        "Equipamento EXCLUÍDO definitivamente do banco.");
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Equipamento não encontrado.",
@@ -201,7 +284,7 @@ public class EquipamentosDAO {
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null,
-                    "Erro ao inativar equipamento:\n" + e.getMessage(),
+                    "Erro ao excluir equipamento:\n" + e.getMessage(),
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }

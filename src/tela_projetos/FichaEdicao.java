@@ -239,11 +239,11 @@ public class FichaEdicao extends javax.swing.JFrame {
 
         txtInicial.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         getContentPane().add(txtInicial);
-        txtInicial.setBounds(1000, 694, 450, 50);
+        txtInicial.setBounds(460, 694, 450, 50);
 
         txtPrazo.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         getContentPane().add(txtPrazo);
-        txtPrazo.setBounds(460, 694, 450, 50);
+        txtPrazo.setBounds(1000, 694, 450, 50);
 
         comboStatus.setFont(Fonte.inserirFonte("Poppins-Regular.ttf", 18f));
         comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ativo", "avaliacao", "finalizado", "cancelado" }));
