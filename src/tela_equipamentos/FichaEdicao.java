@@ -147,8 +147,8 @@ public class FichaEdicao extends javax.swing.JFrame {
         EmprestimosDAO empDAO = new EmprestimosDAO();
         String statusAtual = eqDAO.buscarStatusAtual(idEquipamentoSelecionado);
 
-        // ======================= REGRAS DE BLOQUEIO E AÇÃO =======================
-        // 1. BLOQUEIO: Estoque para Emprestado (Regra: Não pode emprestar pela tela de Edição)
+        // REGRAS DE BLOQUEIO E AÇÃO:
+        // Estoque para Emprestado, não pode emprestar pela tela de Edição.
         if ("estoque".equalsIgnoreCase(statusAtual) && "emprestado".equalsIgnoreCase(novoStatus)) {
             JOptionPane.showMessageDialog(null,
                     "Para emprestar um equipamento, utilize o botão de empréstimos.",
@@ -156,7 +156,7 @@ public class FichaEdicao extends javax.swing.JFrame {
             return; // Interrompe a operação
         }
 
-        // 2. AÇÃO: Emprestado para Estoque (Regra: Tira da mão do soldador atual)
+        // Emprestado para Estoque, tira da mão do soldador atual.
         if ("emprestado".equalsIgnoreCase(statusAtual) && "estoque".equalsIgnoreCase(novoStatus)) {
             try {
                 empDAO.devolverEquipamento(idEquipamentoSelecionado);
@@ -167,8 +167,7 @@ public class FichaEdicao extends javax.swing.JFrame {
             }
         }
 
-        // 3. BLOQUEIO ADICIONAL: Não pode reativar de 'estragado' para 'estoque'/'emprestado'
-        // Se precisar de reativação, deve ser um processo separado.
+        // Não pode reativar de estragado para estoque/emprestado.
         if ("estragado".equalsIgnoreCase(statusAtual) && !"estragado".equalsIgnoreCase(novoStatus)) {
             JOptionPane.showMessageDialog(null,
                     "Não é possível reativar um equipamento 'estragado'.",
@@ -176,20 +175,19 @@ public class FichaEdicao extends javax.swing.JFrame {
             return;
         }
 
-        // ======================= ATUALIZAÇÃO DO EQUIPAMENTO =======================
         // Enviando o cadastro.
         Equipamentos eq = new Equipamentos();
         eq.setId(idEquipamentoSelecionado);
         eq.setCodigo(codigo);
         eq.setModelo(modelo);
         eq.setMarca(marca);
-        eq.setStatus(novoStatus); // O método atualizarEquipamento na DAO cuidará da 'situacao' (true/false)
+        eq.setStatus(novoStatus); 
 
         // Utilizando o método 'atualizarEquipamento' da classe DAO.
-        boolean sucesso = eqDAO.atualizarEquipamento(eq); // Este método já foi ajustado para setar a 'situacao'
+        boolean sucesso = eqDAO.atualizarEquipamento(eq);
 
         if (sucesso) {
-            // Atualiza a tabela da tela principal apenas se a operação for um sucesso
+            // Atualiza a tabela da tela.
             if (telaEquipamentos != null) {
                 telaEquipamentos.carregarTabela();
             }

@@ -63,15 +63,15 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                 // Converte o índice da view para model
                 int model = tabela.convertRowIndexToModel(linha);
 
-                // Pega a Condição (Ativo/Inativo) - Coluna 6
+                // Pega a condição ativo/inativo.
                 String status = (String) tabela.getModel().getValueAt(model, 6);
 
-                // BLOQUEIO: Não pode editar se estiver Inativo
+                // Não permite editar se estiver inativo.
                 if ("Inativo".equalsIgnoreCase(status)) {
                     JOptionPane.showMessageDialog(null,
                             "Não é possível editar equipamentos inativos.",
                             "Bloqueio", JOptionPane.WARNING_MESSAGE);
-                    return; // Sai do método
+                    return;
                 }
 
                 // Pega os dados da linha selecionada
@@ -98,14 +98,12 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
             public void excluindo(int linha) {
                 int model = tabela.convertRowIndexToModel(linha);
                 int idEquipamento = (int) tabela.getModel().getValueAt(model, 0);
-
-                // Coluna 6 = Condição (Ativo / Inativo)
                 String condicao = (String) tabela.getModel().getValueAt(model, 6);
 
                 // Obtém o cargo do usuário logado
                 String cargo = Sessao.usuarioLogado.getCargo();
 
-                // ==================== SE FOR GESTOR → PODE EXCLUIR DIRETO ====================
+                // Se for gestor, deleta do banco.
                 if (cargo.equalsIgnoreCase("Gestor")) {
 
                     int opcao = JOptionPane.showConfirmDialog(
@@ -118,7 +116,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
 
                     if (opcao == JOptionPane.YES_OPTION) {
                         EquipamentosDAO dao = new EquipamentosDAO();
-                        dao.inativarEquipamento(idEquipamento);  // aplica regra de negócio
+                        dao.inativarEquipamento(idEquipamento);
                         carregarTabela();
                         renderizar();
                     }
@@ -126,23 +124,22 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
                     return;
                 }
 
-                // ==================== USUÁRIO COMUM (NÃO GESTOR) ====================
-                
-                    EquipamentosDAO dao = new EquipamentosDAO();
-                    dao.inativarEquipamento(idEquipamento); // DAO já trata regra
-                    carregarTabela();
-                    renderizar();
-                
+                // Para outras contas.
+                EquipamentosDAO dao = new EquipamentosDAO();
+                dao.inativarEquipamento(idEquipamento); 
+                carregarTabela();
+                renderizar();
+
             }
         };
     }
 
     private void renderizar() {
-        // Faz o famoso desliga e liga pra recarregar os botões da coluna Ações
+        // Faz o famoso desliga e liga pra recarregar os botões da coluna Ações.
         tabela.getColumnModel().getColumn(7).setCellRenderer(new TabelaAcaoRender());
         tabela.getColumnModel().getColumn(7).setCellEditor(new TabelaAcaoEditor(evento));
 
-        // Também ajudam no processo de recarregar
+        // Também ajudam no processo de recarregar.
         tabela.revalidate();
         tabela.repaint();
     }
@@ -151,7 +148,7 @@ public final class TelaEquipamentos extends javax.swing.JPanel {
         EquipamentosDAO dao = new EquipamentosDAO();
         List<Equipamentos> lista = dao.listarEquipamentos();
 
-        // Caso algum botão tenha sido clicado, encerra edição
+        // Caso algum botão tenha sido clicado, encerra edição.
         if (tabela.isEditing() && tabela.getCellEditor() != null) {
             tabela.getCellEditor().stopCellEditing();
         }

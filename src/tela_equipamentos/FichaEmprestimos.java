@@ -163,7 +163,6 @@ public class FichaEmprestimos extends javax.swing.JFrame {
                             JMenuItem item = (JMenuItem) popup.getComponent(selecionado[0]);
                             campo.setText(item.getText());
                             popup.setVisible(false);
-                            // NÃO chama botaoCadastrar aqui
                         } else {
                             // Se não houver popup visível, dispara o cadastro
                             botaoCadastrarMouseClicked(null);
@@ -292,7 +291,7 @@ public class FichaEmprestimos extends javax.swing.JFrame {
             return;
         }
 
-        // Tudo OK → emprestar
+        // Realiza o emprestimo.
         if (dao.realizarEmprestimo(eq.id, idSoldador)) {
             // Atualiza a tabela da tela principal
             if (telaEquipamentos != null) {

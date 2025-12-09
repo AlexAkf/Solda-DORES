@@ -56,7 +56,7 @@ public class EquipamentosDAO {
                     "Preencha todos os campos obrigatórios!",
                     "Atenção", JOptionPane.WARNING_MESSAGE);
 
-            // CORREÇÃO: Retorna false se a validação falhar, sem fechar a tela.
+            // Retorna false se a validação falhar, sem fechar a tela.
             return false;
         }
 
@@ -66,9 +66,9 @@ public class EquipamentosDAO {
             stmt.setString(1, eq.getCodigo());
             stmt.setString(2, eq.getModelo());
             stmt.setString(3, eq.getMarca());
-            stmt.setString(4, eq.getStatus());  // estoque / estragado
+            stmt.setString(4, eq.getStatus());
 
-            // Se estragado → já salva INATIVO
+            // Se estragado, já salva como inativo.
             if ("estragado".equalsIgnoreCase(eq.getStatus())) {
                 stmt.setBoolean(5, false);
             } else {
@@ -78,7 +78,6 @@ public class EquipamentosDAO {
             int linhas = stmt.executeUpdate();
             stmt.close();
 
-            // CORREÇÃO: Retorna true se a execução foi bem-sucedida.
             if (linhas > 0) {
                 JOptionPane.showMessageDialog(null, "Equipamento cadastrado com sucesso!");
             }
@@ -88,7 +87,7 @@ public class EquipamentosDAO {
             JOptionPane.showMessageDialog(null,
                     "Erro ao inserir equipamento:\n" + e.getMessage(),
                     "Erro", JOptionPane.ERROR_MESSAGE);
-            // Retorna false em caso de erro no banco.
+            
             return false;
         }
     }
@@ -110,7 +109,7 @@ public class EquipamentosDAO {
                 Equipamentos eq = new Equipamentos();
                 eq.setId(rs.getInt("id"));
                 eq.setCodigo(rs.getString("codigo"));
-                eq.setModelo(rs.getString("equipamento"));  // nome da coluna
+                eq.setModelo(rs.getString("equipamento"));
                 eq.setMarca(rs.getString("marca"));
                 eq.setStatus(rs.getString("condicao"));
 
@@ -118,7 +117,7 @@ public class EquipamentosDAO {
                 String sold = rs.getString("soldador");
                 eq.setSoldador(sold != null ? sold : "—");
 
-                // SITUAÇÃO (boolean)
+                // Situação. Se true, "Ativo". Se false, "Inativo".
                 boolean situacao = rs.getBoolean("situacao");
                 eq.setCondicao(situacao ? "Ativo" : "Inativo");
 
@@ -148,22 +147,21 @@ public class EquipamentosDAO {
             return false;
         }
 
-        // 1. Lógica para definir o valor da 'situacao' (boolean) baseado no 'status' (condicao)
+        // Lógica para definir o valor da 'situacao' (boolean) baseado no 'status' (condicao):
         boolean situacao;
         if ("estragado".equalsIgnoreCase(eq.getStatus())) {
-            situacao = false; // Se estragado -> INATIVO
+            situacao = false; // Se estragado, "Inativo".
         } else {
-            situacao = true;  // Caso contrário (estoque/emprestado) -> ATIVO
+            situacao = true;  // Caso contrário, "Ativo".
         }
 
-        // Você pode adicionar uma verificação de campos vazios aqui, se desejar.
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, eq.getCodigo());
             stmt.setString(2, eq.getModelo());
             stmt.setString(3, eq.getMarca());
             stmt.setString(4, eq.getStatus());
-            stmt.setBoolean(5, situacao); // USA boolean para a coluna 'situacao'
+            stmt.setBoolean(5, situacao);
             stmt.setInt(6, eq.getId());
 
             int linhas = stmt.executeUpdate();
@@ -183,7 +181,7 @@ public class EquipamentosDAO {
     // ========= DELETE, INATIVAR EQUIPAMENTO E DELETAR (Apenas Gestor) =========
     public void inativarEquipamento(int idEquipamento) {
         try {
-            // 1. Verifica se existe movimentação (somente empréstimos agora)
+            // Verifica se existe movimentação
             String sqlMov
                     = "SELECT COUNT(*) AS total_mov "
                     + "FROM emprestimos WHERE fk_equipamento = ?";
@@ -200,7 +198,7 @@ public class EquipamentosDAO {
             rs.close();
             stmtMov.close();
 
-            // 2. Se NÃO existe movimentação → DELETAR
+            // Se não existe movimentação, deleta.
             if (totalMov == 0) {
 
                 int opcao = JOptionPane.showConfirmDialog(
@@ -231,7 +229,7 @@ public class EquipamentosDAO {
                 return;
             }
 
-            // 3. Caso tenha movimentações → INATIVAR
+            // Caso tenha movimentações, inativa.
             int opcao = JOptionPane.showConfirmDialog(
                     null,
                     "O equipamento já possui movimentações.\nDeseja marcar como INATIVO?",
